@@ -1,0 +1,33 @@
+{
+  "name": "ide",
+  "version": "0.1.0",
+  "description": "ide",
+  "main": "index.js",
+  "dependencies": {
+    "codemirror": "^5.13.2",
+    "codemirror-abap": "^0.1.0",
+    "octicons": "^3.5.0"
+  },
+  "devDependencies": {
+    "csslint": "^0.10.0",
+    "htmllint": "^0.3.0",
+    "htmllint-cli": "0.0.4"
+  },
+  "scripts": {
+    "pretest": "htmllint **/*.html",
+    "test": "csslint --ignore=adjoining-classes,bulletproof-font-face **/*.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/larshp/ide.git"
+  },
+  "keywords": [
+    "ABAP"
+  ],
+  "author": "Lars Hvam Petersen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/larshp/ide/issues"
+  },
+  "homepage": "https://github.com/larshp/ide#readme"
+}
