@@ -21,18 +21,60 @@ body {
     overflow: hidden;
 }
 
+@font-face {
+    font-family: "Octicons Regular";
+    src: url("../node_modules/octicons/octicons/octicons.ttf");
+}
+
 .list-item {
     text-decoration: none;
     display: block;
 }
-
-.list-sub {
-  padding-left: 40px;
+.list-item.expanded::before {
+  font-family: "Octicons Regular";
+  content: "\f0a3";
+  width: 12px;
+  display: inline-block;
+  vertical-align: top;
+}
+.list-item.collapsed::before {
+  font-family: "Octicons Regular";
+  content: "\f078";
+  width: 12px;
+  display: inline-block;
+  vertical-align: top;
+}
+.list-item.empty::before {
+  display: inline-block;
+  width: 12px;
+  content: "";
 }
 
+.list-sub {
+  padding-left: 18px;
+}
 .list-top {
   padding-left: 5px;
   margin-top: 5px;
+}
+
+.list-content {
+  display: inline;
+}
+.list-content.directory::before {
+  font-family: "Octicons Regular";
+  content: "\f016";
+  width: 18px;
+  display: inline-block;
+  vertical-align: top;
+
+}
+.list-content.file::before {
+  font-family: "Octicons Regular";
+  content: "\f011";
+  width: 18px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .wrap {
@@ -49,7 +91,7 @@ body {
 
 .floatright {
     float: right;
-    background-color: #00ff00;
+    background-color: #000;
     height: calc(100vh - 20px);
     width: 80%;
 }
@@ -75,13 +117,33 @@ body {
   <div class="topmenu"><i>ide</i> - File About</div>
   <div class="floatleft">
   <ol class="list-top">
-    <li class="list-item">
-        <span class="octicon octicon-chevron-down">&nbsp;</span>
-        <span class="octicon octicon-file-directory">&nbsp;</span>$TMP
-        <ol class="list-sub">
-            <li class="list-item"><span class="octicon octicon-file-text">&nbsp;</span>ZFOOBAR</li>
-            <li class="list-item"><span class="octicon octicon-file-text">&nbsp;</span>ZASDF</li>
-        </ol>
+    <li class="list-item expanded">
+      <div class="list-content directory">$TMP</div>
+      <ol class="list-sub">
+        <li class="list-item empty">
+          <div class="list-content file">ZFOOBAR</div>
+        </li>
+        <li class="list-item empty">
+          <div class="list-content file">ZASDF</div>
+        </li>
+        <li class="list-item expanded">
+          <div class="list-content directory">Programs</div>
+          <ol class="list-sub">
+            <li class="list-item empty">
+              <div class="list-content file">ZFOOBAR</div>
+            </li>
+            <li class="list-item empty">
+              <div class="list-content file">ZASDF</div>
+            </li>
+          </ol>
+        </li>
+        <li class="list-item collapsed">
+          <div class="list-content directory">Data Elements</div>
+        </li>
+        <li class="list-item collapsed">
+          <div class="list-content directory">Domains</div>
+        </li>
+      </ol>
     </li>
   </ol>
     </div>
@@ -104,6 +166,10 @@ WRITE 'Hello world'.
     theme: "seti",
     mode: "abap"
   });
+
+  document.onclick = function(e) {
+    alert('click' + e.target);
+  }
 </script>
   </body>
 </html>
