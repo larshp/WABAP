@@ -2,8 +2,17 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>title</title>
+    <title>ide</title>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" href="../node_modules/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="../node_modules/codemirror/theme/seti.css">
+    <link rel="stylesheet" href="../node_modules/codemirror/addon/dialog/dialog.css">
+    <link rel="stylesheet" href="../node_modules/octicons/octicons/octicons.css">
+    <script src="../node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="../node_modules/codemirror/addon/dialog/dialog.js"></script>
+    <script src="../node_modules/codemirror/addon/search/searchcursor.js"></script>
+    <script src="../node_modules/codemirror/addon/search/search.js"></script>
+    <script src="../node_modules/codemirror-abap/build/abap.js"></script>
     <style type="text/css">
 body {
     font-family: sans-serif;
@@ -13,9 +22,17 @@ body {
 }
 
 .list-item {
-    color: #0F0;
     text-decoration: none;
     display: block;
+}
+
+.list-sub {
+  padding-left: 40px;
+}
+
+.list-top {
+  padding-left: 5px;
+  margin-top: 5px;
 }
 
 .wrap {
@@ -26,34 +43,67 @@ body {
     float: left;
     width: 20%;
     background-color: #353b45;
-    height: 100vh;
+    height: calc(100vh - 20px);
+    color: rgb(215, 218, 224);
 }
 
 .floatright {
     float: right;
     background-color: #00ff00;
-    height: 100vh;
+    height: calc(100vh - 20px);
     width: 80%;
+}
+
+.topmenu {
+  background-color: #292E36;
+  height: 20px;
+  line-height: 20px;
+  overflow: hidden;
+  color: rgb(215, 218, 224);
+}
+
+.CodeMirror {
+  height: calc(100vh - 20px);
+  position: relative;
+  overflow: hidden;
 }
     </style>
   </head>
   <body>
+
 <div class="wrap">
-  <div>This is a menu</div>
+  <div class="topmenu"><i>ide</i> - File About</div>
   <div class="floatleft">
-  <ol>
+  <ol class="list-top">
     <li class="list-item">
-        $TMP
-        <ol>
-            <li class="list-item">ZFOOBAR</li>
-            <li class="list-item">ZASDF</li>
+        <span class="octicon octicon-chevron-down">&nbsp;</span>
+        <span class="octicon octicon-file-directory">&nbsp;</span>$TMP
+        <ol class="list-sub">
+            <li class="list-item"><span class="octicon octicon-file-text">&nbsp;</span>ZFOOBAR</li>
+            <li class="list-item"><span class="octicon octicon-file-text">&nbsp;</span>ZASDF</li>
         </ol>
     </li>
   </ol>
     </div>
-    <div class="floatright">Main area</div>
+    <div class="floatright">
+<form>
+<textarea id="code" name="code">
+* ABAP mode testing
+WRITE 'Hello world'.
+</textarea>
+</form>
+    </div>
     <div style="clear: both;">
 </div>
-
+<script>
+  /* global CodeMirror */
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    matchBrackets: true,
+    tabSize: 2,
+    theme: "seti",
+    mode: "abap"
+  });
+</script>
   </body>
 </html>
