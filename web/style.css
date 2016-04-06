@@ -10,6 +10,8 @@ body {
   src: url("../node_modules/octicons/octicons/octicons.ttf");
 }
 
+/* css decendants */
+
 .list-item {
   text-decoration: none;
   display: block;

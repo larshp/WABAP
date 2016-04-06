@@ -15,7 +15,7 @@
   },
   "scripts": {
     "pretest": "htmllint **/*.html",
-    "test": "csslint --ignore=adjoining-classes,bulletproof-font-face **/*.css"
+    "test": "csslint --ignore=bulletproof-font-face **/*.css"
   },
   "repository": {
     "type": "git",
