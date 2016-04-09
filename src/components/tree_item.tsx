@@ -25,7 +25,7 @@ export class TreeItem extends React.Component<IProps, {}> {
     return (<li style={style}>
       {this.expander(item)}
       {this.icon(item)}
-      {item.getText()}
+      {item.getDescription()}
       {this.children(item)}
       </li>);
   }
@@ -43,7 +43,21 @@ export class TreeItem extends React.Component<IProps, {}> {
       verticalAlign: "top",
     };
 
-    let content = "\uf016";
+    let content = "";
+    switch (item.getType()) {
+      case "PROG":
+        content = "\uf011";
+        break;
+      case "DTEL":
+        content = "\uf06d";
+        break;
+      case "DOMA":
+        content = "\uf099";
+        break;
+      default:
+        content = "\uf016";
+        break;
+    }
 
     return (<div style={style}>{content}</div>);
   }
