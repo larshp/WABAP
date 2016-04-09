@@ -20,14 +20,30 @@ export class TreeItem extends React.Component<IProps, {}> {
       display: "block",
     };
 
+    const inline: {} = {
+      display: "inline-block",
+    }
+
     let item = this.props.item;
 
     return (<li style={style}>
       {this.expander(item)}
+      <div style={inline} onClick={this.clickItem.bind(this)}>
       {this.icon(item)}
       {item.getDescription()}
+      </div>
       {this.children(item)}
       </li>);
+  }
+
+  private clickItem(): void {
+    let item = this.props.item;
+
+    if (item.getType() === "") {
+      return;
+    }
+
+    console.log("Editor open " + item.getType() + " " + item.getDescription());
   }
 
   private icon(item: Backend.TreeItem): React.ReactElement<Provider> {

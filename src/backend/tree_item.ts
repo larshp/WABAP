@@ -102,6 +102,7 @@ export class TreeItemDEVC extends TreeItem {
     public constructor(name: string) {
         super();
         this.description = name;
+        this.type = "DEVC";
     }
 
     public hasChildren(): boolean {
