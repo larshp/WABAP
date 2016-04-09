@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "jsx": "react",
+    "outDir": "build",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "sourceMap": true,
+    "experimentalDecorators": true
+  },
+  "exclude": ["node_modules"]
+}

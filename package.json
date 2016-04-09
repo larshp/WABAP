@@ -1,25 +1,27 @@
 {
-  "name": "ide",
+  "name": "WABAP",
   "version": "0.1.0",
-  "description": "ide",
+  "description": "WABAP",
   "main": "index.js",
   "dependencies": {
     "codemirror": "^5.13.2",
     "codemirror-abap": "^0.1.0",
-    "octicons": "^3.5.0"
+    "octicons": "^3.5.0",
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1"
   },
   "devDependencies": {
-    "csslint": "^0.10.0",
-    "htmllint": "^0.3.0",
-    "htmllint-cli": "0.0.4"
+    "browserify": "^13.0.0",
+    "typescript": "^1.8.9"
   },
   "scripts": {
-    "pretest": "htmllint **/*.html",
-    "test": "csslint --ignore=bulletproof-font-face **/*.css"
+    "browserify": "browserify build/index.js -o web/bundle.js",
+    "test": "tsc",
+    "posttest": "npm run browserify"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/larshp/ide.git"
+    "url": "git+https://github.com/larshp/WABAP.git"
   },
   "keywords": [
     "ABAP"
@@ -27,7 +29,7 @@
   "author": "Lars Hvam Petersen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/larshp/ide/issues"
+    "url": "https://github.com/larshp/WABAP/issues"
   },
-  "homepage": "https://github.com/larshp/ide#readme"
+  "homepage": "https://github.com/larshp/WABAP#readme"
 }
