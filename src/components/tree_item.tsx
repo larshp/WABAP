@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import * as Backend from "../backend/";
 
 interface IProps {
+  key?: number;
   item: Backend.TreeItem;
 }
 
@@ -12,6 +13,10 @@ export class TreeItem extends React.Component<IProps, {}> {
     const style: {} = {
       textDecoration: "none",
       cursor: "default",
+      WebkitUserSelect: "none",
+      MozUserSelect: "none",
+      msUserSelect: "none",
+      userSelect: "none",
       display: "block",
     };
 
@@ -31,12 +36,24 @@ export class TreeItem extends React.Component<IProps, {}> {
       width: "18px",
       display: "inline-block",
       cursor: "default",
+      WebkitUserSelect: "none",
+      MozUserSelect: "none",
+      msUserSelect: "none",
+      userSelect: "none",
       verticalAlign: "top",
     };
 
     let content = "\uf016";
 
     return (<div style={style}>{content}</div>);
+  }
+
+  private clickExpand(): void {
+    let item = this.props.item;
+
+    item.toggleExpanded();
+
+    this.setState(this.props);
   }
 
   private expander(item: Backend.TreeItem): React.ReactElement<Provider> {
@@ -46,6 +63,10 @@ export class TreeItem extends React.Component<IProps, {}> {
       display: "inline-block",
       verticalAlign: "top",
       cursor: "pointer",
+      WebkitUserSelect: "none",
+      MozUserSelect: "none",
+      msUserSelect: "none",
+      userSelect: "none",
     };
 
     let content = "";
@@ -57,7 +78,7 @@ export class TreeItem extends React.Component<IProps, {}> {
       }
     }
 
-    return (<div style={style}>{content}</div>);
+    return (<div style={style} onClick={this.clickExpand.bind(this)}>{content}</div>);
   }
 
   private children(item: Backend.TreeItem): React.ReactElement<Provider> {
@@ -71,9 +92,11 @@ export class TreeItem extends React.Component<IProps, {}> {
       paddingLeft: "18px",
     };
 
+    let i = 0;
+
     return (<ol style={style}>
       {children.map(function(child) {
-        return <TreeItem item={child} />;
+        return <TreeItem key={i++} item={child} />;
       })}
       </ol>);
   }

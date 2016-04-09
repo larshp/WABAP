@@ -21,6 +21,10 @@ export class TreeItem {
         return true;
     }
 
+    public toggleExpanded(): void {
+        this.expanded = !this.expanded;
+    }
+
     public isExpanded(): boolean {
         return this.expanded;
     }
