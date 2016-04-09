@@ -12,10 +12,13 @@ body {
 
 /* css decendants */
 
+/*
 .list-item {
   text-decoration: none;
   display: block;
 }
+*/
+/*
 .list-item.expanded::before {
   font-family: "Octicons Regular";
   content: "\f0a3";
@@ -37,15 +40,19 @@ body {
   width: 12px;
   content: "";
 }
-
+*/
+/*
 .list-sub {
   padding-left: 18px;
 }
+*/
+/*
 .list-top {
   padding-left: 5px;
   margin-top: 5px;
 }
-
+*/
+/*
 .list-content {
   display: inline;
   cursor: default;
@@ -54,6 +61,8 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+*/
+/*
 .list-content.directory::before {
   font-family: "Octicons Regular";
   content: "\f016";
@@ -68,11 +77,14 @@ body {
   display: inline-block;
   vertical-align: top;
 }
-
+*/
+/*
 .wrap {
   width: 100%;
 }
+*/
 
+/*
 .floatleft {
   float: left;
   width: 20%;
@@ -87,7 +99,9 @@ body {
   height: calc(100vh - 20px);
   width: 80%;
 }
+*/
 
+/*
 .topmenu {
   background-color: #292E36;
   height: 20px;
@@ -95,13 +109,14 @@ body {
   overflow: hidden;
   color: rgb(215, 218, 224);
 }
+*/
 
 .CodeMirror {
   height: calc(100vh - 20px);
   position: relative;
   overflow: hidden;
 }
-
+/*
 .menu-item {
   display: inline-block;
   cursor: default;
@@ -110,7 +125,10 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+*/
+/*
 .menu-item:hover {
   background-color: #353b45;
   font-weight: bold;
 }
+*/
