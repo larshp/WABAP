@@ -1,9 +1,9 @@
 /// <reference path="../typings/tsd.d.ts" />
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import * as Components from './components/';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import * as Components from "./components/";
 import * as Backend from "./backend/";
 
 /*
@@ -54,15 +54,15 @@ import * as Backend from "./backend/";
 class Main extends React.Component<{}, {}> {
   public render(): React.ReactElement<Provider> {
     const wrap: {} = {
-      "width": "100%"
-    }
+      width: "100%",
+    };
 
     const top: {} = {
       backgroundColor: "#292E36",
       height: "20px",
       lineHeight: "20px",
       overflow: "hidden",
-      color: "rgb(215, 218, 224)"
+      color: "rgb(215, 218, 224)",
     };
 
     const tree: {} = {
@@ -70,19 +70,19 @@ class Main extends React.Component<{}, {}> {
       width: "20%",
       backgroundColor: "#353b45",
       height: "calc(100vh - 20px)",
-      color: "rgb(215, 218, 224)"
-    }
+      color: "rgb(215, 218, 224)",
+    };
 
     const editor: {} = {
       float: "right",
       backgroundColor: "#000",
       height: "calc(100vh - 20px)",
-      width: "80%"
-    }
+      width: "80%",
+    };
 
     const clear: {} = {
-      clear: "both"
-    }
+      clear: "both",
+    };
 
     let btree = new Backend.Tree();
 
@@ -95,4 +95,4 @@ class Main extends React.Component<{}, {}> {
   }
 }
 
-ReactDOM.render(<Main />, document.getElementById('app'));
+ReactDOM.render(<Main />, document.getElementById("app"));

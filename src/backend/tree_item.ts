@@ -15,7 +15,9 @@ export class TreeItem {
     }
 
     public hasChildren(): boolean {
-        if(this.text === "bar") return false;
+        if (this.text === "bar") {
+            return false;
+        }
         return true;
     }
 

@@ -12,10 +12,12 @@
   },
   "devDependencies": {
     "browserify": "^13.0.0",
+    "tslint": "^3.7.1",
     "typescript": "^1.8.9"
   },
   "scripts": {
     "browserify": "browserify build/index.js -o web/bundle.js",
+    "tslint": "tslint -c tslint.json src/*.ts* src/backend/*.ts* src/components/*.ts*",
     "test": "tsc",
     "posttest": "npm run browserify"
   },

@@ -1,19 +1,18 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
+import * as React from "react";
+import { Provider } from "react-redux";
 import * as Backend from "../backend/";
 
-interface Props {
+interface IProps {
   item: Backend.TreeItem;
 }
 
-export class TreeItem extends React.Component<Props, {}> {
+export class TreeItem extends React.Component<IProps, {}> {
 
   public render(): React.ReactElement<Provider> {
     const style: {} = {
       textDecoration: "none",
       cursor: "default",
-      display: "block"
+      display: "block",
     };
 
     let item = this.props.item;
@@ -32,7 +31,7 @@ export class TreeItem extends React.Component<Props, {}> {
       width: "18px",
       display: "inline-block",
       cursor: "default",
-      verticalAlign: "top"
+      verticalAlign: "top",
     };
 
     let content = "\uf016";
@@ -46,12 +45,12 @@ export class TreeItem extends React.Component<Props, {}> {
       width: "12px",
       display: "inline-block",
       verticalAlign: "top",
-      cursor: "pointer"
+      cursor: "pointer",
     };
 
     let content = "";
     if (item.hasChildren()) {
-      if(item.isExpanded()) {
+      if (item.isExpanded()) {
         content = "\uf0a3";
       } else {
         content = "\uf078";
@@ -63,13 +62,13 @@ export class TreeItem extends React.Component<Props, {}> {
 
   private children(item: Backend.TreeItem): React.ReactElement<Provider> {
     if (item.isExpanded() === false || item.hasChildren() === false) {
-      return null;
+      return undefined;
     }
 
     let children = item.getChildren();
 
     const style: {} = {
-      paddingLeft: "18px"
+      paddingLeft: "18px",
     };
 
     return (<ol style={style}>
