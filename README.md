@@ -1,4 +1,4 @@
-
+[![Dependency Status](https://david-dm.org/larshp/WABAP.svg)](https://david-dm.org/larshp/WABAP)
 
 #### Target patforms
 * Web (online + offline/local)
