@@ -2,65 +2,81 @@ import * as React from "react";
 import * as Backend from "../backend/";
 import {observer} from "mobx-react";
 
+class Style {
+  public static li: {} = {
+    textDecoration: "none",
+    cursor: "default",
+    WebkitUserSelect: "none",
+    MozUserSelect: "none",
+    msUserSelect: "none",
+    userSelect: "none",
+    display: "block",
+  };
+
+  public static inline: {} = {
+    display: "inline-block",
+  };
+
+  public static icon: {} = {
+    fontFamily: "Octicons Regular",
+    width: "18px",
+    display: "inline-block",
+    cursor: "default",
+    WebkitUserSelect: "none",
+    MozUserSelect: "none",
+    msUserSelect: "none",
+    userSelect: "none",
+    verticalAlign: "top",
+  };
+
+  public static expander: {} = {
+    fontFamily: "Octicons Regular",
+    width: "12px",
+    display: "inline-block",
+    verticalAlign: "top",
+    cursor: "pointer",
+    WebkitUserSelect: "none",
+    MozUserSelect: "none",
+    msUserSelect: "none",
+    userSelect: "none",
+  };
+
+  public static ol: {} = {
+    paddingLeft: "18px",
+  };
+}
+
 interface IProps {
   key?: number;
   item: Backend.TreeItem;
+  tabs: Backend.Tabs;
 }
 
 @observer
 export class TreeItem extends React.Component<IProps, {}> {
 
   public render() {
-
-    const style: {} = {
-      textDecoration: "none",
-      cursor: "default",
-      WebkitUserSelect: "none",
-      MozUserSelect: "none",
-      msUserSelect: "none",
-      userSelect: "none",
-      display: "block",
-    };
-
-    const inline: {} = {
-      display: "inline-block",
-    };
-
     let item = this.props.item;
 
-    return (<li style={style}>
+    return (<li style={Style.li}>
       {this.expander(item)}
-      <div style={inline} onClick={this.clickItem.bind(this)}>
+      <div style={Style.inline} onClick={this.clickItem.bind(this)}>
       {this.icon(item)}
       {item.getDescription()}
       </div>
-      {this.children(item)}
+      {this.children(item, this.props.tabs)}
       </li>);
   }
 
   private clickItem(): void {
-    let item = this.props.item;
-
-    if (item.getType() === "") {
+    if (this.props.item.getType() === "") {
       return;
     }
 
-//    console.log("Editor open " + item.getType() + " " + item.getDescription());
+    this.props.tabs.addTab();
   }
 
   private icon(item: Backend.TreeItem) {
-    const style: {} = {
-      fontFamily: "Octicons Regular",
-      width: "18px",
-      display: "inline-block",
-      cursor: "default",
-      WebkitUserSelect: "none",
-      MozUserSelect: "none",
-      msUserSelect: "none",
-      userSelect: "none",
-      verticalAlign: "top",
-    };
-
     let content = "";
     switch (item.getType()) {
       case "PROG":
@@ -77,30 +93,14 @@ export class TreeItem extends React.Component<IProps, {}> {
         break;
     }
 
-    return (<div style={style}>{content}</div>);
+    return (<div style={Style.icon}>{content}</div>);
   }
 
   private clickExpand(): void {
-    let item = this.props.item;
-
-    item.toggleExpanded();
-
-//    this.setState(this.props);
+    this.props.item.toggleExpanded();
   }
 
   private expander(item: Backend.TreeItem) {
-    const style: {} = {
-      fontFamily: "Octicons Regular",
-      width: "12px",
-      display: "inline-block",
-      verticalAlign: "top",
-      cursor: "pointer",
-      WebkitUserSelect: "none",
-      MozUserSelect: "none",
-      msUserSelect: "none",
-      userSelect: "none",
-    };
-
     let content = "";
     if (item.hasChildren()) {
       if (item.expanded) {
@@ -110,25 +110,20 @@ export class TreeItem extends React.Component<IProps, {}> {
       }
     }
 
-    return (<div style={style} onClick={this.clickExpand.bind(this)}>{content}</div>);
+    return (<div style={Style.expander} onClick={this.clickExpand.bind(this)}>{content}</div>);
   }
 
-  private children(item: Backend.TreeItem) {
+  private children(item: Backend.TreeItem, tabs: Backend.Tabs) {
     if (item.expanded === false || item.hasChildren() === false) {
       return undefined;
     }
 
     let children = item.getChildren();
-
-    const style: {} = {
-      paddingLeft: "18px",
-    };
-
     let i = 0;
 
-    return (<ol style={style}>
+    return (<ol style={Style.ol}>
       {children.map(function(child) {
-        return <TreeItem key={i++} item={child} />;
+        return <TreeItem key={i++} item={child} tabs={tabs} />;
       })}
       </ol>);
   }

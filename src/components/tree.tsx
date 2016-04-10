@@ -3,19 +3,21 @@ import * as Components from "./";
 import * as Backend from "../backend/";
 import {observer} from "mobx-react";
 
+class Style {
+  public static top: {} = {
+    paddingLeft: "5px",
+    marginTop: "5px",
+  };
+}
+
 @observer
-export class Tree extends React.Component<{tree: Backend.Tree}, {}> {
+export class Tree extends React.Component<{state: Backend.State}, {}> {
 
   public render() {
-    const top: {} = {
-      paddingLeft: "5px",
-      marginTop: "5px",
-    };
+    const root = this.props.state.tree.getRoot();
 
-    let root = this.props.tree.getRoot();
-
-    return (<ol style={top}>
-      <Components.TreeItem item={root} />
+    return (<ol style={Style.top}>
+      <Components.TreeItem item={root} tabs={this.props.state.tabs} />
       </ol>);
   }
 }
