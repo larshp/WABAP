@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Provider } from "react-redux";
 import * as Backend from "../backend/";
 
 interface IProps {
@@ -9,7 +8,8 @@ interface IProps {
 
 export class TreeItem extends React.Component<IProps, {}> {
 
-  public render(): React.ReactElement<Provider> {
+  public render() {
+
     const style: {} = {
       textDecoration: "none",
       cursor: "default",
@@ -22,7 +22,7 @@ export class TreeItem extends React.Component<IProps, {}> {
 
     const inline: {} = {
       display: "inline-block",
-    }
+    };
 
     let item = this.props.item;
 
@@ -43,10 +43,10 @@ export class TreeItem extends React.Component<IProps, {}> {
       return;
     }
 
-    console.log("Editor open " + item.getType() + " " + item.getDescription());
+//    console.log("Editor open " + item.getType() + " " + item.getDescription());
   }
 
-  private icon(item: Backend.TreeItem): React.ReactElement<Provider> {
+  private icon(item: Backend.TreeItem) {
     const style: {} = {
       fontFamily: "Octicons Regular",
       width: "18px",
@@ -86,7 +86,7 @@ export class TreeItem extends React.Component<IProps, {}> {
     this.setState(this.props);
   }
 
-  private expander(item: Backend.TreeItem): React.ReactElement<Provider> {
+  private expander(item: Backend.TreeItem) {
     const style: {} = {
       fontFamily: "Octicons Regular",
       width: "12px",
@@ -111,7 +111,7 @@ export class TreeItem extends React.Component<IProps, {}> {
     return (<div style={style} onClick={this.clickExpand.bind(this)}>{content}</div>);
   }
 
-  private children(item: Backend.TreeItem): React.ReactElement<Provider> {
+  private children(item: Backend.TreeItem) {
     if (item.isExpanded() === false || item.hasChildren() === false) {
       return undefined;
     }

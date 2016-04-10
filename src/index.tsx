@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { Provider } from "react-redux";
 import * as Components from "./components/";
 import * as Backend from "./backend/";
 
@@ -50,7 +49,7 @@ import * as Backend from "./backend/";
 */
 
 class Main extends React.Component<{}, {}> {
-  public render(): React.ReactElement<Provider> {
+  public render() {
     const wrap: {} = {
       width: "100%",
     };

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Provider } from "react-redux";
 import * as Components from "./";
 import * as Backend from "../backend/";
 
@@ -9,7 +8,7 @@ interface IProps {
 
 export class Tree extends React.Component<IProps, {}> {
 
-  public render(): React.ReactElement<Provider> {
+  public render() {
     const top: {} = {
       paddingLeft: "5px",
       marginTop: "5px",
