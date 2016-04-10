@@ -2,6 +2,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as Components from "./components/";
 import * as Backend from "./backend/";
+import {observable} from "mobx";
+import {observer} from "mobx-react";
+import DevTools from "mobx-react-devtools";
 
 /*
 <div class="wrap">
@@ -48,7 +51,14 @@ import * as Backend from "./backend/";
 <div style="clear: both;"></div>
 */
 
-class Main extends React.Component<{}, {}> {
+class State {
+  @observable public btree = new Backend.Tree();
+}
+
+const state = new State();
+
+@observer
+class Main extends React.Component<{state: State}, {}> {
   public render() {
     const wrap: {} = {
       width: "100%",
@@ -81,15 +91,14 @@ class Main extends React.Component<{}, {}> {
       clear: "both",
     };
 
-    let btree = new Backend.Tree();
-
     return (<div style={wrap}>
       <div style={top}><Components.TopMenu /></div>
-      <div style={tree}><Components.Tree tree={btree}/></div>
+      <div style={tree}><Components.Tree tree={state.btree} /></div>
       <div style={editor}>Hello world</div>
       <div style={clear}></div>
+      <DevTools />
       </div>);
   }
 }
 
-ReactDOM.render(<Main />, document.getElementById("app"));
+ReactDOM.render(<Main state={state} />, document.getElementById("app"));

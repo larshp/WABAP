@@ -1,3 +1,4 @@
+/*
 var editor = null;
 
 function toggleMode(cm) {
@@ -17,7 +18,7 @@ function initCodeMirror() {
     "<textarea id=\"code\" name=\"code\"></textarea>" +
     "</form>";
 
-  /* global CodeMirror */
+   global CodeMirror
   editor = CodeMirror.fromTextArea(document.getElementById("code"), {
     lineNumbers: true,
     matchBrackets: true,
@@ -119,3 +120,4 @@ document.onclick = function(e) {
     }
   }
 };
+*/

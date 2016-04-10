@@ -1,12 +1,10 @@
 import * as React from "react";
 import * as Components from "./";
 import * as Backend from "../backend/";
+import {observer} from "mobx-react";
 
-interface IProps {
-  tree: Backend.Tree;
-}
-
-export class Tree extends React.Component<IProps, {}> {
+@observer
+export class Tree extends React.Component<{tree: Backend.Tree}, {}> {
 
   public render() {
     const top: {} = {

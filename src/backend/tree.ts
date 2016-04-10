@@ -2,10 +2,15 @@ import * as Backend from "./";
 
 export class Tree {
 
+    private root: Backend.TreeItem;
+
+    constructor() {
+        this.root = new Backend.TreeItemDEVC("$TMP");
+        this.root.setExpanded();
+    }
+
     public getRoot(): Backend.TreeItem {
-        let item = new Backend.TreeItemDEVC("$TMP");
-        item.setExpanded();
-        return item;
+        return this.root;
     }
 
 }

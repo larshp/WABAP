@@ -6,6 +6,9 @@
   "dependencies": {
     "codemirror": "^5.13.2",
     "codemirror-abap": "^0.1.0",
+    "mobx": "^2.1.1",
+    "mobx-react": "^3.0.3",
+    "mobx-react-devtools": "^4.0.2",
     "octicons": "^3.5.0",
     "react": "^15.0.1",
     "react-dom": "^15.0.1"

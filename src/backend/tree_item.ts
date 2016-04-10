@@ -1,9 +1,11 @@
+import {observable} from "mobx";
+
 export abstract class TreeItem {
 
     protected description = "";
     protected type = "";
 
-    private expanded = false;
+    @observable public expanded = false;
 
     public getDescription(): string {
         return this.description;
@@ -20,11 +22,11 @@ export abstract class TreeItem {
     public toggleExpanded(): void {
         this.expanded = !this.expanded;
     }
-
-    public isExpanded(): boolean {
+/*
+    @computed get isExpanded(): boolean {
         return this.expanded;
     }
-
+*/
     public hasChildren(): boolean {
         return false;
     }
@@ -62,6 +64,7 @@ class TreeItemCategory extends TreeItem {
 
     private devclass = "";
     private category = "";
+    private children: Array<TreeItem> = [];
 
     public constructor(category: string, description: string, devclass: string) {
         super();
@@ -69,6 +72,21 @@ class TreeItemCategory extends TreeItem {
         this.description = description;
         this.devclass = devclass;
         this.category = category;
+
+        switch (this.category) {
+            case "PROG":
+                this.children.push(new TreeItemPROG("ZPROGRAM"));
+                break;
+            case "DTEL":
+                this.children.push(new TreeItemDTEL("ZDATA_ELEMENT"));
+                break;
+            case "DOMA":
+                this.children.push(new TreeItemDOMA("ZDOMAIN"));
+                break;
+            default:
+                this.children = [];
+                break;
+        }
     }
 
     public hasChildren(): boolean {
@@ -76,33 +94,22 @@ class TreeItemCategory extends TreeItem {
     }
 
     public getChildren() {
-        let children: Array<TreeItem> = [];
-
-        switch (this.category) {
-            case "PROG":
-                children.push(new TreeItemPROG("ZPROGRAM"));
-                break;
-            case "DTEL":
-                children.push(new TreeItemDTEL("ZDATA_ELEMENT"));
-                break;
-            case "DOMA":
-                children.push(new TreeItemDOMA("ZDOMAIN"));
-                break;
-            default:
-                children = [];
-                break;
-        }
-
-        return children;
+        return this.children;
     }
 }
 
 export class TreeItemDEVC extends TreeItem {
 
+    private children: Array<TreeItem> = [];
+
     public constructor(name: string) {
         super();
         this.description = name;
         this.type = "DEVC";
+
+        this.children.push(new TreeItemCategory("PROG", "Programs", this.description));
+        this.children.push(new TreeItemCategory("DTEL", "Data Elements", this.description));
+        this.children.push(new TreeItemCategory("DOMA", "Domains", this.description));
     }
 
     public hasChildren(): boolean {
@@ -110,13 +117,7 @@ export class TreeItemDEVC extends TreeItem {
     }
 
     public getChildren() {
-        let children: Array<TreeItem> = [];
-
-        children.push(new TreeItemCategory("PROG", "Programs", this.description));
-        children.push(new TreeItemCategory("DTEL", "Data Elements", this.description));
-        children.push(new TreeItemCategory("DOMA", "Domains", this.description));
-
-        return children;
+        return this.children;
     }
 
 }

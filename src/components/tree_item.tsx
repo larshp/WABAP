@@ -1,11 +1,13 @@
 import * as React from "react";
 import * as Backend from "../backend/";
+import {observer} from "mobx-react";
 
 interface IProps {
   key?: number;
   item: Backend.TreeItem;
 }
 
+@observer
 export class TreeItem extends React.Component<IProps, {}> {
 
   public render() {
@@ -83,7 +85,7 @@ export class TreeItem extends React.Component<IProps, {}> {
 
     item.toggleExpanded();
 
-    this.setState(this.props);
+//    this.setState(this.props);
   }
 
   private expander(item: Backend.TreeItem) {
@@ -101,7 +103,7 @@ export class TreeItem extends React.Component<IProps, {}> {
 
     let content = "";
     if (item.hasChildren()) {
-      if (item.isExpanded()) {
+      if (item.expanded) {
         content = "\uf0a3";
       } else {
         content = "\uf078";
@@ -112,7 +114,7 @@ export class TreeItem extends React.Component<IProps, {}> {
   }
 
   private children(item: Backend.TreeItem) {
-    if (item.isExpanded() === false || item.hasChildren() === false) {
+    if (item.expanded === false || item.hasChildren() === false) {
       return undefined;
     }
 
