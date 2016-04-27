@@ -26,10 +26,17 @@ class Style {
     color: "rgb(215, 218, 224)",
   };
 
+  public static tablist: {} = {
+    float: "right",
+    backgroundColor: "#000",
+    height: "20px",
+    width: "80%",
+  };
+
   public static editor: {} = {
     float: "right",
     backgroundColor: "#000",
-    height: "calc(100vh - 20px)",
+    height: "calc(100vh - 40px)",
     width: "80%",
   };
 
@@ -44,7 +51,8 @@ class Main extends React.Component<{state: Backend.State}, {}> {
     return (<div style={Style.wrap}>
       <div style={Style.top}><Components.TopMenu /></div>
       <div style={Style.tree}><Components.Tree state={this.props.state} /></div>
-      <div style={Style.editor}><Components.Tabs state={this.props.state} /></div>
+      <div style={Style.tablist}><Components.TabList state={this.props.state} /></div>
+      <div style={Style.editor}><Components.CodeMirror /></div>
       <div style={Style.clear}></div>
       <DevTools />
       </div>);
