@@ -5,7 +5,7 @@ import * as State from "../state/";
 @observer
 export class CodeMirror extends React.Component<{editor: State.Editor}, {}> {
   public componentDidMount() {
-    this.props.editor.openEditor();
+    this.props.editor.initEditor();
   }
 
   public render() {

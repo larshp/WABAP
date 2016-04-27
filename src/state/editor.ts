@@ -155,6 +155,23 @@ class AbapMode implements CodeMirror.Mode<any> {
 CodeMirror.defineMode("abap", (options: CodeMirror.EditorConfiguration, spec: any) => { return new AbapMode(); });
 
 
+function setReadOnly(cm, b: boolean) {
+  cm.setOption("readOnly", b);
+  if (b === true) {
+    cm.setOption("theme", "bespin");
+  } else {
+    cm.setOption("theme", "seti");
+  }
+}
+
+function toggleReadOnly(cm) {
+  if(cm.getOption("readOnly") === true) {
+    setReadOnly(cm, false);
+  } else {
+    setReadOnly(cm, true);
+  }
+}
+
 export class Editor {
   @observable public visible = false;
 
@@ -172,19 +189,16 @@ export class Editor {
       }
     );
 
+    // consume the full div height
+    this.editor.getWrapperElement().style.height = "calc(100vh - 40px)";
+
     this.editor.setOption("extraKeys", {
       Tab: function(cm) {
         var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
         cm.replaceSelection(spaces);
       },
       "Ctrl-F1": function(cm) {
-        if(cm.getOption("readOnly") === true) {
-          cm.setOption("readOnly", false);
-          cm.setOption("theme", "seti");
-        } else {
-          cm.setOption("readOnly", true);
-          cm.setOption("theme", "bespin");
-        }
+        toggleReadOnly(cm);
       },
       "Ctrl-F2": function(cm) {
         alert("todo, check!");
@@ -204,12 +218,29 @@ export class Editor {
     });
   }
 
-  public openEditor() {
+  public hide() {
+    this.editor.getWrapperElement().style.visibility = "hidden";
+  }
+
+  public unHide() {
+    this.editor.getWrapperElement().style.visibility = "";
+  }
+
+  public initEditor() {
     if(this.editor === undefined) {
       this.initCodeMirror();
     }
+    this.hide();
+  }
 
+  public open(s: string) {
+    this.unHide();
+    setReadOnly(this.editor, false);
     this.editor.focus();
-    this.editor.setValue("* ABAP mode testing\nWRITE 'Hello world'.");
+    this.editor.setValue(s);
+  }
+
+  public getValue(): string {
+    return this.editor.getValue();
   }
 }

@@ -7,9 +7,22 @@ class Style {
     display: "inline-block",
   };
 
-  public static tab: {} = {
+  public static tab_active: {} = {
     display: "inline-block",
-    backgroundColor: "#F00",
+    backgroundColor: "#353b45",
+    marginLeft: "10px",
+    color: "rgb(215, 218, 224)",
+    fontWeight: "bold",
+    cursor: "default",
+    WebkitUserSelect: "none",
+    MozUserSelect: "none",
+    msUserSelect: "none",
+    userSelect: "none",
+  };
+
+  public static tab_inactive: {} = {
+    display: "inline-block",
+    backgroundColor: "#353b45",
     marginLeft: "10px",
     color: "rgb(215, 218, 224)",
     cursor: "default",
@@ -37,9 +50,16 @@ class Style {
 export class Tab extends React.Component<{tab: State.Tab, key?: number}, {}> {
 
   public render() {
+    let style;
+    if (this.props.tab.active === true) {
+      style = Style.tab_active;
+    } else {
+      style = Style.tab_inactive;
+    }
+
     return (
       <div style={Style.inline}>
-      <div style={Style.tab} onClick={this.clickItem.bind(this)}>{this.props.tab.text}</div>
+      <div style={style} onClick={this.clickItem.bind(this)}>{this.props.tab.text}</div>
       {this.icon()}
       </div>);
   }
@@ -51,10 +71,10 @@ export class Tab extends React.Component<{tab: State.Tab, key?: number}, {}> {
   }
 
   private clickItem(): void {
-    alert("click " + this.props.tab.text);
+    State.Main.getState().tablist.setActive(this.props.tab);
   }
 
   private clickClose(): void {
-    alert("close " + this.props.tab.text);
+    State.Main.getState().tablist.close(this.props.tab);
   }
 }

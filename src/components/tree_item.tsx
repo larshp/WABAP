@@ -72,7 +72,7 @@ export class TreeItem extends React.Component<IProps, {}> {
       return;
     }
 
-    State.Main.getState().tablist.addTab(this.props.item);
+    State.Main.getState().tablist.add(this.props.item);
   }
 
   private icon(item: State.TreeItem) {
