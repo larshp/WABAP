@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "codemirror": "^5.14.2",
-    "codemirror-abap": "^0.1.0",
+    "codemirror-abap": "^0.1.2",
     "mobx": "^2.1.1",
     "mobx-react": "^3.0.5",
     "mobx-react-devtools": "^4.0.3",
@@ -20,7 +20,7 @@
     "typescript": "^1.8.10"
   },
   "scripts": {
-    "browserify": "browserify build/index.js -o web/bundle.js",
+    "browserify": "browserify build/index.js node_modules/codemirror/addon/dialog/dialog.js node_modules/codemirror/addon/search/searchcursor.js node_modules/codemirror/addon/search/search.js -o web/bundle.js",
     "tslint": "tslint -c tslint.json src/*.ts* src/backend/*.ts* src/components/*.ts*",
     "test": "tsc",
     "typings": "tsd install",

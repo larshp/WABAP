@@ -1,11 +1,15 @@
 import {observable} from "mobx";
-import {TreeItem} from "./tree_item";
-import {Tab} from "./tab";
+import * as State from "./";
 
 export class TabList {
-    @observable public tabs: Tab[] = [];
+    @observable public tabs: State.Tab[] = [];
 
-    public addTab(t: TreeItem) {
-        this.tabs.push(new Tab(t.getDescription()));
+    public addTab(t: State.TreeItem) {
+        let tab = new State.Tab(t.getDescription());
+        this.tabs.push(tab);
+    }
+
+    public setActive() {
+        State.Main.getState().editor.visible = true;
     }
 }

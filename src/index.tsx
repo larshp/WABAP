@@ -52,7 +52,7 @@ class Main extends React.Component<{state: State.Main}, {}> {
       <div style={Style.top}><Components.TopMenu /></div>
       <div style={Style.tree}><Components.Tree state={this.props.state} /></div>
       <div style={Style.tablist}><Components.TabList state={this.props.state} /></div>
-      <div style={Style.editor}><Components.CodeMirror /></div>
+      <div style={Style.editor}><Components.CodeMirror editor={this.props.state.editor} /></div>
       <div style={Style.clear}></div>
       <DevTools />
       </div>);
