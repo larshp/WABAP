@@ -12,9 +12,11 @@ export class TabList extends React.Component<{state: Backend.State}, {}> {
   }
 
   private tabs(t: Backend.TabList) {
+    let key = 1;
+
     return (<div>
       {t.tabs.map(function(child) {
-        return <Components.Tab tab={child}/>;
+        return <Components.Tab tab={child} key={key++} />;
       })}
       </div>);
   }

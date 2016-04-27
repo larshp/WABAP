@@ -34,7 +34,7 @@ class Style {
 }
 
 @observer
-export class Tab extends React.Component<{tab: Backend.Tab}, {}> {
+export class Tab extends React.Component<{tab: Backend.Tab, key?: number}, {}> {
 
   public render() {
       return (
