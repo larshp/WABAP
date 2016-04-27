@@ -17,7 +17,7 @@ export class Tree extends React.Component<{state: Backend.State}, {}> {
     const root = this.props.state.tree.getRoot();
 
     return (<ol style={Style.top}>
-      <Components.TreeItem item={root} tabs={this.props.state.tabs} />
+      <Components.TreeItem item={root} tablist={this.props.state.tablist} />
       </ol>);
   }
 }

@@ -3,8 +3,8 @@ import * as Backend from "../backend/";
 import {observer} from "mobx-react";
 
 @observer
-export class Tabs extends React.Component<{state: Backend.State}, {}> {
+export class CodeMirror extends React.Component<{}, {}> {
   public render() {
-      return (<b>Hello wooorld {this.props.state.tablist.count}</b>);
+      return (<form><textarea id="code" name="code"></textarea></form>);
   }
 }

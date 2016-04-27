@@ -1,9 +1,10 @@
 import {observable} from "mobx";
+import {TreeItem} from "./tree_item";
 
-export class Tabs {
-    @observable public count = 0;
+export class TabList {
+    @observable public count = "";
 
-    public addTab() {
-        this.count = this.count + 1;
+    public addTab(t: TreeItem) {
+        this.count = this.count + t.getDescription();
     }
 }

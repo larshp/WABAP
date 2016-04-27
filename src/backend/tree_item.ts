@@ -22,11 +22,7 @@ export abstract class TreeItem {
     public toggleExpanded(): void {
         this.expanded = !this.expanded;
     }
-/*
-    @computed get isExpanded(): boolean {
-        return this.expanded;
-    }
-*/
+
     public hasChildren(): boolean {
         return false;
     }

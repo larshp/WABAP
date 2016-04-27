@@ -49,7 +49,7 @@ class Style {
 interface IProps {
   key?: number;
   item: Backend.TreeItem;
-  tabs: Backend.Tabs;
+  tablist: Backend.TabList;
 }
 
 @observer
@@ -64,7 +64,7 @@ export class TreeItem extends React.Component<IProps, {}> {
       {this.icon(item)}
       {item.getDescription()}
       </div>
-      {this.children(item, this.props.tabs)}
+      {this.children(item, this.props.tablist)}
       </li>);
   }
 
@@ -73,7 +73,7 @@ export class TreeItem extends React.Component<IProps, {}> {
       return;
     }
 
-    this.props.tabs.addTab();
+    this.props.tablist.addTab(this.props.item);
   }
 
   private icon(item: Backend.TreeItem) {
@@ -113,7 +113,7 @@ export class TreeItem extends React.Component<IProps, {}> {
     return (<div style={Style.expander} onClick={this.clickExpand.bind(this)}>{content}</div>);
   }
 
-  private children(item: Backend.TreeItem, tabs: Backend.Tabs) {
+  private children(item: Backend.TreeItem, tablist: Backend.TabList) {
     if (item.expanded === false || item.hasChildren() === false) {
       return undefined;
     }
@@ -123,7 +123,7 @@ export class TreeItem extends React.Component<IProps, {}> {
 
     return (<ol style={Style.ol}>
       {children.map(function(child) {
-        return <TreeItem key={i++} item={child} tabs={tabs} />;
+        return <TreeItem key={i++} item={child} tablist={tablist} />;
       })}
       </ol>);
   }
