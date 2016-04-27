@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as Backend from "../backend/";
+import * as State from "../state/";
 import {observer} from "mobx-react";
 
 class Style {
@@ -48,8 +48,7 @@ class Style {
 
 interface IProps {
   key?: number;
-  item: Backend.TreeItem;
-  tablist: Backend.TabList;
+  item: State.TreeItem;
 }
 
 @observer
@@ -64,7 +63,7 @@ export class TreeItem extends React.Component<IProps, {}> {
       {this.icon(item)}
       {item.getDescription()}
       </div>
-      {this.children(item, this.props.tablist)}
+      {this.children(item)}
       </li>);
   }
 
@@ -73,10 +72,10 @@ export class TreeItem extends React.Component<IProps, {}> {
       return;
     }
 
-    this.props.tablist.addTab(this.props.item);
+    State.Main.getState().tablist.addTab(this.props.item);
   }
 
-  private icon(item: Backend.TreeItem) {
+  private icon(item: State.TreeItem) {
     let content = "";
     switch (item.getType()) {
       case "PROG":
@@ -100,7 +99,7 @@ export class TreeItem extends React.Component<IProps, {}> {
     this.props.item.toggleExpanded();
   }
 
-  private expander(item: Backend.TreeItem) {
+  private expander(item: State.TreeItem) {
     let content = "";
     if (item.hasChildren()) {
       if (item.expanded) {
@@ -113,7 +112,7 @@ export class TreeItem extends React.Component<IProps, {}> {
     return (<div style={Style.expander} onClick={this.clickExpand.bind(this)}>{content}</div>);
   }
 
-  private children(item: Backend.TreeItem, tablist: Backend.TabList) {
+  private children(item: State.TreeItem) {
     if (item.expanded === false || item.hasChildren() === false) {
       return undefined;
     }
@@ -123,7 +122,7 @@ export class TreeItem extends React.Component<IProps, {}> {
 
     return (<ol style={Style.ol}>
       {children.map(function(child) {
-        return <TreeItem key={i++} item={child} tablist={tablist} />;
+        return <TreeItem key={i++} item={child} />;
       })}
       </ol>);
   }

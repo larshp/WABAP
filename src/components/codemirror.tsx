@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as Backend from "../backend/";
 import {observer} from "mobx-react";
 
 @observer

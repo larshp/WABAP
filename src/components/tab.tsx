@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as Backend from "../backend/";
+import * as State from "../state/";
 import {observer} from "mobx-react";
 
 class Style {
@@ -34,14 +34,14 @@ class Style {
 }
 
 @observer
-export class Tab extends React.Component<{tab: Backend.Tab, key?: number}, {}> {
+export class Tab extends React.Component<{tab: State.Tab, key?: number}, {}> {
 
   public render() {
-      return (
-        <div style={Style.inline}>
-        <div style={Style.tab} onClick={this.clickItem.bind(this)}>{this.props.tab.text}</div>
-        {this.icon()}
-        </div>);
+    return (
+      <div style={Style.inline}>
+      <div style={Style.tab} onClick={this.clickItem.bind(this)}>{this.props.tab.text}</div>
+      {this.icon()}
+      </div>);
   }
 
   private icon() {
