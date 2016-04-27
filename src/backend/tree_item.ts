@@ -72,6 +72,7 @@ class TreeItemCategory extends TreeItem {
         switch (this.category) {
             case "PROG":
                 this.children.push(new TreeItemPROG("ZPROGRAM"));
+                this.children.push(new TreeItemPROG("ZFOOBAR"));
                 break;
             case "DTEL":
                 this.children.push(new TreeItemDTEL("ZDATA_ELEMENT"));
