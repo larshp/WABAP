@@ -18,14 +18,6 @@ class Style {
     color: "rgb(215, 218, 224)",
   };
 
-  public static tree: {} = {
-    float: "left",
-    width: "20%",
-    backgroundColor: "#353b45",
-    height: "calc(100vh - 20px)",
-    color: "rgb(215, 218, 224)",
-  };
-
   public static tablist: {} = {
     float: "right",
     backgroundColor: "#000",
@@ -38,6 +30,14 @@ class Style {
     backgroundColor: "#000",
     height: "calc(100vh - 40px)",
     width: "80%",
+  };
+
+  public static tree: {} = {
+    float: "left",
+    width: "20%",
+    backgroundColor: "#353b45",
+    height: "calc(100vh - 20px)",
+    color: "rgb(215, 218, 224)",
   };
 
   public static clear: {} = {

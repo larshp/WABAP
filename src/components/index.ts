@@ -4,3 +4,4 @@ export * from "./tree_item";
 export * from "./tab_list";
 export * from "./codemirror";
 export * from "./tab";
+export * from "./tree_top";
