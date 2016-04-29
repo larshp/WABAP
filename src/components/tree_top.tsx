@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as Modal from "./modal/"
 import {observer} from "mobx-react";
 
 class Style {
@@ -26,20 +25,20 @@ export class TreeTop extends React.Component<{}, {popup: boolean}> {
     this.state = {popup: false};
   }
 
+  public render() {
+    const content = "\uf030";
+
+    return (<div>
+      <Modal.Connection show={this.state.popup} close={this.toggleModalConnection.bind(this)}/>
+      <div style={Style.floatrighticon} onClick={this.toggleModalConnection.bind(this)}>{content}</div>
+      </div>);
+  }
+
   private toggleModalConnection(): void {
     if (this.state.popup === false) {
       this.setState({popup: true});
     } else {
       this.setState({popup: false});
     }
-  }
-
-  public render() {
-    const content = "\uf030";
-
-    return (<div>
-      <Modal.Connection show={this.state.popup}/>
-      <div style={Style.floatrighticon} onClick={this.toggleModalConnection.bind(this)}>{content}</div>
-      </div>);
   }
 }

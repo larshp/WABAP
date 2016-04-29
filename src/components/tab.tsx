@@ -7,7 +7,7 @@ class Style {
     display: "inline-block",
   };
 
-  public static tab_active: {} = {
+  public static tabActive: {} = {
     display: "inline-block",
     backgroundColor: "#353b45",
     marginLeft: "10px",
@@ -20,7 +20,7 @@ class Style {
     userSelect: "none",
   };
 
-  public static tab_inactive: {} = {
+  public static tabInactive: {} = {
     display: "inline-block",
     backgroundColor: "#353b45",
     marginLeft: "10px",
@@ -52,9 +52,9 @@ export class Tab extends React.Component<{tab: State.Tab, key?: number}, {}> {
   public render() {
     let style;
     if (this.props.tab.active === true) {
-      style = Style.tab_active;
+      style = Style.tabActive;
     } else {
-      style = Style.tab_inactive;
+      style = Style.tabInactive;
     }
 
     return (

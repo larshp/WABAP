@@ -16,8 +16,6 @@ export class Tree extends React.Component<{state: State.Main}, {}> {
   public render() {
     const root = this.props.state.tree.getRoot();
 
-    const content = "\uf030";
-
     return (<div>
       <Components.TreeTop />
       <ol style={Style.top}>
