@@ -26,8 +26,7 @@ export class TopMenu extends React.Component<{}, {}> {
   public render() {
     return (<div>
       <div style={Style.heading}>WABAP</div>
-      <div style={Style.item}>File</div>
-      <div style={Style.item}>About</div>
+      <div style={Style.item}>asdf</div>
       </div>);
   }
 }

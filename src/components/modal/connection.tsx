@@ -41,19 +41,26 @@ class Style {
 	  width: "24px",
 	  textDecoration: "none",
 	  fontWeight: "bold",
-	  webkitBorderRadius: "12px",
-	  mozBorderRadius: "12px",
+	  WebkitBorderRadius: "12px",
+	  MozBorderRadius: "12px",
   	borderRadius: "12px",
-  	mozBoxShadow: "1px 1px 3px #000",
-  	webkitBoxShadow: "1px 1px 3px #000",
+  	MozBoxShadow: "1px 1px 3px #000",
+  	WebkitBoxShadow: "1px 1px 3px #000",
   	boxShadow: "1px 1px 3px #000",
   };
 }
 
 @observer
-export class Connection extends React.Component<{show: boolean, close: () => void}, {}> {
+export class Connection extends React.Component<{show: boolean, close: () => void}, {str: string}> {
+
+  public constructor() {
+    super();
+    this.state = {str: "mongodb://<dbuser>:<dbpassword>@<host>:<port>/<db>"};
+  }
 
   private clickSAP() {
+//    localStorage.setItem("wabappp", "asdf");
+    alert(this.state.str);
     this.props.close();
   }
 
@@ -63,6 +70,10 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
 
   private clickOffline() {
     this.props.close();
+  }
+
+  private handleChange(event) {
+    this.setState({str: event.target.value});
   }
 
   public render() {
@@ -78,7 +89,7 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
             <a href="#" title="Close" style={Style.close} onClick={this.props.close.bind(this)}>{content}</a>
             New Connection<br />
             <br />
-            <input type="text" value="mongodb://<dbuser>:<dbpassword>@<host>:<port>/<db>" style={Style.input} /><br />
+            <input type="text" value={this.state.str} onChange={this.handleChange.bind(this)} style={Style.input} /><br />
             <input type="submit" value="SAP" onClick={this.clickSAP.bind(this)} />
             <input type="submit" value="MongoDB" onClick={this.clickMongo.bind(this)} />
             <input type="submit" value="Offline" onClick={this.clickOffline.bind(this)} />

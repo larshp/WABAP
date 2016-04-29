@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as Modal from "./modal/";
 import {observer} from "mobx-react";
 
 class Style {
