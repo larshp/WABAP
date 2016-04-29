@@ -5,6 +5,7 @@ export class Main {
   @observable public tree = new State.Tree();
   @observable public tablist = new State.TabList();
   @observable public editor = new State.Editor();
+  @observable public connections = new State.Connections();
 
   private static state: Main = undefined;
 

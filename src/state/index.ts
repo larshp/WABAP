@@ -4,3 +4,4 @@ export * from "./tab_list";
 export * from "./main";
 export * from "./tab";
 export * from "./editor";
+export * from "./connections";

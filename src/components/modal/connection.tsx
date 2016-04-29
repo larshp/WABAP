@@ -1,5 +1,6 @@
 import * as React from "react";
 import {observer} from "mobx-react";
+import * as State from "../../state/";
 
 class Style {
   public static background: {} = {
@@ -59,16 +60,17 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
   }
 
   private clickSAP() {
-//    localStorage.setItem("wabappp", "asdf");
-    alert(this.state.str);
+    State.Main.getState().connections.add(State.ConnectionType.SAP, this.state.str);
     this.props.close();
   }
 
   private clickMongo() {
+    State.Main.getState().connections.add(State.ConnectionType.MongoDB, this.state.str);
     this.props.close();
   }
 
   private clickOffline() {
+    State.Main.getState().connections.add(State.ConnectionType.Offline, this.state.str);
     this.props.close();
   }
 
@@ -77,7 +79,6 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
   }
 
   public render() {
-
       const content = "\uf081";
 
       if (this.props.show === false) {

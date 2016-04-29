@@ -1,5 +1,9 @@
 import {observable} from "mobx";
+/*
+interface Hierachy {
 
+}
+*/
 export abstract class TreeItem {
 
     protected description = "";

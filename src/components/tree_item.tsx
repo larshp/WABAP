@@ -63,7 +63,7 @@ export class TreeItem extends React.Component<IProps, {}> {
       {this.icon(item)}
       {item.getDescription()}
       </div>
-      {this.children(item)}
+      {this.renderChildren(item)}
       </li>);
   }
 
@@ -112,7 +112,7 @@ export class TreeItem extends React.Component<IProps, {}> {
     return (<div style={Style.expander} onClick={this.clickExpand.bind(this)}>{content}</div>);
   }
 
-  private children(item: State.TreeItem) {
+  private renderChildren(item: State.TreeItem) {
     if (item.expanded === false || item.hasChildren() === false) {
       return undefined;
     }
