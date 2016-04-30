@@ -56,16 +56,11 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
 
   public constructor() {
     super();
-    this.state = {str: "mongodb://<dbuser>:<dbpassword>@<host>:<port>/<db>"};
+    this.state = {str: window.location.href};
   }
 
-  private clickSAP() {
-    State.Main.getState().connections.add(State.ConnectionType.SAP, this.state.str);
-    this.props.close();
-  }
-
-  private clickMongo() {
-    State.Main.getState().connections.add(State.ConnectionType.MongoDB, this.state.str);
+  private clickOnline() {
+    State.Main.getState().connections.add(State.ConnectionType.Online, this.state.str);
     this.props.close();
   }
 
@@ -91,8 +86,9 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
             New Connection<br />
             <br />
             <input type="text" value={this.state.str} onChange={this.handleChange.bind(this)} style={Style.input} /><br />
-            <input type="submit" value="SAP" onClick={this.clickSAP.bind(this)} />
-            <input type="submit" value="MongoDB" onClick={this.clickMongo.bind(this)} />
+            <input type="submit" value="Online" onClick={this.clickOnline.bind(this)} />
+            <br />
+            <br />
             <input type="submit" value="Offline" onClick={this.clickOffline.bind(this)} />
           </div>
           </div>);

@@ -1,10 +1,10 @@
 import {observable} from "mobx";
 import * as State from "./";
+import * as REST from "../rest/";
 import Octicons from "../misc/octicons";
 
 export enum ConnectionType {
-  SAP,
-  MongoDB,
+  Online,
   Offline
 }
 
@@ -18,11 +18,9 @@ export class Connection extends State.TreeItem {
     this.cstring = s;
 
     switch (t) {
-      case ConnectionType.SAP:
-        this.description = "SAP Connection";
-        break;
-      case ConnectionType.MongoDB:
-        this.description = "MongoDB Connection";
+      case ConnectionType.Online:
+        this.description = "Online Connection";
+        REST.TADIR.fetch(this.cstring);
         break;
       case ConnectionType.Offline:
         this.description = "Offline Connection";
