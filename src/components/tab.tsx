@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as State from "../state/";
 import {observer} from "mobx-react";
+import Octicons from "../misc/octicons";
 
 class Style {
   public static inline: {} = {
@@ -65,9 +66,7 @@ export class Tab extends React.Component<{tab: State.Tab, key?: number}, {}> {
   }
 
   private icon() {
-    let content = "\uf081";
-
-    return (<div style={Style.icon} onClick={this.clickClose.bind(this)}>{content}</div>);
+    return (<div style={Style.icon} onClick={this.clickClose.bind(this)}>{Octicons.x}</div>);
   }
 
   private clickItem(): void {

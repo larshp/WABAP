@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as State from "../state/";
 import {observer} from "mobx-react";
+import Octicons from "../misc/octicons";
 
 class Style {
   public static li: {} = {
@@ -83,9 +84,9 @@ export class TreeItem extends React.Component<IProps, {}> {
     let content = "";
     if (item.children.length > 0) {
       if (item.expanded) {
-        content = "\uf0a3";
+        content = Octicons.chevronDown;
       } else {
-        content = "\uf078";
+        content = Octicons.chevronRight;
       }
     }
 

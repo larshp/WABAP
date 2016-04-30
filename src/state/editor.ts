@@ -18,10 +18,10 @@ class AbapMode implements CodeMirror.Mode<any> {
 
         if (this.isKeyword(stream)) {
             return KEYWORD;
-        } else if (stream.match(/^\d+( |\.|$)/, false) !== null) {
+        } else if (stream.match(/^\d+( |\.|$)/, false)) {
             stream.match(/^\d+/);
             return NUMBER;
-        } else if (stream.match(/^##\w+/) !== null) {
+        } else if (stream.match(/^##\w+/)) {
 // pragmas
             return COMMENT;
         }
@@ -141,7 +141,7 @@ class AbapMode implements CodeMirror.Mode<any> {
         let match = false;
         for (let i = 0; i < list.length; i++) {
             let reg = new RegExp("^" + list[i] + "( |\\\.|,|:|$)", "i");
-            if (stream.match(reg, false) !== null) {
+            if (stream.match(reg, false)) {
                 let reg = new RegExp("^" + list[i], "i");
                 stream.match(reg);
                 match = true;
@@ -154,7 +154,6 @@ class AbapMode implements CodeMirror.Mode<any> {
 
 CodeMirror.defineMode("abap", (options: CodeMirror.EditorConfiguration, spec: any) => { return new AbapMode(); });
 
-
 function setReadOnly(cm, b: boolean) {
   cm.setOption("readOnly", b);
   if (b === true) {
@@ -165,7 +164,7 @@ function setReadOnly(cm, b: boolean) {
 }
 
 function toggleReadOnly(cm) {
-  if(cm.getOption("readOnly") === true) {
+  if (cm.getOption("readOnly") === true) {
     setReadOnly(cm, false);
   } else {
     setReadOnly(cm, true);
@@ -176,6 +175,32 @@ export class Editor {
   @observable public visible = false;
 
   public editor = undefined;
+
+  public hide() {
+    this.editor.getWrapperElement().style.visibility = "hidden";
+  }
+
+  public unHide() {
+    this.editor.getWrapperElement().style.visibility = "";
+  }
+
+  public initEditor() {
+    if (this.editor === undefined) {
+      this.initCodeMirror();
+    }
+    this.hide();
+  }
+
+  public open(s: string) {
+    this.unHide();
+    setReadOnly(this.editor, false);
+    this.editor.focus();
+    this.editor.setValue(s);
+  }
+
+  public getValue(): string {
+    return this.editor.getValue();
+  }
 
   private initCodeMirror() {
 
@@ -194,7 +219,7 @@ export class Editor {
 
     this.editor.setOption("extraKeys", {
       Tab: function(cm) {
-        var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+        let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
         cm.replaceSelection(spaces);
       },
       "Ctrl-F1": function(cm) {
@@ -214,33 +239,7 @@ export class Editor {
       },
       "Ctrl-S": function(cm) {
         alert("todo, save");
-      }
+      },
     });
-  }
-
-  public hide() {
-    this.editor.getWrapperElement().style.visibility = "hidden";
-  }
-
-  public unHide() {
-    this.editor.getWrapperElement().style.visibility = "";
-  }
-
-  public initEditor() {
-    if(this.editor === undefined) {
-      this.initCodeMirror();
-    }
-    this.hide();
-  }
-
-  public open(s: string) {
-    this.unHide();
-    setReadOnly(this.editor, false);
-    this.editor.focus();
-    this.editor.setValue(s);
-  }
-
-  public getValue(): string {
-    return this.editor.getValue();
   }
 }

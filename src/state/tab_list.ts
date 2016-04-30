@@ -23,13 +23,13 @@ export class TabList {
   }
 
   public close(t: State.Tab) {
-    this.tabs = this.tabs.filter((item) => { return item.text != t.text; });
+    this.tabs = this.tabs.filter((item) => { return item.text !== t.text; });
 
     if (this.tabs.length === 0) {
 // last tab is closed
       State.Main.getState().editor.hide();
       this.active = undefined;
-    } else if (t == this.active) {
+    } else if (t === this.active) {
 // active tab is closed
       this.setActive(this.tabs[0]);
     }

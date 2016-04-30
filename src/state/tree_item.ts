@@ -1,5 +1,6 @@
 import {observable} from "mobx";
 import * as State from "./";
+import Octicons from "../misc/octicons";
 
 export abstract class TreeItem {
   @observable public description;
@@ -21,7 +22,7 @@ export abstract class TreeItem {
   }
 
   public getIcon(): string {
-    return "\uf02c";
+    return Octicons.question;
   }
 
   public click(): void {
@@ -36,7 +37,7 @@ export class TreeItemPROG extends TreeItem {
   }
 
   public getIcon() {
-    return "\uf011";
+    return Octicons.fileText;
   }
 
   public click() {
@@ -51,7 +52,7 @@ export class TreeItemDTEL extends TreeItem {
   }
 
   public getIcon() {
-    return "\uf06d";
+    return Octicons.diffModified;
   }
 }
 
@@ -62,7 +63,7 @@ export class TreeItemDOMA extends TreeItem {
   }
 
   public getIcon() {
-    return "\uf099";
+    return Octicons.diffIgnored;
   }
 }
 
@@ -95,7 +96,7 @@ class TreeItemCategory extends TreeItem {
   }
 
   public getIcon() {
-    return "\uf016";
+    return Octicons.fileDirectory;
   }
 }
 
@@ -111,6 +112,6 @@ export class TreeItemDEVC extends TreeItem {
   }
 
   public getIcon() {
-    return "\uf016";
+    return Octicons.fileDirectory;
   }
 }

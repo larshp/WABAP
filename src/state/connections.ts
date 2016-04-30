@@ -1,5 +1,6 @@
 import {observable} from "mobx";
 import * as State from "./";
+import Octicons from "../misc/octicons";
 
 export enum ConnectionType {
   SAP,
@@ -16,7 +17,7 @@ export class Connection extends State.TreeItem {
     this.ctype = t;
     this.cstring = s;
 
-    switch(t) {
+    switch (t) {
       case ConnectionType.SAP:
         this.description = "SAP Connection";
         break;
@@ -34,15 +35,15 @@ export class Connection extends State.TreeItem {
   }
 
   public getIcon() {
-    return "\uf0dd";
+    return Octicons.beaker;
   }
 }
 
 export class Connections {
 
-  private key = "Connections";
-
   @observable public list: Connection[];
+
+  private key = "Connections";
 
   public constructor() {
     this.load();
@@ -60,12 +61,12 @@ export class Connections {
 
   private load() {
     let value = localStorage.getItem(this.key);
-    if (value === null) {
+    if (!value) {
       this.list = [];
     } else {
       let parsed = JSON.parse(value);
       this.list = parsed.map((item) => {
-        return new Connection(item.ctype, item.cstring)});
+        return new Connection(item.ctype, item.cstring); });
     }
   }
 

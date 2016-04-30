@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as Modal from "./modal/";
 import {observer} from "mobx-react";
+import Octicons from "../misc/octicons";
 
 class Style {
   public static floatrighticon: {} = {
@@ -27,7 +28,7 @@ export class TreeTop extends React.Component<{}, {popup: boolean}> {
   }
 
   public render() {
-    const content = "\uf030";
+    const content = Octicons.radioTower;
 
     return (<div>
       <Modal.Connection show={this.state.popup} close={this.toggleModalConnection.bind(this)}/>
