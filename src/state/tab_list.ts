@@ -7,7 +7,7 @@ export class TabList {
   private active: State.Tab = undefined;
 
   public add(t: State.TreeItem) {
-    let text = t.getDescription();
+    let text = t.description;
 
 // look to see if it is already there
     for (let tab of this.tabs) {

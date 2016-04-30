@@ -2,7 +2,6 @@ import * as State from "./";
 import {observable} from "mobx";
 
 export class Main {
-  @observable public tree = new State.Tree();
   @observable public tablist = new State.TabList();
   @observable public editor = new State.Editor();
   @observable public connections = new State.Connections();

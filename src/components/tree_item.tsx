@@ -61,38 +61,18 @@ export class TreeItem extends React.Component<IProps, {}> {
       {this.expander(item)}
       <div style={Style.inline} onClick={this.clickItem.bind(this)}>
       {this.icon(item)}
-      {item.getDescription()}
+      {item.description}
       </div>
       {this.renderChildren(item)}
       </li>);
   }
 
   private clickItem(): void {
-    if (this.props.item.getType() === "") {
-      return;
-    }
-
-    State.Main.getState().tablist.add(this.props.item);
+    this.props.item.click();
   }
 
   private icon(item: State.TreeItem) {
-    let content = "";
-    switch (item.getType()) {
-      case "PROG":
-        content = "\uf011";
-        break;
-      case "DTEL":
-        content = "\uf06d";
-        break;
-      case "DOMA":
-        content = "\uf099";
-        break;
-      default:
-        content = "\uf016";
-        break;
-    }
-
-    return (<div style={Style.icon}>{content}</div>);
+    return (<div style={Style.icon}>{item.getIcon()}</div>);
   }
 
   private clickExpand(): void {
@@ -101,7 +81,7 @@ export class TreeItem extends React.Component<IProps, {}> {
 
   private expander(item: State.TreeItem) {
     let content = "";
-    if (item.hasChildren()) {
+    if (item.children.length > 0) {
       if (item.expanded) {
         content = "\uf0a3";
       } else {
@@ -113,11 +93,11 @@ export class TreeItem extends React.Component<IProps, {}> {
   }
 
   private renderChildren(item: State.TreeItem) {
-    if (item.expanded === false || item.hasChildren() === false) {
+    if (item.expanded === false || item.children.length === 0) {
       return undefined;
     }
 
-    let children = item.getChildren();
+    let children = item.children;
     let i = 0;
 
     return (<ol style={Style.ol}>

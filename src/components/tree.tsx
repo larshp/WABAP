@@ -14,12 +14,14 @@ class Style {
 export class Tree extends React.Component<{state: State.Main}, {}> {
 
   public render() {
-    const root = this.props.state.tree.getRoot();
+    let i = 0;
 
     return (<div>
       <Components.TreeTop />
       <ol style={Style.top}>
-      <Components.TreeItem item={root} />
+      {this.props.state.connections.list.map((child) => {
+        return <Components.TreeItem key={i++} item={child} />;
+      })}
       </ol>
       </div>);
   }
