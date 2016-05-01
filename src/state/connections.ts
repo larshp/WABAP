@@ -12,23 +12,15 @@ export class Connection extends State.TreeItem {
   public ctype: ConnectionType;
   public cstring: string;
 
-  constructor(t: ConnectionType, s: string) {
+  constructor(t: ConnectionType, s: string, d: string) {
     super();
     this.ctype = t;
     this.cstring = s;
+    this.description = d;
 
-    switch (t) {
-      case ConnectionType.Online:
-        this.description = "Online Connection";
-        REST.TADIR.fetch(this.cstring);
-        break;
-      case ConnectionType.Offline:
-        this.description = "Offline Connection";
-        break;
-      default:
-        this.description = "Error Connection";
-        break;
-    }
+// todo
+//    REST.TADIR.fetch(this.cstring);
+
     this.children = [new State.TreeItemDEVC("$TMP")];
   }
 
@@ -47,8 +39,8 @@ export class Connections {
     this.load();
   }
 
-  public add(t: ConnectionType, s: string): void {
-    this.list.push(new Connection(t, s));
+  public add(t: ConnectionType, s: string, d: string): void {
+    this.list.push(new Connection(t, s, d));
     this.save();
   }
 
@@ -64,7 +56,7 @@ export class Connections {
     } else {
       let parsed = JSON.parse(value);
       this.list = parsed.map((item) => {
-        return new Connection(item.ctype, item.cstring); });
+        return new Connection(item.ctype, item.cstring, "foobar"); });
     }
   }
 
