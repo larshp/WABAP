@@ -19,7 +19,7 @@ export class Connection extends State.TreeItem {
     this.description = d;
 
 // todo
-//    REST.TADIR.fetch(this.cstring);
+// REST.TADIR.fetch(this.cstring);
 
     this.children = [new State.TreeItemDEVC("$TMP")];
   }

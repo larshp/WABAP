@@ -48,13 +48,18 @@ class Style {
 @observer
 class Main extends React.Component<{state: State.Main}, {}> {
   public render() {
-    return (<div style={Style.wrap}>
+    return (<div style={Style.wrap} onClick={this.click.bind(this)}>
       <div style={Style.top}><Components.TopMenu /></div>
       <div style={Style.tree}><Components.Tree state={this.props.state} /></div>
       <div style={Style.tablist}><Components.TabList state={this.props.state} /></div>
       <div style={Style.editor}><Components.CodeMirror editor={this.props.state.editor} /></div>
+      <div><Components.ContextMenu con={this.props.state.contextMenu} /></div>
       <div style={Style.clear}></div>
       </div>);
+  }
+
+  private click(): void {
+    this.props.state.contextMenu.hide();
   }
 }
 

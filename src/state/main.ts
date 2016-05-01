@@ -7,7 +7,9 @@ export class Main {
   @observable public tablist = new State.TabList();
   @observable public editor = new State.Editor();
   @observable public connections = new State.Connections();
+  @observable public contextMenu = new State.ContextMenu();
 
+// todo, just have this as a globla function instead?
   public static getState() {
     if (this.state === undefined) {
       this.state = new Main();

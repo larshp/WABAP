@@ -60,12 +60,17 @@ export class TreeItem extends React.Component<IProps, {}> {
 
     return (<li style={Style.li}>
       {this.expander(item)}
-      <div style={Style.inline} onClick={this.clickItem.bind(this)}>
+      <div style={Style.inline} onClick={this.clickItem.bind(this)} onContextMenu={this.contextMenu.bind(this)}>
       {this.icon(item)}
       {item.description}
       </div>
       {this.renderChildren(item)}
       </li>);
+  }
+
+  private contextMenu(e): void {
+    e.preventDefault();
+    State.Main.getState().contextMenu.display(e.clientX, e.clientY);
   }
 
   private clickItem(): void {
