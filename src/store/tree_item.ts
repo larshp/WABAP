@@ -28,6 +28,10 @@ export abstract class TreeItem {
   public click(): void {
     return;
   }
+
+  public getContextList(): Store.ContextItem[] {
+    return [];
+  }
 }
 
 export class TreeItemPROG extends TreeItem {

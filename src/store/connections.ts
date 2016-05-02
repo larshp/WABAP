@@ -27,6 +27,11 @@ export class Connection extends Store.TreeItem {
   public getIcon() {
     return Octicons.beaker;
   }
+
+  public getContextList() {
+    return [{description: "foo", callback: () => {}},
+      {description: "bar", callback: () => {}}];
+  }
 }
 
 export class Connections {
