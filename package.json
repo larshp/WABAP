@@ -8,7 +8,7 @@
     "codemirror-abap": "^0.1.2",
     "mobx": "^2.1.5",
     "mobx-react": "^3.0.5",
-    "mobx-react-devtools": "^4.0.3",
+    "mobx-react-devtools": "^4.0.5",
     "octicons": "^3.5.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2"

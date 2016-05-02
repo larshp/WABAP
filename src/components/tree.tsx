@@ -12,7 +12,6 @@ class Style {
 
 @observer
 export class Tree extends React.Component<{con: Store.Connections}, {}> {
-
   public render() {
     let i = 0;
 

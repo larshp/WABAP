@@ -33,13 +33,19 @@ export class ContextMenuItem extends React.Component<{item: Store.ContextItem, k
     };
 
     return (<li style={hoverStyle}
+      onClick={this.click.bind(this)}
       onMouseEnter={this.toggleHover.bind(this)}
       onMouseLeave={this.toggleHover.bind(this)}>
       {this.props.item.description}</li>);
   }
 
+  private click(): void {
+    this.props.item.callback();
+    Store.getStore().contextMenu.hide();
+  }
+
   private toggleHover(): void {
-    this.setState({hover: !this.state.hover})
+    this.setState({hover: !this.state.hover});
   }
 }
 
@@ -70,7 +76,7 @@ export class ContextMenu extends React.Component<{con: Store.ContextMenu}, {}> {
 
     return (<ul style={Style.ul}>
       {list.map(function(child) {
-        return <ContextMenuItem key={i++} item={child} />
+        return <ContextMenuItem key={i++} item={child} />;
       })}
       </ul>);
   }
