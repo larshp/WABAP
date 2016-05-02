@@ -1,9 +1,9 @@
 import {observer} from "mobx-react";
 import * as React from "react";
-import * as State from "../state/";
+import * as Store from "../store/";
 
 @observer
-export class ContextMenu extends React.Component<{con: State.ContextMenu}, {}> {
+export class ContextMenu extends React.Component<{con: Store.ContextMenu}, {}> {
   public render() {
     if (this.props.con.show === false) {
       return (<div></div>);

@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as State from "../state/";
+import * as Store from "../store/";
 import {observer} from "mobx-react";
 import Octicons from "../misc/octicons";
 
@@ -48,7 +48,7 @@ class Style {
 }
 
 @observer
-export class Tab extends React.Component<{tab: State.Tab, key?: number}, {}> {
+export class Tab extends React.Component<{tab: Store.Tab, key?: number}, {}> {
 
   public render() {
     let style;
@@ -70,10 +70,10 @@ export class Tab extends React.Component<{tab: State.Tab, key?: number}, {}> {
   }
 
   private clickItem(): void {
-    State.Main.getState().tablist.setActive(this.props.tab);
+    Store.Main.getStore().tablist.setActive(this.props.tab);
   }
 
   private clickClose(): void {
-    State.Main.getState().tablist.close(this.props.tab);
+    Store.Main.getStore().tablist.close(this.props.tab);
   }
 }

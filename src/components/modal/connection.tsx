@@ -1,6 +1,6 @@
 import * as React from "react";
 import {observer} from "mobx-react";
-import * as State from "../../state/";
+import * as Store from "../../store/";
 
 class Style {
   public static background: {} = {
@@ -60,14 +60,14 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
   }
 
   private clickOnline() {
-    State.Main.getState().connections.add(State.ConnectionType.Online,
+    Store.Main.getStore().connections.add(Store.ConnectionType.Online,
       this.state.str,
       this.state.desc);
     this.props.close();
   }
 
   private clickOffline() {
-    State.Main.getState().connections.add(State.ConnectionType.Offline,
+    Store.Main.getStore().connections.add(Store.ConnectionType.Offline,
       this.state.str,
       this.state.desc);
     this.props.close();

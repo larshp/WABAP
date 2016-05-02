@@ -1,5 +1,5 @@
 import {observable} from "mobx";
-import * as State from "./";
+import * as Store from "./";
 import * as REST from "../rest/";
 import Octicons from "../misc/octicons";
 
@@ -8,7 +8,7 @@ export enum ConnectionType {
   Offline
 }
 
-export class Connection extends State.TreeItem {
+export class Connection extends Store.TreeItem {
   public ctype: ConnectionType;
   public cstring: string;
 
@@ -21,7 +21,7 @@ export class Connection extends State.TreeItem {
 // todo
 // REST.TADIR.fetch(this.cstring);
 
-    this.children = [new State.TreeItemDEVC("$TMP")];
+    this.children = [new Store.TreeItemDEVC("$TMP")];
   }
 
   public getIcon() {

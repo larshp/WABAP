@@ -1,9 +1,9 @@
 import * as React from "react";
 import {observer} from "mobx-react";
-import * as State from "../state/";
+import * as Store from "../store/";
 
 @observer
-export class CodeMirror extends React.Component<{editor: State.Editor}, {}> {
+export class CodeMirror extends React.Component<{editor: Store.Editor}, {}> {
   public componentDidMount() {
     this.props.editor.initEditor();
   }

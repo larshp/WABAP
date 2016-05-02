@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as Components from "./components/";
-import * as State from "./state/";
+import * as Store from "./store/";
 import {observer} from "mobx-react";
 import DevTools from "mobx-react-devtools";
 
@@ -46,7 +46,7 @@ class Style {
 }
 
 @observer
-class Main extends React.Component<{state: State.Main}, {}> {
+class Main extends React.Component<{state: Store.Main}, {}> {
   public render() {
     return (<div style={Style.wrap} onClick={this.click.bind(this)}>
       <div style={Style.top}><Components.TopMenu /></div>
@@ -63,4 +63,4 @@ class Main extends React.Component<{state: State.Main}, {}> {
   }
 }
 
-ReactDOM.render(<Main state={State.Main.getState()} />, document.getElementById("app"));
+ReactDOM.render(<Main state={Store.Main.getStore()} />, document.getElementById("app"));

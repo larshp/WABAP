@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Components from "./";
-import * as State from "../state/";
+import * as Store from "../store/";
 import {observer} from "mobx-react";
 
 class Style {
@@ -11,7 +11,7 @@ class Style {
 }
 
 @observer
-export class Tree extends React.Component<{state: State.Main}, {}> {
+export class Tree extends React.Component<{state: Store.Main}, {}> {
 
   public render() {
     let i = 0;

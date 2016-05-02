@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as State from "../state/";
+import * as Store from "../store/";
 import {observer} from "mobx-react";
 import Octicons from "../misc/octicons";
 
@@ -49,7 +49,7 @@ class Style {
 
 interface IProps {
   key?: number;
-  item: State.TreeItem;
+  item: Store.TreeItem;
 }
 
 @observer
@@ -70,14 +70,14 @@ export class TreeItem extends React.Component<IProps, {}> {
 
   private contextMenu(e): void {
     e.preventDefault();
-    State.Main.getState().contextMenu.display(e.clientX, e.clientY);
+    Store.Main.getStore().contextMenu.display(e.clientX, e.clientY);
   }
 
   private clickItem(): void {
     this.props.item.click();
   }
 
-  private icon(item: State.TreeItem) {
+  private icon(item: Store.TreeItem) {
     return (<div style={Style.icon}>{item.getIcon()}</div>);
   }
 
@@ -85,7 +85,7 @@ export class TreeItem extends React.Component<IProps, {}> {
     this.props.item.toggleExpanded();
   }
 
-  private expander(item: State.TreeItem) {
+  private expander(item: Store.TreeItem) {
     let content = "";
     if (item.children.length > 0) {
       if (item.expanded) {
@@ -98,7 +98,7 @@ export class TreeItem extends React.Component<IProps, {}> {
     return (<div style={Style.expander} onClick={this.clickExpand.bind(this)}>{content}</div>);
   }
 
-  private renderChildren(item: State.TreeItem) {
+  private renderChildren(item: Store.TreeItem) {
     if (item.expanded === false || item.children.length === 0) {
       return undefined;
     }

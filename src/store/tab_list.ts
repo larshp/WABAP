@@ -1,12 +1,12 @@
 import {observable} from "mobx";
-import * as State from "./";
+import * as Store from "./";
 
 export class TabList {
-  @observable public tabs: State.Tab[] = [];
+  @observable public tabs: Store.Tab[] = [];
 
-  private active: State.Tab = undefined;
+  private active: Store.Tab = undefined;
 
-  public add(t: State.TreeItem) {
+  public add(t: Store.TreeItem) {
     let text = t.description;
 
 // look to see if it is already there
@@ -17,17 +17,17 @@ export class TabList {
       }
     }
 
-    let tab = new State.Tab(text);
+    let tab = new Store.Tab(text);
     this.tabs.push(tab);
     this.setActive(tab);
   }
 
-  public close(t: State.Tab) {
+  public close(t: Store.Tab) {
     this.tabs = this.tabs.filter((item) => { return item.text !== t.text; });
 
     if (this.tabs.length === 0) {
 // last tab is closed
-      State.Main.getState().editor.hide();
+      Store.Main.getStore().editor.hide();
       this.active = undefined;
     } else if (t === this.active) {
 // active tab is closed
@@ -35,8 +35,8 @@ export class TabList {
     }
   }
 
-  public setActive(t: State.Tab) {
-    let editor = State.Main.getState().editor;
+  public setActive(t: Store.Tab) {
+    let editor = Store.Main.getStore().editor;
 
     if (this.active !== undefined) {
       this.active.active = false;

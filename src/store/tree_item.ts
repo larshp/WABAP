@@ -1,5 +1,5 @@
 import {observable} from "mobx";
-import * as State from "./";
+import * as Store from "./";
 import Octicons from "../misc/octicons";
 
 export abstract class TreeItem {
@@ -41,7 +41,7 @@ export class TreeItemPROG extends TreeItem {
   }
 
   public click() {
-    State.Main.getState().tablist.add(this);
+    Store.Main.getStore().tablist.add(this);
   }
 }
 
