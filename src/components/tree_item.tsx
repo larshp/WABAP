@@ -70,7 +70,7 @@ export class TreeItem extends React.Component<IProps, {}> {
 
   private contextMenu(e): void {
     e.preventDefault();
-    Store.Main.getStore().contextMenu.display(e.clientX, e.clientY);
+    Store.getStore().contextMenu.display(e.clientX, e.clientY);
   }
 
   private clickItem(): void {

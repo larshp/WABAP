@@ -27,7 +27,7 @@ export class TabList {
 
     if (this.tabs.length === 0) {
 // last tab is closed
-      Store.Main.getStore().editor.hide();
+      Store.getStore().editor.hide();
       this.active = undefined;
     } else if (t === this.active) {
 // active tab is closed
@@ -36,7 +36,7 @@ export class TabList {
   }
 
   public setActive(t: Store.Tab) {
-    let editor = Store.Main.getStore().editor;
+    let editor = Store.getStore().editor;
 
     if (this.active !== undefined) {
       this.active.active = false;

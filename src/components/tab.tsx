@@ -70,10 +70,10 @@ export class Tab extends React.Component<{tab: Store.Tab, key?: number}, {}> {
   }
 
   private clickItem(): void {
-    Store.Main.getStore().tablist.setActive(this.props.tab);
+    Store.getStore().tablist.setActive(this.props.tab);
   }
 
   private clickClose(): void {
-    Store.Main.getStore().tablist.close(this.props.tab);
+    Store.getStore().tablist.close(this.props.tab);
   }
 }

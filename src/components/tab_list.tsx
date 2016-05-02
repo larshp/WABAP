@@ -4,10 +4,10 @@ import * as Components from "./";
 import {observer} from "mobx-react";
 
 @observer
-export class TabList extends React.Component<{state: Store.Main}, {}> {
+export class TabList extends React.Component<{tablist: Store.TabList}, {}> {
   public render() {
       return (<div>
-        {this.tabs(this.props.state.tablist)}
+        {this.tabs(this.props.tablist)}
         </div>);
   }
 

@@ -60,14 +60,14 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
   }
 
   private clickOnline() {
-    Store.Main.getStore().connections.add(Store.ConnectionType.Online,
+    Store.getStore().connections.add(Store.ConnectionType.Online,
       this.state.str,
       this.state.desc);
     this.props.close();
   }
 
   private clickOffline() {
-    Store.Main.getStore().connections.add(Store.ConnectionType.Offline,
+    Store.getStore().connections.add(Store.ConnectionType.Offline,
       this.state.str,
       this.state.desc);
     this.props.close();

@@ -11,7 +11,7 @@ class Style {
 }
 
 @observer
-export class Tree extends React.Component<{state: Store.Main}, {}> {
+export class Tree extends React.Component<{con: Store.Connections}, {}> {
 
   public render() {
     let i = 0;
@@ -19,7 +19,7 @@ export class Tree extends React.Component<{state: Store.Main}, {}> {
     return (<div>
       <Components.TreeTop />
       <ol style={Style.top}>
-      {this.props.state.connections.list.map((child) => {
+      {this.props.con.list.map((child) => {
         return <Components.TreeItem key={i++} item={child} />;
       })}
       </ol>

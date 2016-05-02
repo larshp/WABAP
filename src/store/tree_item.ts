@@ -41,7 +41,7 @@ export class TreeItemPROG extends TreeItem {
   }
 
   public click() {
-    Store.Main.getStore().tablist.add(this);
+    Store.getStore().tablist.add(this);
   }
 }
 

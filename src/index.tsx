@@ -46,21 +46,22 @@ class Style {
 }
 
 @observer
-class Main extends React.Component<{state: Store.Main}, {}> {
+class Main extends React.Component<{}, {}> {
   public render() {
     return (<div style={Style.wrap} onClick={this.click.bind(this)}>
       <div style={Style.top}><Components.TopMenu /></div>
-      <div style={Style.tree}><Components.Tree state={this.props.state} /></div>
-      <div style={Style.tablist}><Components.TabList state={this.props.state} /></div>
-      <div style={Style.editor}><Components.CodeMirror editor={this.props.state.editor} /></div>
-      <div><Components.ContextMenu con={this.props.state.contextMenu} /></div>
+      <div style={Style.tree}><Components.Tree con={Store.getStore().connections} /></div>
+      <div style={Style.tablist}><Components.TabList tablist={Store.getStore().tablist} /></div>
+      <div style={Style.editor}><Components.CodeMirror editor={Store.getStore().editor} /></div>
+      <div><Components.ContextMenu con={Store.getStore().contextMenu} /></div>
       <div style={Style.clear}></div>
       </div>);
   }
 
   private click(): void {
-    this.props.state.contextMenu.hide();
+    Store.getStore().contextMenu.hide();
   }
 }
 
-ReactDOM.render(<Main state={Store.Main.getStore()} />, document.getElementById("app"));
+Store.getStore(); // make sure to initialize the store before starting the app
+ReactDOM.render(<Main />, document.getElementById("app"));
