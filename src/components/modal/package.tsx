@@ -13,7 +13,7 @@ function focus(input) {
 // todo, super class for modal dialogs?
 
 @observer
-export class Package extends React.Component<{show: boolean, close: () => void}, {str: string}> {
+export class Package extends React.Component<{show: boolean, con: Store.Connection, close: () => void}, {str: string}> {
 
   public constructor() {
     super();
@@ -21,7 +21,7 @@ export class Package extends React.Component<{show: boolean, close: () => void},
   }
 
   private click() {
-    alert("todo, do something");
+    this.props.con.addPackage(this.state.str);
     this.props.close();
   }
 
@@ -41,19 +41,19 @@ export class Package extends React.Component<{show: boolean, close: () => void},
   }
 
   public render() {
-      if (this.props.show === false) {
-        return (<div />);
-      } else {
-        return (<div>
-          <div style={Style.background}></div>
-          <div style={Style.modal} onKeyDown={this.keyDown.bind(this)}>
-            <a href="#" title="Close" style={Style.close} onClick={this.props.close.bind(this)}>{Octicons.x}</a>
-            Open Package<br />
-            <br />
-            <input ref={focus} type="text" value={this.state.str} onChange={this.handleChange.bind(this)} style={Style.input} /><br />
-            <input type="submit" value="Open" onClick={this.click.bind(this)} />
-          </div>
-          </div>);
-      }
+    if (this.props.show === false) {
+      return (<div />);
+    } else {
+      return (<div>
+        <div style={Style.background}></div>
+        <div style={Style.modal} onKeyDown={this.keyDown.bind(this)}>
+          <a href="#" title="Close" style={Style.close} onClick={this.props.close.bind(this)}>{Octicons.x}</a>
+          Open Package<br />
+          <br />
+          <input ref={focus} type="text" value={this.state.str} onChange={this.handleChange.bind(this)} style={Style.input} /><br />
+          <input type="submit" value="Open" onClick={this.click.bind(this)} />
+        </div>
+        </div>);
+    }
   }
 }

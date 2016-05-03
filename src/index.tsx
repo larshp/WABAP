@@ -55,6 +55,7 @@ class Main extends React.Component<{}, {}> {
       <div style={Style.tablist}><Components.TabList tablist={Store.getStore().tablist} /></div>
       <div style={Style.editor}><Components.CodeMirror editor={Store.getStore().editor} /></div>
       <div><Components.ContextMenu con={Store.getStore().contextMenu} /></div>
+      <DevTools />
       <div><Modal.Container /></div>
       <div style={Style.clear}></div>
       </div>);

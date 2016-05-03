@@ -1,8 +1,10 @@
 import {observable} from "mobx";
+import * as Store from "./";
 
 export class Modal {
   @observable public connection: boolean;
   @observable public package: boolean;
+  @observable public con: Store.Connection;
 
   public constructor() {
     this.connection = false;
@@ -13,7 +15,8 @@ export class Modal {
     this.connection = true;
   }
 
-  public showPackage() {
+  public openPackage(c: Store.Connection) {
+    this.con = c;
     this.package = true;
   }
 }

@@ -29,8 +29,20 @@ export class Connection extends Store.TreeItem {
   }
 
   public getContextList() {
-    return [{description: "Open package", callback: () => { Store.getStore().modal.showPackage(); }},
-      {description: "Close connection", callback: () => { this.close(); }}];
+    return [
+      {
+        description: "Open package",
+        callback: () => { Store.getStore().modal.openPackage(this); }
+      },
+      {
+        description: "Close connection",
+        callback: () => { this.close(); }
+      },
+      ];
+  }
+
+  public addPackage(name: string) {
+    this.children.push(new Store.TreeItemDEVC("$TMP"));
   }
 
   private close() {

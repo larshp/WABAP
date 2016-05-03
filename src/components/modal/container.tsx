@@ -10,7 +10,7 @@ export class Container extends React.Component<{}, {}> {
     return (
       <div>
       <Modal.Connection show={modal.connection} close={this.toggleConnection.bind(this)}/>
-      <Modal.Package show={modal.package} close={this.togglePackage.bind(this)}/>
+      <Modal.Package show={modal.package} con={modal.con} close={this.togglePackage.bind(this)}/>
       </div>);
   }
 
