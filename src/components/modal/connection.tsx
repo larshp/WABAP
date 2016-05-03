@@ -4,6 +4,12 @@ import * as Store from "../../store/";
 import {Style} from "./";
 import Octicons from "../../misc/octicons";
 
+function focus(input) {
+  if (input) {
+    input.focus();
+  }
+}
+
 @observer
 export class Connection extends React.Component<{show: boolean, close: () => void}, {str: string, desc: string}> {
 
@@ -34,17 +40,25 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
     this.setState({str: this.state.str, desc: event.target.value});
   }
 
+  private keyDown(e) {
+    switch(e.key) {
+      case "Escape":
+        this.props.close();
+        break;
+    }
+  }
+
   public render() {
       if (this.props.show === false) {
         return (<div />);
       } else {
         return (<div>
           <div style={Style.background}></div>
-          <div style={Style.modal}>
+          <div style={Style.modal} onKeyDown={this.keyDown.bind(this)}>
             <a href="#" title="Close" style={Style.close} onClick={this.props.close.bind(this)}>{Octicons.x}</a>
             New Connection<br />
             <br />
-            <input type="text" value={this.state.desc} onChange={this.handleChangeDesc.bind(this)} style={Style.input} /><br />
+            <input type="text" ref={focus} value={this.state.desc} onChange={this.handleChangeDesc.bind(this)} style={Style.input} /><br />
             <input type="submit" value="Offline" onClick={this.clickOffline.bind(this)} />
             <br />
             <br />
