@@ -7,11 +7,20 @@ import * as Modal from "./";
 export class Container extends React.Component<{}, {}> {
   public render() {
     let modal = Store.getStore().modal;
-    return (<Modal.Connection show={modal.connection} close={this.toggleConnection.bind(this)}/>);
+    return (
+      <div>
+      <Modal.Connection show={modal.connection} close={this.toggleConnection.bind(this)}/>
+      <Modal.Package show={modal.package} close={this.togglePackage.bind(this)}/>
+      </div>);
   }
 
   private toggleConnection(): void {
     let modal = Store.getStore().modal;
     modal.connection = !modal.connection;
+  }
+
+  private togglePackage(): void {
+    let modal = Store.getStore().modal;
+    modal.package = !modal.package;
   }
 }

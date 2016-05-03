@@ -29,7 +29,7 @@ export class Connection extends Store.TreeItem {
   }
 
   public getContextList() {
-    return [{description: "Open package", callback: () => { alert("foobar, todo"); }},
+    return [{description: "Open package", callback: () => { Store.getStore().modal.showPackage(); }},
       {description: "Close connection", callback: () => { this.close(); }}];
   }
 
