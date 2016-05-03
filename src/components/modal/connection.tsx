@@ -21,6 +21,7 @@ class Style {
 	  top: "50px",
 	  left: "100px",
 	  padding: "5px 20px 10px 20px",
+	  color: "rgb(215, 218, 224)",
 	  borderRadius: "10px",
 	  background: "#353b45",
 	  zIndex: "100",

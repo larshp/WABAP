@@ -29,7 +29,7 @@ export class Connection extends Store.TreeItem {
   }
 
   public getContextList() {
-    return [{description: "Open package", callback: () => { alert("foo"); }},
+    return [{description: "Open package", callback: () => { alert("foobar, todo"); }},
       {description: "Close connection", callback: () => { this.close(); }}];
   }
 
@@ -53,7 +53,7 @@ class ConnectionDummy extends Connection {
   }
 
   public click() {
-    alert("todo, click icon to the right instead");
+    Store.getStore().modal.showConnection();
   }
 }
 

@@ -1,10 +1,11 @@
 import * as React from "react";
 import * as Modal from "./modal/";
+import * as Store from "../store/";
 import {observer} from "mobx-react";
 import Octicons from "../misc/octicons";
 
 class Style {
-  public static floatrighticon: {} = {
+  public static icon: {} = {
     float: "right",
     position: "relative",
     fontFamily: "Octicons Regular",
@@ -20,27 +21,12 @@ class Style {
 }
 
 @observer
-export class TreeTop extends React.Component<{}, {popup: boolean}> {
-
-  constructor() {
-    super();
-    this.state = {popup: false};
-  }
-
+export class TreeTop extends React.Component<{}, {}> {
   public render() {
-    const content = Octicons.radioTower;
-
-    return (<div>
-      <Modal.Connection show={this.state.popup} close={this.toggleModalConnection.bind(this)}/>
-      <div style={Style.floatrighticon} onClick={this.toggleModalConnection.bind(this)}>{content}</div>
-      </div>);
+    return (<div style={Style.icon} onClick={this.show.bind(this)}>{Octicons.radioTower}</div>);
   }
 
-  private toggleModalConnection(): void {
-    if (this.state.popup === false) {
-      this.setState({popup: true});
-    } else {
-      this.setState({popup: false});
-    }
+  private show(): void {
+    Store.getStore().modal.showConnection();
   }
 }

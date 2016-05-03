@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as Components from "./components/";
 import * as Store from "./store/";
+import * as Modal from "./components/modal/";
 import {observer} from "mobx-react";
 import DevTools from "mobx-react-devtools";
 
@@ -54,6 +55,7 @@ class Main extends React.Component<{}, {}> {
       <div style={Style.tablist}><Components.TabList tablist={Store.getStore().tablist} /></div>
       <div style={Style.editor}><Components.CodeMirror editor={Store.getStore().editor} /></div>
       <div><Components.ContextMenu con={Store.getStore().contextMenu} /></div>
+      <div><Modal.Container /></div>
       <div style={Style.clear}></div>
       </div>);
   }

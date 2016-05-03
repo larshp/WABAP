@@ -6,12 +6,14 @@ class Main {
   @observable public editor: Store.Editor;
   @observable public connections: Store.Connections
   @observable public contextMenu: Store.ContextMenu;
+  @observable public modal: Store.Modal;
 
   constructor() {
     this.tablist = new Store.TabList();
     this.editor = new Store.Editor();
     this.connections = new Store.Connections();
     this.contextMenu = new Store.ContextMenu();
+    this.modal = new Store.Modal();
   }
 }
 
