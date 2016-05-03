@@ -21,7 +21,8 @@ export class Connection extends Store.TreeItem {
 // todo
 // REST.TADIR.fetch(this.cstring);
 
-    this.children = [new Store.TreeItemDEVC("$TMP")];
+// this.children = [new Store.TreeItemDEVC("$TMP")];
+    this.children = [];
   }
 
   public getIcon() {
@@ -41,8 +42,11 @@ export class Connection extends Store.TreeItem {
       ];
   }
 
-  public addPackage(name: string) {
-    this.children.push(new Store.TreeItemDEVC("$TMP"));
+  public addPackage(name: string, save = true) {
+    this.children.push(new Store.TreeItemDEVC(name));
+    if (save) {
+      Store.getStore().connections.save();
+    }
   }
 
   private close() {
@@ -97,6 +101,19 @@ export class Connections {
     this.addDummy();
   }
 
+  public save() {
+    let mapped = this.list.map((con) => {
+      let packages = con.children.map((p) => {return p.description;});
+      return {
+        ctype: con.ctype,
+        cstring: con.cstring,
+        description: con.description,
+        packages: packages
+      };
+    });
+    localStorage.setItem(this.key, JSON.stringify(mapped));
+  }
+
   private addDummy() {
     if (this.list.length === 0) {
       this.list = [new ConnectionDummy()];
@@ -110,13 +127,10 @@ export class Connections {
     } else {
       let parsed = JSON.parse(value);
       this.list = parsed.map((item) => {
-        return new Connection(item.ctype, item.cstring, "foobar"); });
+        let con = new Connection(item.ctype, item.cstring, item.description);
+        item.packages.forEach((p) => { con.addPackage(p, false); });
+        return con;
+      });
     }
-  }
-
-  private save() {
-    let mapped = this.list.map((con) => {
-      return {ctype: con.ctype, cstring: con.cstring}; });
-    localStorage.setItem(this.key, JSON.stringify(mapped));
   }
 }
