@@ -1,8 +1,8 @@
 import {observable} from "mobx";
 
-export interface ContextItem {
-  description: string;
-  callback: () => void;
+export class ContextItem {
+  public description: string;
+  public callback: () => void;
 }
 
 export class ContextMenu {

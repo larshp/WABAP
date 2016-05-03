@@ -17,11 +17,6 @@ export class Connection extends Store.TreeItem {
     this.ctype = t;
     this.cstring = s;
     this.description = d;
-
-// todo
-// REST.TADIR.fetch(this.cstring);
-
-// this.children = [new Store.TreeItemDEVC("$TMP")];
     this.children = [];
   }
 
@@ -33,11 +28,11 @@ export class Connection extends Store.TreeItem {
     return [
       {
         description: "Open package",
-        callback: () => { Store.getStore().modal.openPackage(this); }
+        callback: () => { Store.getStore().modal.openPackage(this); },
       },
       {
         description: "Close connection",
-        callback: () => { this.close(); }
+        callback: () => { this.close(); },
       },
       ];
   }
@@ -94,8 +89,8 @@ export class Connections {
 
   public remove(c: Connection) {
     let i = this.list.indexOf(c);
-    if(i !== -1) {
-	    this.list.splice(i, 1);
+    if (i !== -1) {
+      this.list.splice(i, 1);
     }
     this.save();
     this.addDummy();
@@ -103,12 +98,12 @@ export class Connections {
 
   public save() {
     let mapped = this.list.map((con) => {
-      let packages = con.children.map((p) => {return p.description;});
+      let packages = con.children.map((p) => { return p.description; });
       return {
         ctype: con.ctype,
         cstring: con.cstring,
         description: con.description,
-        packages: packages
+        packages: packages,
       };
     });
     localStorage.setItem(this.key, JSON.stringify(mapped));

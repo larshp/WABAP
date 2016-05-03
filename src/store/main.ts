@@ -4,7 +4,7 @@ import {observable} from "mobx";
 class Main {
   @observable public tablist: Store.TabList;
   @observable public editor: Store.Editor;
-  @observable public connections: Store.Connections
+  @observable public connections: Store.Connections;
   @observable public contextMenu: Store.ContextMenu;
   @observable public modal: Store.Modal;
 

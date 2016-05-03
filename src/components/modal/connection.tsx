@@ -18,15 +18,46 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
     this.state = {str: window.location.href, desc: "description"};
   }
 
+  public render() {
+    if (this.props.show === false) {
+      return (<div />);
+    }
+
+    return (<div>
+      <div style={Style.background}></div>
+      <div style={Style.modal} onKeyDown={this.keyDown.bind(this)}>
+        <a href="#" title="Close" style={Style.close} onClick={this.props.close.bind(this)}>{Octicons.x}</a>
+        New Connection<br />
+        <br />
+        <input type="text"
+          ref={focus} value={this.state.desc}
+          onChange={this.handleChangeDesc.bind(this)}
+          style={Style.input} />
+        <br />
+        <input type="submit" value="Offline" onClick={this.clickOffline.bind(this)} />
+        <br />
+        <br />
+        <input type="text"
+          value={this.state.str}
+          onChange={this.handleChange.bind(this)}
+          style={Style.input} />
+        <br />
+        <input type="submit" value="Online" onClick={this.clickOnline.bind(this)} />
+      </div>
+      </div>);
+  }
+
   private clickOnline() {
-    Store.getStore().connections.add(Store.ConnectionType.Online,
+    Store.getStore().connections.add(
+      Store.ConnectionType.Online,
       this.state.str,
       this.state.desc);
     this.props.close();
   }
 
   private clickOffline() {
-    Store.getStore().connections.add(Store.ConnectionType.Offline,
+    Store.getStore().connections.add(
+      Store.ConnectionType.Offline,
       this.state.str,
       this.state.desc);
     this.props.close();
@@ -40,32 +71,13 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
     this.setState({str: this.state.str, desc: event.target.value});
   }
 
-  private keyDown(e) {
-    switch(e.key) {
+  private keyDown(e): void {
+    switch (e.key) {
       case "Escape":
         this.props.close();
         break;
+      default:
+        return;
     }
-  }
-
-  public render() {
-      if (this.props.show === false) {
-        return (<div />);
-      } else {
-        return (<div>
-          <div style={Style.background}></div>
-          <div style={Style.modal} onKeyDown={this.keyDown.bind(this)}>
-            <a href="#" title="Close" style={Style.close} onClick={this.props.close.bind(this)}>{Octicons.x}</a>
-            New Connection<br />
-            <br />
-            <input type="text" ref={focus} value={this.state.desc} onChange={this.handleChangeDesc.bind(this)} style={Style.input} /><br />
-            <input type="submit" value="Offline" onClick={this.clickOffline.bind(this)} />
-            <br />
-            <br />
-            <input type="text" value={this.state.str} onChange={this.handleChange.bind(this)} style={Style.input} /><br />
-            <input type="submit" value="Online" onClick={this.clickOnline.bind(this)} />
-          </div>
-          </div>);
-      }
   }
 }
