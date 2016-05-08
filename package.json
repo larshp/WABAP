@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "codemirror": "^5.14.2",
-    "codemirror-abap": "^0.1.5",
+    "codemirror-abap": "^0.1.6",
     "mobx": "^2.1.5",
     "mobx-react": "^3.0.5",
     "mobx-react-devtools": "^4.0.5",
