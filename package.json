@@ -16,14 +16,14 @@
   "devDependencies": {
     "browserify": "^13.0.0",
     "tslint": "^3.8.1",
-    "tsd": "^0.6.5",
-    "typescript": "^1.8.10"
+    "typescript": "^1.8.10",
+    "typings": "^0.8.1"
   },
   "scripts": {
     "browserify": "browserify build/index.js node_modules/codemirror/addon/dialog/dialog.js node_modules/codemirror/addon/search/searchcursor.js node_modules/codemirror/addon/search/search.js -o web/bundle.js",
     "tslint": "tslint -c tslint.json src/*.ts* src/store/*.ts* src/components/*.ts* src/components/modal/*.ts* src/misc/*.ts* src/rest/*.ts*",
     "test": "tsc --pretty",
-    "typings": "tsd install",
+    "typings": "typings install",
     "posttest": "npm run browserify"
   },
   "repository": {
