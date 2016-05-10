@@ -40,6 +40,7 @@ class Style {
     backgroundColor: "#353b45",
     height: "calc(100vh - 20px)",
     color: "rgb(215, 218, 224)",
+    whiteSpace: "nowrap",
   };
 
   public static clear: {} = {
