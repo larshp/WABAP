@@ -1,4 +1,6 @@
 build/
 typings/
-web/bundle.js
+web/*.js
+web/*.css
+web/*.ttf
 npm-debug.log
