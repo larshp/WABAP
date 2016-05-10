@@ -1,5 +1,6 @@
 import {observable} from "mobx";
 import * as Store from "./";
+import * as REST from "../rest/";
 import Octicons from "../misc/octicons";
 
 export abstract class TreeItem {
@@ -71,51 +72,117 @@ export class TreeItemDOMA extends TreeItem {
   }
 }
 
-class TreeItemCategory extends TreeItem {
-  private devclass = "";
-  private category = "";
+export class TreeItemUnsupported extends TreeItem {
+  public constructor(name: string) {
+    super();
+    this.description = name;
+  }
 
-  public constructor(category: string, description: string, devclass: string) {
+  public getIcon() {
+    return Octicons.question;
+  }
+}
+
+class TreeItemCategory extends TreeItem {
+  private category = "";
+  private icon;
+
+  public constructor(category: string, description: string, objects: REST.TADIREntry[], icon = Octicons.fileDirectory) {
     super();
 
     this.description = description;
-    this.devclass = devclass;
     this.category = category;
+    this.icon = icon;
 
-    switch (this.category) {
-      case "PROG":
-        this.children.push(new TreeItemPROG("ZPROGRAM"));
-        this.children.push(new TreeItemPROG("ZFOOBAR"));
-        break;
-      case "DTEL":
-        this.children.push(new TreeItemDTEL("ZDATA_ELEMENT"));
-        break;
-      case "DOMA":
-        this.children.push(new TreeItemDOMA("ZDOMAIN"));
-        break;
-      default:
-        this.children = [];
-        break;
+    this.children = [];
+
+    for (let object of objects) {
+      switch (object.OBJECT) {
+        case "PROG":
+          this.children.push(new TreeItemPROG(object.OBJ_NAME));
+          break;
+        case "DOMA":
+          this.children.push(new TreeItemDOMA(object.OBJ_NAME));
+          break;
+        case "DTEL":
+          this.children.push(new TreeItemDTEL(object.OBJ_NAME));
+          break;
+        default:
+          this.children.push(new TreeItemUnsupported(object.OBJ_NAME));
+          break;
+      }
     }
   }
 
   public getIcon() {
-    return Octicons.fileDirectory;
+    return this.icon;
   }
 }
 
 export class TreeItemDEVC extends TreeItem {
 
-  public constructor(name: string) {
+  public constructor(name: string, c: Store.Connection) {
     super();
     this.description = name;
+    this.children = [];
 
-    this.children.push(new TreeItemCategory("PROG", "Programs", this.description));
-    this.children.push(new TreeItemCategory("DTEL", "Data Elements", this.description));
-    this.children.push(new TreeItemCategory("DOMA", "Domains", this.description));
+    REST.TADIR.fetch(c, this.populate.bind(this));
+  }
+
+  public getContextList() {
+    return [
+      {
+        description: "New something",
+        callback: () => { alert("todo"); },
+      },
+      ];
   }
 
   public getIcon() {
     return Octicons.fileDirectory;
+  }
+
+  private populate(list: REST.TADIREntry[]) {
+    let types: string[] = [];
+
+    for (let entry of list) {
+      if (types.indexOf(entry.OBJECT) === -1) {
+        types.push(entry.OBJECT);
+      }
+    }
+
+    for (let type of types) {
+      let objects: REST.TADIREntry[] = [];
+
+      for (let object of list) {
+        if (object.OBJECT !== type) {
+          continue;
+        }
+        objects.push(object);
+      }
+
+      if (this.isSupported(type)) {
+        this.children.push(new TreeItemCategory(type, this.getTypeDescription(type), objects));
+      } else {
+        this.children.push(new TreeItemCategory(type, type + " - Unsupported", objects, Octicons.question));
+      }
+    }
+  }
+
+  private isSupported(type: string): boolean {
+    return this.getTypeDescription(type) === "" ? false : true;
+  }
+
+  private getTypeDescription(type: string): string {
+    switch (type) {
+      case "PROG":
+        return "Programs";
+      case "DTEL":
+        return "Data Elements";
+      case "DOMA":
+        return "Domains";
+      default:
+        return "";
+    }
   }
 }

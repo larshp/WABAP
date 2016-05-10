@@ -38,7 +38,7 @@ export class Connection extends Store.TreeItem {
   }
 
   public addPackage(name: string, save = true) {
-    this.children.push(new Store.TreeItemDEVC(name));
+    this.children.push(new Store.TreeItemDEVC(name, this));
     if (save) {
       Store.getStore().connections.save();
     }
