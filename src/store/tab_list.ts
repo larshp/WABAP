@@ -6,10 +6,11 @@ export class TabList {
 
   private active: Store.Tab = undefined;
 
-  public add(t: Store.TreeItem) {
+  public add(t: Store.TreeItem, source: string) {
     let text = t.description;
 
 // look to see if it is already there
+// todo, also compare by object type?
     for (let tab of this.tabs) {
       if (tab.text === text) {
         this.setActive(tab);
@@ -17,7 +18,7 @@ export class TabList {
       }
     }
 
-    let tab = new Store.Tab(text);
+    let tab = new Store.Tab(text, source);
     this.tabs.push(tab);
     this.setActive(tab);
   }

@@ -36,9 +36,13 @@ export abstract class TreeItem {
 }
 
 export class TreeItemPROG extends TreeItem {
-  public constructor(name: string) {
+  private connection: Store.Connection;
+
+// todo, is should the tree items refer to an object, which knows the connection?
+  public constructor(name: string, c: Store.Connection) {
     super();
     this.description = name;
+    this.connection = c;
   }
 
   public getIcon() {
@@ -46,7 +50,7 @@ export class TreeItemPROG extends TreeItem {
   }
 
   public click() {
-    Store.getStore().tablist.add(this);
+    REST.Reports.read(this.connection, this.description, (s) => { Store.getStore().tablist.add(this, s); });
   }
 }
 
@@ -85,9 +89,14 @@ export class TreeItemUnsupported extends TreeItem {
 
 class TreeItemCategory extends TreeItem {
   private category = "";
-  private icon;
+  private icon: string;
 
-  public constructor(category: string, description: string, objects: REST.TADIREntry[], icon = Octicons.fileDirectory) {
+  public constructor(
+      category: string,
+      description: string,
+      objects: REST.TADIREntry[],
+      c: Store.Connection,
+      icon = Octicons.fileDirectory) {
     super();
 
     this.description = description;
@@ -99,7 +108,7 @@ class TreeItemCategory extends TreeItem {
     for (let object of objects) {
       switch (object.OBJECT) {
         case "PROG":
-          this.children.push(new TreeItemPROG(object.OBJ_NAME));
+          this.children.push(new TreeItemPROG(object.OBJ_NAME, c));
           break;
         case "DOMA":
           this.children.push(new TreeItemDOMA(object.OBJ_NAME));
@@ -117,14 +126,25 @@ class TreeItemCategory extends TreeItem {
   public getIcon() {
     return this.icon;
   }
+
+  public getContextList() {
+    return [
+      {
+        description: "New " + this.category,
+        callback: () => { alert("todo"); },
+      },
+      ];
+  }
 }
 
 export class TreeItemDEVC extends TreeItem {
+  private connection: Store.Connection;
 
   public constructor(name: string, c: Store.Connection) {
     super();
     this.description = name;
     this.children = [];
+    this.connection = c;
 
     REST.TADIR.fetch(c, this.populate.bind(this));
   }
@@ -162,9 +182,19 @@ export class TreeItemDEVC extends TreeItem {
       }
 
       if (this.isSupported(type)) {
-        this.children.push(new TreeItemCategory(type, this.getTypeDescription(type), objects));
+// todo, too many parameters
+        this.children.push(new TreeItemCategory(
+          type,
+          this.getTypeDescription(type),
+          objects,
+          this.connection));
       } else {
-        this.children.push(new TreeItemCategory(type, type + " - Unsupported", objects, Octicons.question));
+        this.children.push(new TreeItemCategory(
+          type,
+          type + " - Unsupported",
+          objects,
+          this.connection,
+          Octicons.question));
       }
     }
   }

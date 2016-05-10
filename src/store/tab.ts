@@ -6,9 +6,9 @@ export class Tab {
 
   private buffer = "";
 
-  constructor(t: string) {
+  constructor(t: string, buffer: string) {
     this.text = t;
-    this.buffer = "REPORT " + t + ".\n* ABAP mode testing\nWRITE 'Hello world'.";
+    this.buffer = buffer;
   }
 
   public getBuffer(): string {
