@@ -3,7 +3,6 @@ cp node_modules/codemirror/lib/codemirror.css web/
 cp node_modules/codemirror/theme/seti.css web/
 cp node_modules/codemirror/theme/bespin.css web/
 cp node_modules/codemirror/addon/dialog/dialog.css web/
-cp node_modules/octicons/octicons/octicons.css web/
 cp node_modules/codemirror/lib/codemirror.js web/
 cp node_modules/codemirror/addon/dialog/dialog.js web/
 cp node_modules/codemirror/addon/search/searchcursor.js web/
