@@ -1,4 +1,5 @@
 import {observable} from "mobx";
+import * as abaplint from "abaplint";
 
 declare var CodeMirror: any;
 
@@ -17,6 +18,22 @@ function toggleReadOnly(cm) {
   } else {
     setReadOnly(cm, true);
   }
+}
+
+function validator(text, options) {
+  let result = [];
+
+  let issues = abaplint.run("foobar.abap", text);
+
+  for (let issue of issues) {
+    result.push({message: issue.get_description(),
+                 severity: "error",
+                 from: CodeMirror.Pos(issue.get_row() - 1, issue.get_col() - 1),
+                 to: CodeMirror.Pos(issue.get_row() - 1, issue.get_col() + 10),
+                });
+  }
+
+  return result;
 }
 
 export class Editor {
@@ -52,6 +69,8 @@ export class Editor {
 
   private initCodeMirror() {
 
+    CodeMirror.registerHelper("lint", "abap", validator);
+
     this.editor = CodeMirror.fromTextArea(
       document.getElementById("code") as HTMLTextAreaElement,
       {
@@ -59,6 +78,8 @@ export class Editor {
         tabSize: 2,
         mode: "abap",
         theme: "seti",
+        gutters: ["CodeMirror-lint-markers"],
+        lint: true,
       }
     );
 

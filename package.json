@@ -4,6 +4,7 @@
   "description": "WABAP",
   "main": "index.js",
   "dependencies": {
+    "abaplint": "^0.24.6",
     "codemirror": "^5.14.2",
     "codemirror-abap": "^0.1.6",
     "mobx": "^2.1.6",
@@ -14,8 +15,8 @@
     "react-dom": "^15.0.2"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "tslint": "^3.9.0",
+    "browserify": "^13.0.1",
+    "tslint": "^3.10.1",
     "typescript": "^1.8.10",
     "typings": "^0.8.1"
   },
