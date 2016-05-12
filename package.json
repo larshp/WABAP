@@ -4,7 +4,7 @@
   "description": "WABAP",
   "main": "index.js",
   "dependencies": {
-    "abaplint": "^0.24.6",
+    "abaplint": "^0.25.2",
     "codemirror": "^5.14.2",
     "codemirror-abap": "^0.1.6",
     "mobx": "^2.1.6",

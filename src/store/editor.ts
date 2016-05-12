@@ -26,11 +26,13 @@ function validator(text, options) {
   let issues = abaplint.run("foobar.abap", text);
 
   for (let issue of issues) {
-    result.push({message: issue.get_description(),
-                 severity: "error",
-                 from: CodeMirror.Pos(issue.get_row() - 1, issue.get_col() - 1),
-                 to: CodeMirror.Pos(issue.get_row() - 1, issue.get_col() + 10),
-                });
+    result.push(
+      {
+        message: issue.getDescription(),
+        severity: "error",
+        from: CodeMirror.Pos(issue.getStart().getRow() - 1, issue.getStart().getCol() - 1),
+        to: CodeMirror.Pos(issue.getEnd().getRow() - 1, issue.getEnd().getCol() - 1),
+      });
   }
 
   return result;
