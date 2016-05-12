@@ -1,4 +1,5 @@
 import * as Store from "../store/";
+import Manager from "./manager";
 
 function parse(evt): TADIREntry[] {
   let json = JSON.parse(evt.target.responseText);
@@ -44,9 +45,6 @@ export class TADIREntry implements ITADIREntry {
 
 export class TADIR {
   public static fetch(c: Store.Connection, callback: (list: TADIREntry[]) => void) {
-    let oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", (evt) => { callback(parse(evt)); });
-    oReq.open("GET", c.cstring + "tadir/");
-    oReq.send();
+    Manager.request("GET", c.cstring + "tadir/", (evt) => { callback(parse(evt)); });
   }
 }

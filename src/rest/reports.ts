@@ -1,7 +1,7 @@
 import * as Store from "../store/";
+import Manager from "./manager";
 
 function parse(evt): string {
-  console.log("hello");
   let json = JSON.parse(evt.target.responseText);
   let result = "";
   for (let line of json.DATA.SOURCE) {
@@ -12,9 +12,6 @@ function parse(evt): string {
 
 export class Reports {
   public static read(c: Store.Connection, name: string, callback: (source: string) => void) {
-    let oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", (evt) => { callback(parse(evt)); });
-    oReq.open("GET", c.cstring + "reports/" + name);
-    oReq.send();
+    Manager.request("GET", c.cstring + "reports/" + name, (evt) => { callback(parse(evt)); });
   }
 }
