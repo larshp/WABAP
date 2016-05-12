@@ -1,7 +1,13 @@
 import * as Store from "../store/";
 
 function parse(evt): string {
-  return evt.target.responseText;
+  console.log("hello");
+  let json = JSON.parse(evt.target.responseText);
+  let result = "";
+  for (let line of json.DATA.SOURCE) {
+    result = result + line.LINE + "\n";
+  }
+  return result;
 }
 
 export class Reports {
