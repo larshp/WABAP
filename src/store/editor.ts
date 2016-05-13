@@ -20,7 +20,7 @@ function toggleReadOnly(cm) {
   }
 }
 
-function validator(text, options) {
+function validator(text, callback, options) {
   let result = [];
 
   let issues = abaplint.run("foobar.abap", text);
@@ -35,7 +35,7 @@ function validator(text, options) {
       });
   }
 
-  return result;
+  callback(result);
 }
 
 export class Editor {
@@ -71,8 +71,6 @@ export class Editor {
 
   private initCodeMirror() {
 
-    CodeMirror.registerHelper("lint", "abap", validator);
-
     this.editor = CodeMirror.fromTextArea(
       document.getElementById("code") as HTMLTextAreaElement,
       {
@@ -81,7 +79,10 @@ export class Editor {
         mode: "abap",
         theme: "seti",
         gutters: ["CodeMirror-lint-markers"],
-        lint: true,
+        lint: {
+          "getAnnotations": validator,
+          "async" : true,
+        }
       }
     );
 
