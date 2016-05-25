@@ -4,21 +4,21 @@
   "description": "WABAP",
   "main": "index.js",
   "dependencies": {
-    "abaplint": "^0.25.2",
+    "abaplint": "^0.25.3",
     "codemirror": "^5.14.2",
     "codemirror-abap": "^0.1.7",
-    "mobx": "^2.1.6",
-    "mobx-react": "^3.1.0",
+    "mobx": "^2.1.7",
+    "mobx-react": "^3.2.0",
     "mobx-react-devtools": "^4.0.5",
     "octicons": "^3.5.0",
-    "react": "^15.0.2",
-    "react-dom": "^15.0.2"
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0"
   },
   "devDependencies": {
     "browserify": "^13.0.1",
     "tslint": "^3.10.2",
     "typescript": "^1.8.10",
-    "typings": "^1.0.3"
+    "typings": "^1.0.4"
   },
   "scripts": {
     "postinstall": "npm run typings",
