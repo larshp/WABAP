@@ -11,6 +11,7 @@ CLASS lcl_app DEFINITION FINAL.
       initialization,
       select_file.
 
+
   PRIVATE SECTION.
     TYPES: BEGIN OF ty_file,
              path     TYPE string,
