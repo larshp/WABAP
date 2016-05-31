@@ -14,6 +14,8 @@
     <item>/tsconfig.json</item>
     <item>/tslint.json</item>
     <item>/typings.json</item>
+    <item>/src/*</item>
+    <item>/web/*</item>    
    </IGNORE>
   </DATA>
  </asx:values>
