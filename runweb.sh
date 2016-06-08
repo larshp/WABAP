@@ -10,4 +10,4 @@ cp node_modules/codemirror/addon/lint/lint.js web/
 cp node_modules/codemirror/addon/search/searchcursor.js web/
 cp node_modules/codemirror/addon/search/search.js web/
 cp node_modules/codemirror-abap/build/abap.js web/
-cp node_modules/octicons/octicons/octicons.ttf web/
+cp node_modules/octicons/build/font/octicons.ttf web/
