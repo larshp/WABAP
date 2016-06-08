@@ -4,7 +4,7 @@
   "description": "WABAP",
   "main": "index.js",
   "dependencies": {
-    "abaplint": "^0.25.5",
+    "abaplint": "^0.26.0",
     "codemirror": "^5.15.2",
     "codemirror-abap": "^0.1.7",
     "mobx": "^2.2.2",
@@ -25,6 +25,7 @@
     "browserify": "browserify build/index.js -o web/bundle.js",
     "postbrowserify": "./runweb.sh",
     "tslint": "tslint -c tslint.json src/*.ts* src/store/*.ts* src/components/*.ts* src/components/modal/*.ts* src/misc/*.ts* src/rest/*.ts*",
+    "pretest": "abaplint abap/*.abap",
     "test": "tsc --pretty",
     "typings": "typings install",
     "posttest": "npm run browserify"
