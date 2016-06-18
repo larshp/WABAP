@@ -1,2 +1,2 @@
-export * from "./tadir";
-export * from "./reports";
+export * from "./object_devc";
+export * from "./object_prog";

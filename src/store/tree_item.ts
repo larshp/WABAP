@@ -50,7 +50,7 @@ export class TreeItemPROG extends TreeItem {
   }
 
   public click() {
-    REST.Reports.read(this.connection, this.description, (s) => { Store.getStore().tablist.add(this, s); });
+    REST.ObjectPROG.read(this.connection, this.description, (s) => { Store.getStore().tablist.add(this, s); });
   }
 }
 
@@ -146,7 +146,7 @@ export class TreeItemDEVC extends TreeItem {
     this.children = [];
     this.connection = c;
 
-    REST.TADIR.fetch(c, this.populate.bind(this));
+    REST.ObjectDEVC.fetch(c, this.populate.bind(this));
   }
 
   public getContextList() {
