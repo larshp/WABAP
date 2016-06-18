@@ -29,24 +29,13 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
 
   METHOD if_http_extension~handle_request.
 
-* root = main entry, serve bundle.js and index.html
-*        also see comment in method READ_MIME
-
-* /rest/ = rest services
-
-*    DATA: lt_fields TYPE tihttpnvp,
-*          lv_html   TYPE string.
-*    FIELD-SYMBOLS: <ls_fields> LIKE LINE OF lt_fields.
-*    server->request->get_header_fields( CHANGING fields = lt_fields ).
-*    LOOP AT lt_fields ASSIGNING <ls_fields>.
-*      lv_html = lv_html && <ls_fields>-name && '=' && <ls_fields>-value && '<br>'.
-*    ENDLOOP.
-*    server->response->set_cdata( lv_html ).
+* see https://github.com/larshp/WABAP/wiki/REST
 
     DATA: lv_reason TYPE string,
           lv_path   TYPE string,
           lv_name   TYPE tadir-obj_name,
           lt_path   TYPE TABLE OF string.
+
 
     lv_path = server->request->get_header_field( '~path_info' ).
 
@@ -54,21 +43,25 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
     READ TABLE lt_path INDEX 5 INTO lv_name.
     TRANSLATE lv_name TO UPPER CASE.
 
+* todo, refactor
     IF lv_path CP '/rest/objects/DEVC/*'.
       DATA(lo_devc) = NEW zcl_wabap_object_devc( lv_name ).
-      DATA(ls_devc) = lo_devc->read( ).
-      server->response->set_data( to_json( ls_devc ) ).
+      server->response->set_data( to_json( lo_devc->read( ) ) ).
     ELSEIF lv_path CP '/rest/objects/PROG/*/abap'.
       DATA(lo_prog) = NEW zcl_wabap_object_prog( lv_name ).
-      DATA(lv_abap) = lo_prog->abap( ).
       server->response->set_header_field(
         name  = 'Content-Type'
         value = 'text/plain' ).
-      server->response->set_cdata( lv_abap ).
+      server->response->set_cdata( lo_prog->abap( ) ).
     ELSEIF lv_path CP '/rest/objects/PROG/*'.
       lo_prog = NEW zcl_wabap_object_prog( lv_name ).
-      DATA(ls_prog) = lo_prog->read( ).
-      server->response->set_data( to_json( ls_prog ) ).
+      server->response->set_data( to_json( lo_prog->read( ) ) ).
+    ELSEIF lv_path CP '/rest/objects/SMIM/*/content'.
+      DATA(lo_smim) = NEW zcl_wabap_object_smim( lv_name ).
+      server->response->set_data( lo_smim->content( ) ).
+    ELSEIF lv_path CP '/rest/objects/SMIM/*'.
+      lo_smim = NEW zcl_wabap_object_smim( lv_name ).
+      server->response->set_data( to_json( lo_smim->read( ) ) ).
     ELSEIF lv_path = '' OR lv_path = '/'.
 * todo, redirect "/wabap" to "/wabap/" ?
       server->response->set_data( read_mime( '/index.html' ) ).

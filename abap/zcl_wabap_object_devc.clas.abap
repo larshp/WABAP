@@ -44,8 +44,6 @@ CLASS ZCL_WABAP_OBJECT_DEVC IMPLEMENTATION.
 
   METHOD read.
 
-* todo, subpackages?
-
     SELECT SINGLE * FROM tdevc
       INTO rs_data-tdevc
       WHERE devclass = mv_name.
