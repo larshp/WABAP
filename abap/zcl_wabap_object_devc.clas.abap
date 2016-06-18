@@ -24,10 +24,10 @@ CLASS zcl_wabap_object_devc DEFINITION
     METHODS constructor
       IMPORTING
         !iv_name TYPE tadir-obj_name .
-protected section.
-private section.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
 
-  data MV_NAME type DEVCLASS .
+    DATA mv_name TYPE devclass .
 ENDCLASS.
 
 
@@ -50,7 +50,8 @@ CLASS ZCL_WABAP_OBJECT_DEVC IMPLEMENTATION.
 
     SELECT * FROM tdevct
       INTO TABLE rs_data-tdevct
-      WHERE devclass = mv_name.
+      WHERE devclass = mv_name
+      ORDER BY PRIMARY KEY.
 
     SELECT * FROM tadir
       INTO CORRESPONDING FIELDS OF TABLE rs_data-contents
@@ -61,7 +62,8 @@ CLASS ZCL_WABAP_OBJECT_DEVC IMPLEMENTATION.
 
     SELECT devclass FROM tdevc INTO
       TABLE rs_data-sub
-      WHERE parentcl = mv_name.
+      WHERE parentcl = mv_name
+      ORDER BY PRIMARY KEY.
 
   ENDMETHOD.
 ENDCLASS.
