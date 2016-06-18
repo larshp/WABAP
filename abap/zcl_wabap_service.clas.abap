@@ -8,47 +8,18 @@ CLASS zcl_wabap_service DEFINITION
 
     CONSTANTS cv_url TYPE string VALUE '/SAP/zwabap' ##NO_TEXT.
 
-  PROTECTED SECTION.
+protected section.
 
-    TYPES:
-      BEGIN OF ty_tadir,
-        pgmid      TYPE tadir-pgmid,
-        object     TYPE tadir-object,
-        obj_name   TYPE tadir-obj_name,
-        srcsystem  TYPE tadir-srcsystem,
-        author     TYPE tadir-author,
-        devclass   TYPE tadir-devclass,
-        masterlang TYPE tadir-masterlang,
-        delflag    TYPE tadir-delflag,
-      END OF ty_tadir.
-    TYPES:
-      ty_tadir_tt TYPE STANDARD TABLE OF ty_tadir WITH DEFAULT KEY.
-
-    TYPES:
-      BEGIN OF ty_report,
-        progdir TYPE progdir,
-        source  TYPE STANDARD TABLE OF abaptxt255 WITH DEFAULT KEY,
-      END OF ty_report.
-
-    METHODS read_report
-      IMPORTING
-        !iv_name         TYPE progname
-      RETURNING
-        VALUE(rs_report) TYPE ty_report.
-    METHODS read_tadir
-      RETURNING
-        VALUE(rt_data) TYPE ty_tadir_tt.
-    METHODS to_json
-      IMPORTING
-        !ig_data       TYPE any
-      RETURNING
-        VALUE(rv_json) TYPE xstring.
-    METHODS read_mime
-      IMPORTING
-        !iv_file       TYPE string
-      RETURNING
-        VALUE(rv_data) TYPE xstring.
-
+  methods TO_JSON
+    importing
+      !IG_DATA type ANY
+    returning
+      value(RV_JSON) type XSTRING .
+  methods READ_MIME
+    importing
+      !IV_FILE type STRING
+    returning
+      value(RV_DATA) type XSTRING .
 ENDCLASS.
 
 
@@ -73,17 +44,33 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
 *    server->response->set_cdata( lv_html ).
 
     DATA: lv_reason TYPE string,
-          lv_path   TYPE string.
+          lv_path   TYPE string,
+          lv_name   TYPE tadir-obj_name,
+          lt_path   TYPE TABLE OF string.
 
     lv_path = server->request->get_header_field( '~path_info' ).
 
-    IF lv_path CP '/rest/tadir*'.
-      DATA(lt_tadir) = read_tadir( ).
-      server->response->set_data( to_json( lt_tadir ) ).
-    ELSEIF lv_path CP '/rest/reports/*'.
-      DATA(ls_report) = read_report( CONV #( lv_path+14 ) ).
-      server->response->set_data( to_json( ls_report ) ).
+    SPLIT lv_path AT '/' INTO TABLE lt_path.
+    READ TABLE lt_path INDEX 5 INTO lv_name.
+    TRANSLATE lv_name TO UPPER CASE.
+
+    IF lv_path CP '/rest/objects/DEVC/*'.
+      DATA(lo_devc) = NEW zcl_wabap_object_devc( lv_name ).
+      DATA(ls_devc) = lo_devc->read( ).
+      server->response->set_data( to_json( ls_devc ) ).
+    ELSEIF lv_path CP '/rest/objects/PROG/*/abap'.
+      DATA(lo_prog) = NEW zcl_wabap_object_prog( lv_name ).
+      DATA(lv_abap) = lo_prog->abap( ).
+      server->response->set_header_field(
+        name  = 'Content-Type'
+        value = 'text/plain' ).
+      server->response->set_cdata( lv_abap ).
+    ELSEIF lv_path CP '/rest/objects/PROG/*'.
+      lo_prog = NEW zcl_wabap_object_prog( lv_name ).
+      DATA(ls_prog) = lo_prog->read( ).
+      server->response->set_data( to_json( ls_prog ) ).
     ELSEIF lv_path = '' OR lv_path = '/'.
+* todo, redirect "/wabap" to "/wabap/" ?
       server->response->set_data( read_mime( '/index.html' ) ).
     ELSE.
       server->response->set_data( read_mime( lv_path ) ).
@@ -113,48 +100,6 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
         i_url = lv_url
       IMPORTING
         e_content = rv_data ).
-
-  ENDMETHOD.
-
-
-  METHOD read_report.
-
-* todo, security? escape some stuff?
-
-    DATA(lv_program) = CONV progname( to_upper( iv_name ) ).
-
-    CALL FUNCTION 'RPY_PROGRAM_READ'
-      EXPORTING
-        program_name     = lv_program
-        with_lowercase   = abap_true
-      TABLES
-        source_extended  = rs_report-source
-      EXCEPTIONS
-        cancelled        = 1
-        not_found        = 2
-        permission_error = 3
-        OTHERS           = 4.
-    ASSERT sy-subrc = 0. " todo, error handling
-
-    CALL FUNCTION 'READ_PROGDIR'
-      EXPORTING
-        i_progname = lv_program
-        i_state    = 'A'   " todo, possibility to handle inactive state
-      IMPORTING
-        e_progdir  = rs_report-progdir.
-
-  ENDMETHOD.
-
-
-  METHOD read_tadir.
-
-    SELECT * FROM tadir
-      INTO CORRESPONDING FIELDS OF TABLE rt_data
-      WHERE devclass = '$TMP'
-      AND author <> 'SAP'
-      AND author <> 'DDIC'
-      AND obj_name LIKE 'Z%'
-      ORDER BY PRIMARY KEY.                             "#EC CI_GENBUFF
 
   ENDMETHOD.
 
