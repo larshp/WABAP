@@ -6,34 +6,27 @@ export class TabList {
 
   private active: Store.Tab = undefined;
 
-  public add(t: Store.TreeItem, source: string, mode: string) {
-    let text = t.description;
-
+  public add(t: Store.Tab) {
 // look to see if it is already there
-// todo, also compare by object type?
-    for (let tab of this.tabs) {
-      if (tab.text === text) {
-        this.setActive(tab);
+// todo, also compare by object type? and "sub" types?
+    for (let existing of this.tabs) {
+      if (existing.text === t.text) {
+        this.setActive(existing);
         return;
       }
     }
 
-    let tab = new Store.Tab(text, source, mode);
-
-    this.tabs.push(tab);
-    this.setActive(tab);
+    this.tabs.push(t);
+    this.setActive(t);
   }
 
   public close(t: Store.Tab) {
     this.tabs = this.tabs.filter((item) => { return item.text !== t.text; });
 
     if (this.tabs.length === 0) {
-// last tab is closed
-      Store.getStore().editor.hide();
-      this.active = undefined;
+      this.closeLastTab();
     } else if (t === this.active) {
-// active tab is closed
-      this.setActive(this.tabs[0]);
+      this.closeActiveTab();
     }
   }
 
@@ -54,5 +47,14 @@ export class TabList {
 
   public getActive(): Store.Tab {
     return this.active;
+  }
+
+  private closeActiveTab() {
+    this.setActive(this.tabs[0]);
+  }
+
+  private closeLastTab() {
+    Store.getStore().editor.hide();
+    this.active = undefined;
   }
 }

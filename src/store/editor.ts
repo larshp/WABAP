@@ -115,8 +115,7 @@ export class Editor {
         alert("todo, save, f11");
       },
       "Ctrl-S": function(cm) {
-        alert("todo, save, ctrl+s");
-        console.log(Store.getStore().tablist.getActive());
+        Store.getStore().tablist.getActive().getSave()(cm.getValue());
       },
     });
   }

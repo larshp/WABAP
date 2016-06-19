@@ -49,7 +49,13 @@ export class TreeItemPROG extends TreeItem {
   }
 
   public click() {
-    this.prog.getABAP().get((s) => { Store.getStore().tablist.add(this, s, "abap"); });
+    this.prog.getABAP().get((s) => {
+      let tab = new Store.Tab(
+        this.description,
+        s,
+        "abap",
+        (s) => { alert("todo, save PROG"); });
+      Store.getStore().tablist.add(tab); });
   }
 }
 
@@ -77,7 +83,15 @@ export class TreeItemSMIM extends TreeItem {
       alert("unsupported mime type");
       return;
     }
-    this.smim.getContent().get((s) => { Store.getStore().tablist.add(this, s, mode); });
+
+    this.smim.getContent().get((s) => {
+      let content = this.smim.getContent();
+      let tab = new Store.Tab(
+        this.description,
+        s,
+        mode,
+        content.save.bind(content));
+      Store.getStore().tablist.add(tab); });
   }
 }
 
