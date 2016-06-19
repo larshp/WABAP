@@ -58,8 +58,17 @@ export class Editor {
     this.hide();
   }
 
-  public open(s: string) {
+  public open(s: string, mode: string) {
     this.unHide();
+    this.editor.setOption("mode", mode);
+    if (mode === "abap") {
+      this.editor.setOption("lint", {
+          "getAnnotations": validator,
+          "async" : true,
+        });
+    } else {
+      this.editor.setOption("lint", undefined);
+    }
     setReadOnly(this.editor, false);
     this.editor.focus();
     this.editor.setValue(s);
@@ -76,13 +85,8 @@ export class Editor {
       {
         lineNumbers: true,
         tabSize: 2,
-        mode: "abap",
         theme: "seti",
         gutters: ["CodeMirror-lint-markers"],
-        lint: {
-          "getAnnotations": validator,
-          "async" : true,
-        }
       }
     );
 
@@ -98,19 +102,19 @@ export class Editor {
         toggleReadOnly(cm);
       },
       "Ctrl-F2": function(cm) {
-        alert("todo, check!");
+        alert("todo, check! ctrl+f2");
       },
       "Ctrl-F3": function(cm) {
-        alert("todo, activate!");
+        alert("todo, activate! ctrl+f3");
       },
       "Shift-F1": function(cm) {
-        alert("todo, pretty print");
+        alert("todo, pretty print, shift+f1");
       },
       "F11": function(cm) {
-        alert("todo, save");
+        alert("todo, save, f11");
       },
       "Ctrl-S": function(cm) {
-        alert("todo, save");
+        alert("todo, save, ctrl+s");
       },
     });
   }

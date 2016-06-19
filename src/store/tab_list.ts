@@ -6,7 +6,7 @@ export class TabList {
 
   private active: Store.Tab = undefined;
 
-  public add(t: Store.TreeItem, source: string) {
+  public add(t: Store.TreeItem, source: string, mode: string) {
     let text = t.description;
 
 // look to see if it is already there
@@ -18,7 +18,8 @@ export class TabList {
       }
     }
 
-    let tab = new Store.Tab(text, source);
+    let tab = new Store.Tab(text, source, mode);
+
     this.tabs.push(tab);
     this.setActive(tab);
   }
@@ -48,6 +49,6 @@ export class TabList {
     t.active = true;
     this.active = t;
 
-    editor.open(t.getBuffer());
+    editor.open(t.getBuffer(), t.getMode());
   }
 }

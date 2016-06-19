@@ -4,11 +4,13 @@ export class Tab {
   @observable public text = "";
   @observable public active = false;
 
+  private mode = "";
   private buffer = "";
 
-  constructor(t: string, buffer: string) {
+  constructor(t: string, buffer: string, mode: string) {
     this.text = t;
     this.buffer = buffer;
+    this.mode = mode;
   }
 
   public getBuffer(): string {
@@ -17,5 +19,9 @@ export class Tab {
 
   public setBuffer(s: string) {
     this.buffer = s;
+  }
+
+  public getMode(): string {
+    return this.mode;
   }
 }

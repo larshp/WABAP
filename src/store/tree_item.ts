@@ -49,7 +49,7 @@ export class TreeItemPROG extends TreeItem {
   }
 
   public click() {
-    this.prog.read((s) => { Store.getStore().tablist.add(this, s); });
+    this.prog.read((s) => { Store.getStore().tablist.add(this, s, "abap"); });
   }
 }
 
@@ -68,8 +68,7 @@ export class TreeItemSMIM extends TreeItem {
   }
 
   public click() {
-    alert("todo, SMIM");
-    this.smim.content((data) => { console.log(data); });
+    this.smim.content((s) => { Store.getStore().tablist.add(this, s, "text/html"); });
   }
 }
 
