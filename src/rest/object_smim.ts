@@ -49,7 +49,7 @@ class Content {
   }
 
   public save(data: string) {
-    Manager.post(this.url, data);
+    Manager.post(this.url, data, this.obj.name + " saved");
   }
 }
 

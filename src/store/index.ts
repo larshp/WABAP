@@ -6,3 +6,4 @@ export * from "./editor";
 export * from "./connections";
 export * from "./context_menu";
 export * from "./modal";
+export * from "./notifications";

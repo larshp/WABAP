@@ -50,6 +50,7 @@ class Style {
 
 @observer
 class Main extends React.Component<{}, {}> {
+//      <DevTools />
   public render() {
     return (<div style={Style.wrap} onClick={this.click.bind(this)}>
       <div style={Style.top}><Components.TopMenu /></div>
@@ -57,8 +58,8 @@ class Main extends React.Component<{}, {}> {
       <div style={Style.tablist}><Components.TabList tablist={Store.getStore().tablist} /></div>
       <div style={Style.editor}><Components.CodeMirror editor={Store.getStore().editor} /></div>
       <div><Components.ContextMenu con={Store.getStore().contextMenu} /></div>
-      <DevTools />
-      <div><Modal.Container /></div>
+      <Modal.Container />
+      <Components.Notifications n={Store.getStore().notifications} />
       <div style={Style.clear}></div>
       </div>);
   }

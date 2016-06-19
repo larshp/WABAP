@@ -7,6 +7,7 @@ class Main {
   @observable public connections: Store.Connections;
   @observable public contextMenu: Store.ContextMenu;
   @observable public modal: Store.Modal;
+  @observable public notifications: Store.Notifications;
 
   constructor() {
     this.tablist = new Store.TabList();
@@ -14,6 +15,7 @@ class Main {
     this.connections = new Store.Connections();
     this.contextMenu = new Store.ContextMenu();
     this.modal = new Store.Modal();
+    this.notifications = new Store.Notifications();
   }
 }
 

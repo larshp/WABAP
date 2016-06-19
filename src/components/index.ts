@@ -7,3 +7,4 @@ export * from "./tab";
 export * from "./tree_top";
 export * from "./context_menu";
 export * from "./cube";
+export * from "./notifications";
