@@ -68,7 +68,11 @@ export class TreeItemSMIM extends TreeItem {
   }
 
   public click() {
-    this.smim.content((s) => { Store.getStore().tablist.add(this, s, "text/html"); });
+    let mode = "text/html";
+    if (/\.js/.test(this.description)) {
+      mode = "text/javascript";
+    }
+    this.smim.content((s) => { Store.getStore().tablist.add(this, s, mode); });
   }
 }
 
