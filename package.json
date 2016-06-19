@@ -28,6 +28,7 @@
     "_pretest": "abaplint abap/*.abap",
     "test": "tsc --pretty",
     "typings": "typings install",
+    "zip": "zip build.zip web/*",
     "posttest": "npm run browserify"
   },
   "repository": {

@@ -3,4 +3,5 @@ typings/
 web/*.js
 web/*.css
 web/*.ttf
+build.zip
 npm-debug.log
