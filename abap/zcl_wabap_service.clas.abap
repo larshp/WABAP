@@ -17,9 +17,10 @@ protected section.
       value(RV_JSON) type XSTRING .
   methods READ_MIME
     importing
-      !IV_FILE type STRING
-    returning
-      value(RV_DATA) type XSTRING .
+      !IV_FILE type STRING .
+private section.
+
+  data MV_SERVER type ref to IF_HTTP_SERVER .
 ENDCLASS.
 
 
@@ -36,8 +37,11 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
           lv_name   TYPE tadir-obj_name,
           lt_path   TYPE TABLE OF string.
 
+    mv_server = server.
 
     lv_path = server->request->get_header_field( '~path_info' ).
+
+    DATA(lv_method) = server->request->get_method( ).
 
     SPLIT lv_path AT '/' INTO TABLE lt_path.
     READ TABLE lt_path INDEX 5 INTO lv_name.
@@ -58,15 +62,19 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
       server->response->set_data( to_json( lo_prog->read( ) ) ).
     ELSEIF lv_path CP '/rest/objects/SMIM/*/content'.
       DATA(lo_smim) = NEW zcl_wabap_object_smim( lv_name ).
-      server->response->set_data( lo_smim->content( ) ).
+      IF lv_method = 'POST'.
+        lo_smim->save_content( server->request->get_data( ) ).
+      ELSE.
+        server->response->set_data( lo_smim->read_content( ) ).
+      ENDIF.
     ELSEIF lv_path CP '/rest/objects/SMIM/*'.
       lo_smim = NEW zcl_wabap_object_smim( lv_name ).
       server->response->set_data( to_json( lo_smim->read( ) ) ).
     ELSEIF lv_path = '' OR lv_path = '/'.
 * todo, redirect "/wabap" to "/wabap/" ?
-      server->response->set_data( read_mime( '/index.html' ) ).
+      read_mime( '/index.html' ).
     ELSE.
-      server->response->set_data( read_mime( lv_path ) ).
+      read_mime( lv_path ).
     ENDIF.
 
     server->response->set_status( code = 200
@@ -80,8 +88,10 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
 * todo, does this work with browser caching?
 * or use something more standard instead?
 
-    DATA: li_api TYPE REF TO if_mr_api,
-          lv_url TYPE string.
+    DATA: li_api  TYPE REF TO if_mr_api,
+          lv_data TYPE xstring,
+          lv_mime TYPE string,
+          lv_url  TYPE string.
 
 
     lv_url = cv_url && iv_file.
@@ -90,9 +100,13 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
 
     li_api->get(
       EXPORTING
-        i_url = lv_url
+        i_url       = lv_url
       IMPORTING
-        e_content = rv_data ).
+        e_content   = lv_data
+        e_mime_type = lv_mime ).
+
+    mv_server->response->set_content_type( lv_mime ).
+    mv_server->response->set_data( lv_data ).
 
   ENDMETHOD.
 

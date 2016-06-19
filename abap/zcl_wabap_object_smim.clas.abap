@@ -11,19 +11,22 @@ public section.
         folder TYPE abap_bool,
       END OF ty_smim .
 
-  methods CONTENT
+  methods READ_CONTENT
     returning
       value(RV_CONTENT) type XSTRING .
+  methods SAVE_CONTENT
+    importing
+      value(IV_CONTENT) type XSTRING .
   methods READ
     returning
       value(RS_DATA) type TY_SMIM .
   methods CONSTRUCTOR
     importing
-      !IV_KEY type clike .
-protected section.
-private section.
+      !IV_KEY type CLIKE .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
 
-  data MV_KEY type SDOK_LOID .
+    DATA mv_key TYPE sdok_loid.
 ENDCLASS.
 
 
@@ -34,30 +37,6 @@ CLASS ZCL_WABAP_OBJECT_SMIM IMPLEMENTATION.
   METHOD constructor.
 
     mv_key = iv_key.
-
-  ENDMETHOD.
-
-
-  METHOD content.
-
-    DATA(ls_smim) = read( ).
-
-    ASSERT ls_smim-folder = abap_false.
-
-    DATA(li_api) = cl_mime_repository_api=>if_mr_api~get_api( ).
-
-    li_api->get(
-      EXPORTING
-        i_url              = ls_smim-url
-      IMPORTING
-        e_content          = rv_content
-      EXCEPTIONS
-        parameter_missing  = 1
-        error_occured      = 2
-        not_found          = 3
-        permission_failure = 4
-        OTHERS             = 5 ).
-    ASSERT sy-subrc = 0.
 
   ENDMETHOD.
 
@@ -87,6 +66,55 @@ CLASS ZCL_WABAP_OBJECT_SMIM IMPLEMENTATION.
         io  = ls_io
       IMPORTING
         url = rs_data-url.
+
+  ENDMETHOD.
+
+
+  METHOD read_content.
+
+    DATA(ls_smim) = read( ).
+
+    ASSERT ls_smim-folder = abap_false.
+
+    DATA(li_api) = cl_mime_repository_api=>if_mr_api~get_api( ).
+
+    li_api->get(
+      EXPORTING
+        i_url              = ls_smim-url
+      IMPORTING
+        e_content          = rv_content
+      EXCEPTIONS
+        parameter_missing  = 1
+        error_occured      = 2
+        not_found          = 3
+        permission_failure = 4
+        OTHERS             = 5 ).
+    ASSERT sy-subrc = 0.
+
+  ENDMETHOD.
+
+
+  METHOD save_content.
+
+    DATA(ls_data) = read( ).
+    ASSERT ls_data-folder = abap_false.
+
+    DATA(li_api) = cl_mime_repository_api=>if_mr_api~get_api( ).
+
+    li_api->put(
+      EXPORTING
+        i_url                   = ls_data-url
+        i_content               = iv_content
+      EXCEPTIONS
+        parameter_missing       = 1
+        error_occured           = 2
+        cancelled               = 3
+        permission_failure      = 4
+        data_inconsistency      = 5
+        new_loio_already_exists = 6
+        is_folder               = 7
+        OTHERS                  = 8 ).
+    ASSERT sy-subrc = 0.
 
   ENDMETHOD.
 ENDCLASS.
