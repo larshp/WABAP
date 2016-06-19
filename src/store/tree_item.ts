@@ -36,13 +36,12 @@ export abstract class TreeItem {
 }
 
 export class TreeItemPROG extends TreeItem {
-  private connection: Store.Connection;
+  private prog: REST.ObjectPROG;
 
-// todo, is should the tree items refer to an object, which knows the connection?
   public constructor(name: string, c: Store.Connection) {
     super();
     this.description = name;
-    this.connection = c;
+    this.prog = new REST.ObjectPROG(c, name);
   }
 
   public getIcon() {
@@ -50,29 +49,27 @@ export class TreeItemPROG extends TreeItem {
   }
 
   public click() {
-    REST.ObjectPROG.read(this.connection, this.description, (s) => { Store.getStore().tablist.add(this, s); });
+    this.prog.read((s) => { Store.getStore().tablist.add(this, s); });
   }
 }
 
-export class TreeItemDTEL extends TreeItem {
-  public constructor(name: string) {
+export class TreeItemSMIM extends TreeItem {
+  private smim: REST.ObjectSMIM;
+
+  public constructor(name: string, c: Store.Connection) {
     super();
     this.description = name;
+    this.smim = new REST.ObjectSMIM(c, name);
+    this.smim.fetch((data) => { this.description = data.URL; });
   }
 
   public getIcon() {
-    return Octicons.diffModified;
-  }
-}
-
-export class TreeItemDOMA extends TreeItem {
-  public constructor(name: string) {
-    super();
-    this.description = name;
+    return Octicons.question;
   }
 
-  public getIcon() {
-    return Octicons.diffIgnored;
+  public click() {
+    alert("todo, SMIM");
+    this.smim.content((data) => { console.log(data); });
   }
 }
 
@@ -106,15 +103,13 @@ class TreeItemCategory extends TreeItem {
     this.children = [];
 
     for (let object of objects) {
+// todo, refactor
       switch (object.OBJECT) {
         case "PROG":
           this.children.push(new TreeItemPROG(object.OBJ_NAME, c));
           break;
-        case "DOMA":
-          this.children.push(new TreeItemDOMA(object.OBJ_NAME));
-          break;
-        case "DTEL":
-          this.children.push(new TreeItemDTEL(object.OBJ_NAME));
+        case "SMIM":
+          this.children.push(new TreeItemSMIM(object.OBJ_NAME, c));
           break;
         default:
           this.children.push(new TreeItemUnsupported(object.OBJ_NAME));
@@ -139,6 +134,7 @@ class TreeItemCategory extends TreeItem {
 
 export class TreeItemDEVC extends TreeItem {
   private connection: Store.Connection;
+  private devc: REST.ObjectDEVC;
 
   public constructor(name: string, c: Store.Connection) {
     super();
@@ -146,7 +142,8 @@ export class TreeItemDEVC extends TreeItem {
     this.children = [];
     this.connection = c;
 
-    REST.ObjectDEVC.fetch(c, this.populate.bind(this));
+    this.devc = new REST.ObjectDEVC(c, name);
+    this.devc.fetch(this.populate.bind(this));
   }
 
   public getContextList() {
@@ -206,11 +203,9 @@ export class TreeItemDEVC extends TreeItem {
   private getTypeDescription(type: string): string {
     switch (type) {
       case "PROG":
-        return "Programs";
-      case "DTEL":
-        return "Data Elements";
-      case "DOMA":
-        return "Domains";
+        return "PROG - Programs";
+      case "SMIM":
+        return "SMIM - Mime Repository";
       default:
         return "";
     }

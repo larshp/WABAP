@@ -26,7 +26,18 @@ export class TADIREntry implements ITADIREntry {
 }
 
 export class ObjectDEVC {
-  public static fetch(c: Store.Connection, callback: (list: TADIREntry[]) => void) {
-    Manager.request("GET", c.cstring + "objects/DEVC/%24TMP/", (evt) => { callback(parse(evt)); });
+  private c: Store.Connection;
+  private name: string;
+
+  public constructor(c: Store.Connection, name: string) {
+    this.c = c;
+    this.name = name;
+  }
+
+  public fetch(callback: (list: TADIREntry[]) => void) {
+    Manager.request(
+      "GET",
+      this.c.cstring + "objects/DEVC/" + this.name + "/",
+      (evt) => { callback(parse(evt)); });
   }
 }
