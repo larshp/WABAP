@@ -44,7 +44,7 @@ export class Package extends React.Component<{show: boolean, con: Store.Connecti
   }
 
   private click() {
-    this.props.con.addPackage(this.state.str);
+    this.props.con.addPackage(this.state.str.toUpperCase());
     this.props.close();
   }
 

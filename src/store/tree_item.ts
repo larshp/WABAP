@@ -205,13 +205,16 @@ export class TreeItemDEVC extends TreeItem {
     return Octicons.fileDirectory;
   }
 
-  private populate(list: REST.TADIREntry[]) {
-    let types = this.uniqueTypes(list);
+  private populate(devc: REST.DEVCEntry) {
+    for (let sub of devc.sub) {
+      let obj = new REST.BackendObject(this.obj.c, sub, "DEVC");
+      this.children.push(new TreeItemDEVC(obj));
+    }
 
-    for (let type of types) {
+    for (let type of this.uniqueTypes(devc.tadir)) {
       let objects: REST.TADIREntry[] = [];
 
-      for (let object of list) {
+      for (let object of devc.tadir) {
         if (object.OBJECT !== type) {
           continue;
         }
@@ -234,6 +237,6 @@ export class TreeItemDEVC extends TreeItem {
       }
     }
 
-    return types;
+    return types.sort();
   }
 }
