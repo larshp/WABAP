@@ -1,5 +1,6 @@
 import {observable} from "mobx";
 import * as abaplint from "abaplint";
+import * as Store from "./";
 
 declare var CodeMirror: any;
 
@@ -115,6 +116,7 @@ export class Editor {
       },
       "Ctrl-S": function(cm) {
         alert("todo, save, ctrl+s");
+        console.log(Store.getStore().tablist.getActive());
       },
     });
   }

@@ -51,4 +51,8 @@ export class TabList {
 
     editor.open(t.getBuffer(), t.getMode());
   }
+
+  public getActive(): Store.Tab {
+    return this.active;
+  }
 }

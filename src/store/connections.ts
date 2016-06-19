@@ -38,7 +38,8 @@ export class Connection extends Store.TreeItem {
   }
 
   public addPackage(name: string, save = true) {
-    this.children.push(new Store.TreeItemDEVC(name, this));
+    let obj = new REST.BackendObject(this, name, "DEVC");
+    this.children.push(new Store.TreeItemDEVC(obj));
     if (save) {
       Store.getStore().connections.save();
     }

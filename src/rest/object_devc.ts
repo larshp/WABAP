@@ -1,5 +1,5 @@
-import * as Store from "../store/";
 import Manager from "./manager";
+import { BackendObject } from "./";
 
 function parse(evt): TADIREntry[] {
   let json = JSON.parse(evt.target.responseText);
@@ -26,18 +26,15 @@ export class TADIREntry implements ITADIREntry {
 }
 
 export class ObjectDEVC {
-  private c: Store.Connection;
-  private name: string;
+  private obj: BackendObject;
 
-  public constructor(c: Store.Connection, name: string) {
-    this.c = c;
-    this.name = name;
+  public constructor(obj: BackendObject) {
+    this.obj = obj;
   }
 
   public fetch(callback: (list: TADIREntry[]) => void) {
-    Manager.request(
-      "GET",
-      this.c.cstring + "objects/DEVC/" + this.name + "/",
+    Manager.get(
+      this.obj.c.cstring + "objects/DEVC/" + this.obj.name + "/",
       (evt) => { callback(parse(evt)); });
   }
 }

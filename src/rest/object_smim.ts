@@ -1,5 +1,5 @@
-import * as Store from "../store/";
 import Manager from "./manager";
+import { BackendObject } from "./";
 
 function parse(evt): SMIMEntry {
   let json = JSON.parse(evt.target.responseText);
@@ -21,26 +21,53 @@ export class SMIMEntry implements ISMIMEntry {
   }
 }
 
-export class ObjectSMIM {
-  private c: Store.Connection;
-  private name: string;
+class Meta {
+  private obj: BackendObject;
 
-  public constructor(c: Store.Connection, name: string) {
-    this.c = c;
-    this.name = name;
+  public constructor(obj: BackendObject) {
+    this.obj = obj;
   }
 
-  public fetch(callback: (list: SMIMEntry) => void) {
-    Manager.request(
-      "GET",
-      this.c.cstring + "objects/SMIM/" + this.name + "/",
+  public get(callback: (list: SMIMEntry) => void) {
+    Manager.get(
+      this.obj.c.cstring + "objects/SMIM/" + this.obj.name + "/",
       (evt) => { callback(parse(evt)); });
   }
+}
 
-  public content(callback: (data: string) => void ) {
-    Manager.request(
-      "GET",
-      this.c.cstring + "objects/SMIM/" + this.name + "/content/",
-      (evt) => { callback(evt.target.responseText); });
+class Content {
+  private obj: BackendObject;
+  private url: string;
+
+  public constructor(obj: BackendObject) {
+    this.obj = obj;
+    this.url = this.obj.c.cstring + "objects/SMIM/" + this.obj.name + "/content/";
   }
+
+  public get(callback: (data: string) => void) {
+    Manager.get(this.url, (evt) => { callback(evt.target.responseText); });
+  }
+
+  public save(data: string) {
+    Manager.post(this.url, data);
+  }
+}
+
+export class ObjectSMIM {
+  private meta: Meta;
+  private content: Content;
+
+  public constructor(obj: BackendObject) {
+    this.meta = new Meta(obj);
+    this.content = new Content(obj);
+  }
+
+  public getMeta(): Meta {
+    return this.meta;
+  }
+
+  public getContent(): Content {
+    return this.content;
+  }
+
 }

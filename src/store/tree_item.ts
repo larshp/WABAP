@@ -38,10 +38,29 @@ export abstract class TreeItem {
 export class TreeItemPROG extends TreeItem {
   private prog: REST.ObjectPROG;
 
-  public constructor(name: string, c: Store.Connection) {
+  public constructor(obj: REST.BackendObject) {
+    super();
+    this.description = obj.name;
+    this.prog = new REST.ObjectPROG(obj);
+  }
+
+  public getIcon() {
+    return Octicons.fileCode;
+  }
+
+  public click() {
+    this.prog.getABAP().get((s) => { Store.getStore().tablist.add(this, s, "abap"); });
+  }
+}
+
+export class TreeItemSMIM extends TreeItem {
+  private smim: REST.ObjectSMIM;
+
+  public constructor(obj: REST.BackendObject) {
     super();
     this.description = name;
-    this.prog = new REST.ObjectPROG(c, name);
+    this.smim = new REST.ObjectSMIM(obj);
+    this.smim.getMeta().get((data) => { this.description = data.URL; });
   }
 
   public getIcon() {
@@ -49,37 +68,23 @@ export class TreeItemPROG extends TreeItem {
   }
 
   public click() {
-    this.prog.read((s) => { Store.getStore().tablist.add(this, s, "abap"); });
-  }
-}
-
-export class TreeItemSMIM extends TreeItem {
-  private smim: REST.ObjectSMIM;
-
-  public constructor(name: string, c: Store.Connection) {
-    super();
-    this.description = name;
-    this.smim = new REST.ObjectSMIM(c, name);
-    this.smim.fetch((data) => { this.description = data.URL; });
-  }
-
-  public getIcon() {
-    return Octicons.question;
-  }
-
-  public click() {
-    let mode = "text/html";
-    if (/\.js/.test(this.description)) {
+    let mode = "";
+    if (/\.js$/.test(this.description)) {
       mode = "text/javascript";
+    } else if (/\.html?$/.test(this.description)) {
+      mode = "text/html";
+    } else {
+      alert("unsupported mime type");
+      return;
     }
-    this.smim.content((s) => { Store.getStore().tablist.add(this, s, mode); });
+    this.smim.getContent().get((s) => { Store.getStore().tablist.add(this, s, mode); });
   }
 }
 
 export class TreeItemUnsupported extends TreeItem {
-  public constructor(name: string) {
+  public constructor(obj: REST.BackendObject) {
     super();
-    this.description = name;
+    this.description = obj.name;
   }
 
   public getIcon() {
@@ -89,40 +94,41 @@ export class TreeItemUnsupported extends TreeItem {
 
 class TreeItemCategory extends TreeItem {
   private category = "";
-  private icon: string;
 
   public constructor(
       category: string,
-      description: string,
-      objects: REST.TADIREntry[],
-      c: Store.Connection,
-      icon = Octicons.fileDirectory) {
+      children: REST.TADIREntry[],
+      parent: REST.BackendObject) {
     super();
 
-    this.description = description;
     this.category = category;
-    this.icon = icon;
-
     this.children = [];
 
-    for (let object of objects) {
-// todo, refactor
+    this.description = this.buildDescription();
+
+    for (let object of children) {
+      let obj = new REST.BackendObject(parent.c, object.OBJ_NAME, object.OBJECT);
+
       switch (object.OBJECT) {
         case "PROG":
-          this.children.push(new TreeItemPROG(object.OBJ_NAME, c));
+          this.children.push(new TreeItemPROG(obj));
           break;
         case "SMIM":
-          this.children.push(new TreeItemSMIM(object.OBJ_NAME, c));
+          this.children.push(new TreeItemSMIM(obj));
           break;
         default:
-          this.children.push(new TreeItemUnsupported(object.OBJ_NAME));
+          this.children.push(new TreeItemUnsupported(obj));
           break;
       }
     }
   }
 
   public getIcon() {
-    return this.icon;
+    if (this.isSupported()) {
+      return Octicons.fileDirectory;
+    } else {
+      return Octicons.question;
+    }
   }
 
   public getContextList() {
@@ -133,19 +139,42 @@ class TreeItemCategory extends TreeItem {
       },
       ];
   }
+
+  private buildDescription(): string {
+    if (this.isSupported()) {
+      return this.getTypeDescription();
+    } else {
+      return this.category + " - Unsupported";
+    }
+  }
+
+  private isSupported(): boolean {
+    return this.getTypeDescription() === "" ? false : true;
+  }
+
+  private getTypeDescription(): string {
+    switch (this.category) {
+      case "PROG":
+        return "PROG - Programs";
+      case "SMIM":
+        return "SMIM - Mime Repository";
+      default:
+        return "";
+    }
+  }
 }
 
 export class TreeItemDEVC extends TreeItem {
-  private connection: Store.Connection;
   private devc: REST.ObjectDEVC;
+  private obj: REST.BackendObject;
 
-  public constructor(name: string, c: Store.Connection) {
+  public constructor(obj: REST.BackendObject) {
     super();
-    this.description = name;
+    this.description = obj.name;
     this.children = [];
-    this.connection = c;
+    this.obj = obj;
 
-    this.devc = new REST.ObjectDEVC(c, name);
+    this.devc = new REST.ObjectDEVC(obj);
     this.devc.fetch(this.populate.bind(this));
   }
 
@@ -163,13 +192,7 @@ export class TreeItemDEVC extends TreeItem {
   }
 
   private populate(list: REST.TADIREntry[]) {
-    let types: string[] = [];
-
-    for (let entry of list) {
-      if (types.indexOf(entry.OBJECT) === -1) {
-        types.push(entry.OBJECT);
-      }
-    }
+    let types = this.uniqueTypes(list);
 
     for (let type of types) {
       let objects: REST.TADIREntry[] = [];
@@ -181,36 +204,22 @@ export class TreeItemDEVC extends TreeItem {
         objects.push(object);
       }
 
-      if (this.isSupported(type)) {
-// todo, too many parameters
-        this.children.push(new TreeItemCategory(
-          type,
-          this.getTypeDescription(type),
-          objects,
-          this.connection));
-      } else {
-        this.children.push(new TreeItemCategory(
-          type,
-          type + " - Unsupported",
-          objects,
-          this.connection,
-          Octicons.question));
+      this.children.push(new TreeItemCategory(
+        type,
+        objects,
+        this.obj));
+    }
+  }
+
+  private uniqueTypes(list: REST.TADIREntry[]): string[] {
+    let types: string[] = [];
+
+    for (let entry of list) {
+      if (types.indexOf(entry.OBJECT) === -1) {
+        types.push(entry.OBJECT);
       }
     }
-  }
 
-  private isSupported(type: string): boolean {
-    return this.getTypeDescription(type) === "" ? false : true;
-  }
-
-  private getTypeDescription(type: string): string {
-    switch (type) {
-      case "PROG":
-        return "PROG - Programs";
-      case "SMIM":
-        return "SMIM - Mime Repository";
-      default:
-        return "";
-    }
+    return types;
   }
 }

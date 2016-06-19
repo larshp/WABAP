@@ -1,24 +1,32 @@
-import * as Store from "../store/";
 import Manager from "./manager";
-import * as REST from "./";
+import { BackendObject } from "./";
 
 function parse(evt): string {
   return evt.target.responseText;
 }
 
-export class ObjectPROG {
-  private c: Store.Connection;
-  private name: string;
+class ABAP {
+  private obj: BackendObject;
 
-  public constructor(c: Store.Connection, name: string) {
-    this.c = c;
-    this.name = name;
+  public constructor(obj: BackendObject) {
+    this.obj = obj;
   }
 
-  public read(callback: (source: string) => void) {
-    Manager.request(
-      "GET",
-      this.c.cstring + "objects/PROG/" + this.name + "/abap/",
+  public get(callback: (source: string) => void) {
+    Manager.get(
+      this.obj.c.cstring + "objects/PROG/" + this.obj.name + "/abap/",
       (evt) => { callback(parse(evt)); });
+  }
+}
+
+export class ObjectPROG {
+  private abap: ABAP;
+
+  public constructor(obj: BackendObject) {
+    this.abap = new ABAP(obj);
+  }
+
+  public getABAP() {
+    return this.abap;
   }
 }

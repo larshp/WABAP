@@ -6,6 +6,7 @@ export default class Octicons {
   public static diffIgnored = "\uf099";
   public static fileDirectory = "\uf016";
   public static fileText = "\uf011";
+  public static fileCode = "\uf010";
   public static radioTower = "\uf030";
   public static question = "\uf02c";
   public static x = "\uf081";
