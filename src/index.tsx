@@ -41,6 +41,7 @@ class Style {
     height: "calc(100vh - 20px)",
     color: "rgb(215, 218, 224)",
     whiteSpace: "nowrap",
+    overflow: "auto",
   };
 
   public static clear: {} = {
