@@ -2,6 +2,7 @@ import * as React from "react";
 import * as Components from "./";
 import * as Store from "../store/";
 import {observer} from "mobx-react";
+import * as Transition from "react-addons-css-transition-group";
 
 class Style {
   public static notification: {} = {
@@ -33,9 +34,11 @@ export class Notifications extends React.Component<{n: Store.Notifications}, {}>
     let i = 0;
 
     return (<div style={Style.topright}>
+      <Transition transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
       {this.props.n.texts.map((text) => {
         return <Notification text={text} key={i++} />;
       })}
+      </Transition>
       </div>);
   }
 }
