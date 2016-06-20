@@ -8,19 +8,20 @@ CLASS zcl_wabap_service DEFINITION
 
     CONSTANTS cv_url TYPE string VALUE '/SAP/zwabap' ##NO_TEXT.
 
-protected section.
+  PROTECTED SECTION.
 
-  methods TO_JSON
-    importing
-      !IG_DATA type ANY
-    returning
-      value(RV_JSON) type XSTRING .
-  methods READ_MIME
-    importing
-      !IV_FILE type STRING .
-private section.
+    METHODS to_json
+      IMPORTING
+        !ig_data       TYPE any
+      RETURNING
+        VALUE(rv_json) TYPE xstring.
+    METHODS read_mime
+      IMPORTING
+        !iv_file TYPE string.
 
-  data MV_SERVER type ref to IF_HTTP_SERVER .
+  PRIVATE SECTION.
+    DATA mv_server TYPE REF TO if_http_server.
+
 ENDCLASS.
 
 
@@ -51,6 +52,7 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
     IF lv_path CP '/rest/objects/DEVC/*'.
       DATA(lo_devc) = NEW zcl_wabap_object_devc( lv_name ).
       server->response->set_data( to_json( lo_devc->read( ) ) ).
+
     ELSEIF lv_path CP '/rest/objects/PROG/*/abap'.
       DATA(lo_prog) = NEW zcl_wabap_object_prog( lv_name ).
       server->response->set_header_field(
@@ -60,6 +62,17 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
     ELSEIF lv_path CP '/rest/objects/PROG/*'.
       lo_prog = NEW zcl_wabap_object_prog( lv_name ).
       server->response->set_data( to_json( lo_prog->read( ) ) ).
+
+    ELSEIF lv_path CP '/rest/objects/CLAS/*/abap'.
+      DATA(lo_clas) = NEW zcl_wabap_object_clas( lv_name ).
+      server->response->set_header_field(
+        name  = 'Content-Type'
+        value = 'text/plain' ).
+      server->response->set_cdata( lo_clas->abap( ) ).
+    ELSEIF lv_path CP '/rest/objects/CLAS/*'.
+      lo_clas = NEW zcl_wabap_object_clas( lv_name ).
+      server->response->set_data( to_json( lo_clas->read( ) ) ).
+
     ELSEIF lv_path CP '/rest/objects/SMIM/*/content'.
       DATA(lo_smim) = NEW zcl_wabap_object_smim( lv_name ).
       IF lv_method = 'POST'.
@@ -70,6 +83,12 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
     ELSEIF lv_path CP '/rest/objects/SMIM/*'.
       lo_smim = NEW zcl_wabap_object_smim( lv_name ).
       server->response->set_data( to_json( lo_smim->read( ) ) ).
+
+    ELSEIF lv_path CP '/rest/pretty_printer/'.
+      server->response->set_cdata(
+        zcl_wabap_pretty_printer=>run(
+        server->request->get_cdata( ) ) ).
+
     ELSEIF lv_path = '' OR lv_path = '/'.
 * todo, redirect "/wabap" to "/wabap/" ?
       read_mime( '/index.html' ).
