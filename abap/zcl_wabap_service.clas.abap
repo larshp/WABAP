@@ -84,7 +84,7 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
       lo_smim = NEW zcl_wabap_object_smim( lv_name ).
       server->response->set_data( to_json( lo_smim->read( ) ) ).
 
-    ELSEIF lv_path CP '/rest/pretty_printer/'.
+    ELSEIF lv_path CP '/rest/pretty_printer'.
       server->response->set_cdata(
         zcl_wabap_pretty_printer=>run(
         server->request->get_cdata( ) ) ).
