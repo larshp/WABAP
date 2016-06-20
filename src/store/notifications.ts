@@ -1,7 +1,7 @@
 import {observable} from "mobx";
 
 export class Notifications {
-  @observable texts: string[];
+  @observable public texts: string[];
 
   public constructor() {
     this.texts = [];
