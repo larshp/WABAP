@@ -110,11 +110,19 @@ export class Editor {
         alert("todo, activate! ctrl+f3");
       },
       "Shift-F1": function(cm) {
-        alert("todo, pretty print, shift+f1");
 // todo, wrong wrong wrong, bad bad bad
 // get the proper connection object
         let printer = new REST.PrettyPrinter(Store.getStore().connections.list[0]);
-        printer.run(cm.getValue(), (str) => {cm.setValue(str);});
+
+        let cursor = cm.getCursor();
+        let top = cm.getScrollerElement().scrollTop;
+        let left = cm.getScrollerElement().scrollLeft;
+
+        printer.run(cm.getValue(), (str) => {
+          cm.setValue(str);
+          cm.setCursor(cursor);
+          cm.scrollTo(left, top);
+        });
       },
       "F11": function(cm) {
         alert("todo, save, f11");

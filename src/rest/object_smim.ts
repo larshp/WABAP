@@ -51,7 +51,7 @@ class Content {
   }
 
   public save(data: string) {
-    Manager.post(this.url, data, (e) => { () => {Store.getStore().notifications.add("SMIM Saved");}});
+    Manager.post(this.url, data, () => {Store.getStore().notifications.add("SMIM Saved");});
   }
 }
 
