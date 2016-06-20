@@ -54,7 +54,7 @@ export class TreeItemPROG extends TreeItem {
         this.description,
         s,
         "abap",
-        (s) => { alert("todo, save PROG"); });
+        (source) => { alert("todo, save PROG"); });
       Store.getStore().tablist.add(tab); });
   }
 }

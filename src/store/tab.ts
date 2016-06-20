@@ -6,23 +6,23 @@ export class Tab {
   @observable public active = false;
 
   private mode = "";
-  private buffer = "";
-  private save: (string) => void;
+  private textBuffer = "";
+  private saveFunction: (string) => void;
 
 // todo, instead of save, pass an object implementing a interface?
   constructor(text: string, buffer: string, mode: string, save: (string) => void) {
     this.text = text;
-    this.buffer = buffer;
+    this.textBuffer = buffer;
     this.mode = mode;
-    this.save = save;
+    this.saveFunction = save;
   }
 
   public getBuffer(): string {
-    return this.buffer;
+    return this.textBuffer;
   }
 
   public setBuffer(s: string) {
-    this.buffer = s;
+    this.textBuffer = s;
   }
 
   public getMode(): string {
@@ -30,6 +30,6 @@ export class Tab {
   }
 
   public getSave() {
-    return this.save;
+    return this.saveFunction;
   }
 }
