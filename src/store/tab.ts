@@ -11,9 +11,9 @@ export class Tab {
 
 // todo, instead of save, pass an object implementing a interface?
   constructor(text: string, buffer: string, mode: string, save: (string) => void) {
-    this.text = text;
-    this.textBuffer = buffer;
-    this.mode = mode;
+    this.text         = text;
+    this.textBuffer   = buffer;
+    this.mode         = mode;
     this.saveFunction = save;
   }
 

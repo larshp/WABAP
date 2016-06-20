@@ -59,6 +59,30 @@ export class TreeItemPROG extends TreeItem {
   }
 }
 
+export class TreeItemCLAS extends TreeItem {
+  private clas: REST.ObjectCLAS;
+
+  public constructor(obj: REST.BackendObject) {
+    super();
+    this.description = obj.name;
+    this.clas = new REST.ObjectCLAS(obj);
+  }
+
+  public getIcon() {
+    return Octicons.fileCode;
+  }
+
+  public click() {
+    this.clas.getABAP().get((s) => {
+      let tab = new Store.Tab(
+        this.description,
+        s,
+        "abap",
+        (source) => { alert("todo, save CLAS"); });
+      Store.getStore().tablist.add(tab); });
+  }
+}
+
 export class TreeItemSMIM extends TreeItem {
   private smim: REST.ObjectSMIM;
 
@@ -127,6 +151,9 @@ class TreeItemCategory extends TreeItem {
         case "PROG":
           this.children.push(new TreeItemPROG(obj));
           break;
+        case "CLAS":
+          this.children.push(new TreeItemCLAS(obj));
+          break;
         case "SMIM":
           this.children.push(new TreeItemSMIM(obj));
           break;
@@ -170,6 +197,8 @@ class TreeItemCategory extends TreeItem {
     switch (this.category) {
       case "PROG":
         return "PROG - Programs";
+      case "CLAS":
+        return "CLAS - Classes";
       case "SMIM":
         return "SMIM - Mime Repository";
       default:

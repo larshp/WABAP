@@ -1,6 +1,7 @@
 import {observable} from "mobx";
 import * as abaplint from "abaplint";
 import * as Store from "./";
+import * as REST from "../rest/";
 
 declare var CodeMirror: any;
 
@@ -110,6 +111,10 @@ export class Editor {
       },
       "Shift-F1": function(cm) {
         alert("todo, pretty print, shift+f1");
+// todo, wrong wrong wrong, bad bad bad
+// get the proper connection object
+        let printer = new REST.PrettyPrinter(Store.getStore().connections.list[0]);
+        printer.run(cm.getValue(), (str) => {cm.setValue(str);});
       },
       "F11": function(cm) {
         alert("todo, save, f11");

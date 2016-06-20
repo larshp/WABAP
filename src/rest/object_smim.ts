@@ -1,5 +1,7 @@
 import Manager from "./manager";
 import { BackendObject } from "./";
+import * as Store from "../store/";
+
 
 function parse(evt): SMIMEntry {
   let json = JSON.parse(evt.target.responseText);
@@ -49,7 +51,7 @@ class Content {
   }
 
   public save(data: string) {
-    Manager.post(this.url, data, this.obj.name + " saved");
+    Manager.post(this.url, data, (e) => { () => {Store.getStore().notifications.add("SMIM Saved");}});
   }
 }
 
