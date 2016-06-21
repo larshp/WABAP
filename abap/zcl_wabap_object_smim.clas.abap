@@ -1,28 +1,28 @@
-class ZCL_WABAP_OBJECT_SMIM definition
-  public
-  final
-  create public .
+CLASS zcl_wabap_object_smim DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC.
 
-public section.
+  PUBLIC SECTION.
 
-  types:
-    BEGIN OF ty_smim,
+    TYPES:
+      BEGIN OF ty_smim,
         url    TYPE skwf_url,
         folder TYPE abap_bool,
-      END OF ty_smim .
+      END OF ty_smim.
 
-  methods READ_CONTENT
-    returning
-      value(RV_CONTENT) type XSTRING .
-  methods SAVE_CONTENT
-    importing
-      value(IV_CONTENT) type XSTRING .
-  methods READ
-    returning
-      value(RS_DATA) type TY_SMIM .
-  methods CONSTRUCTOR
-    importing
-      !IV_KEY type CLIKE .
+    METHODS read_content
+      RETURNING
+        VALUE(rv_content) TYPE xstring.
+    METHODS save_content
+      IMPORTING
+        !iv_content TYPE xstring.
+    METHODS read
+      RETURNING
+        VALUE(rs_data) TYPE ty_smim.
+    METHODS constructor
+      IMPORTING
+        !iv_key TYPE clike.
   PROTECTED SECTION.
   PRIVATE SECTION.
 

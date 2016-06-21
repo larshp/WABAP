@@ -1,7 +1,7 @@
 CLASS zcl_wabap_object_devc DEFINITION
   PUBLIC
   FINAL
-  CREATE PUBLIC .
+  CREATE PUBLIC.
 
   PUBLIC SECTION.
 
@@ -23,11 +23,11 @@ CLASS zcl_wabap_object_devc DEFINITION
         VALUE(rs_data) TYPE ty_devc.
     METHODS constructor
       IMPORTING
-        !iv_name TYPE tadir-obj_name .
+        !iv_name TYPE tadir-obj_name.
   PROTECTED SECTION.
   PRIVATE SECTION.
 
-    DATA mv_name TYPE devclass .
+    DATA mv_name TYPE devclass.
 ENDCLASS.
 
 
@@ -51,7 +51,7 @@ CLASS ZCL_WABAP_OBJECT_DEVC IMPLEMENTATION.
     SELECT * FROM tdevct
       INTO TABLE rs_data-tdevct
       WHERE devclass = mv_name
-      ORDER BY PRIMARY KEY.
+      ORDER BY PRIMARY KEY.                             "#EC CI_GENBUFF
 
     SELECT * FROM tadir
       INTO CORRESPONDING FIELDS OF TABLE rs_data-contents
@@ -63,7 +63,7 @@ CLASS ZCL_WABAP_OBJECT_DEVC IMPLEMENTATION.
     SELECT devclass FROM tdevc INTO
       TABLE rs_data-sub
       WHERE parentcl = mv_name
-      ORDER BY PRIMARY KEY.
+      ORDER BY PRIMARY KEY.                             "#EC CI_GENBUFF
 
   ENDMETHOD.
 ENDCLASS.

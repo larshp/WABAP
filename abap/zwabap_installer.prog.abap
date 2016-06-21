@@ -1,7 +1,7 @@
 REPORT zwabap_installer.
 
-PARAMETERS: a_zip  TYPE text_512 OBLIGATORY,
-            a_devc TYPE devclass DEFAULT '$WABAP_FRONTEND' OBLIGATORY.
+PARAMETERS: p_zip  TYPE text_512 OBLIGATORY,
+            p_devc TYPE devclass DEFAULT '$WABAP_FRONTEND' OBLIGATORY.
 
 CLASS lcl_app DEFINITION FINAL.
 
@@ -115,7 +115,7 @@ CLASS lcl_app IMPLEMENTATION.
           lt_data     TYPE STANDARD TABLE OF ty_hex200.
 
 
-    lv_filename = a_zip.
+    lv_filename = p_zip.
 
     cl_gui_frontend_services=>gui_upload(
       EXPORTING
@@ -157,7 +157,7 @@ CLASS lcl_app IMPLEMENTATION.
 
     create_mimes( unzip( read_file( ) ) ).
 
-    WRITE: / 'Done'.
+    WRITE: / 'Done'(001).
 
   ENDMETHOD.
 
@@ -172,14 +172,14 @@ CLASS lcl_app IMPLEMENTATION.
       EXPORTING
         i_url              = zcl_wabap_service=>cv_url
         i_description      = 'wabap'
-        i_dev_package      = a_devc
+        i_dev_package      = p_devc
       EXCEPTIONS
         parameter_missing  = 1
         error_occured      = 2
         cancelled          = 3
         permission_failure = 4
         folder_exists      = 5
-        OTHERS             = 6 ).
+        OTHERS             = 6 ) ##NO_TEXT.
     ASSERT sy-subrc = 0 OR sy-subrc = 5.
 
   ENDMETHOD.
@@ -205,7 +205,7 @@ CLASS lcl_app IMPLEMENTATION.
         EXPORTING
           i_url                   = lv_url
           i_content               = <ls_file>-data
-          i_dev_package           = a_devc
+          i_dev_package           = p_devc
         EXCEPTIONS
           parameter_missing       = 1
           error_occured           = 2
@@ -228,6 +228,8 @@ CLASS lcl_app IMPLEMENTATION.
 
 
     cl_gui_frontend_services=>file_open_dialog(
+      EXPORTING
+        default_filename        = '*.zip'
       CHANGING
         file_table              = lt_filetable
         rc                      = lv_rc
@@ -240,14 +242,14 @@ CLASS lcl_app IMPLEMENTATION.
     ASSERT sy-subrc = 0.
 
     IF lv_rc = 1.
-      a_zip = lt_filetable[ 1 ]-filename.
+      p_zip = lt_filetable[ 1 ]-filename.
     ENDIF.
 
   ENDMETHOD.
 
 ENDCLASS.
 
-AT SELECTION-SCREEN ON VALUE-REQUEST FOR a_zip.
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_zip.
   lcl_app=>select_file( ).
 
 INITIALIZATION.

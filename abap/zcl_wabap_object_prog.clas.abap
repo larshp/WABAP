@@ -1,28 +1,28 @@
-class ZCL_WABAP_OBJECT_PROG definition
-  public
-  final
-  create public .
+CLASS zcl_wabap_object_prog DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC.
 
-public section.
+  PUBLIC SECTION.
 
-  types:
-    BEGIN OF ty_prog,
-           progdir TYPE progdir,
-         END OF ty_prog .
+    TYPES:
+      BEGIN OF ty_prog,
+        progdir TYPE progdir,
+      END OF ty_prog.
 
-  methods READ
-    returning
-      value(RS_DATA) type TY_PROG .
-  methods CONSTRUCTOR
-    importing
-      !IV_NAME type TADIR-OBJ_NAME .
-  methods ABAP
-    returning
-      value(RV_ABAP) type STRING .
-protected section.
-private section.
+    METHODS read
+      RETURNING
+        VALUE(rs_data) TYPE ty_prog.
+    METHODS constructor
+      IMPORTING
+        !iv_name TYPE tadir-obj_name.
+    METHODS abap
+      RETURNING
+        VALUE(rv_abap) TYPE string.
+  PROTECTED SECTION.
+  PRIVATE SECTION.
 
-  data MV_NAME type PROGNAME .
+    DATA mv_name TYPE progname.
 ENDCLASS.
 
 

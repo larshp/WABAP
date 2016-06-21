@@ -20,8 +20,8 @@ CLASS zcl_wabap_service DEFINITION
         !iv_file TYPE string.
 
   PRIVATE SECTION.
-    DATA mv_server TYPE REF TO if_http_server.
 
+    DATA mi_server TYPE REF TO if_http_server.
 ENDCLASS.
 
 
@@ -38,7 +38,7 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
           lv_name   TYPE tadir-obj_name,
           lt_path   TYPE TABLE OF string.
 
-    mv_server = server.
+    mi_server = server.
 
     lv_path = server->request->get_header_field( '~path_info' ).
 
@@ -57,7 +57,7 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
       DATA(lo_prog) = NEW zcl_wabap_object_prog( lv_name ).
       server->response->set_header_field(
         name  = 'Content-Type'
-        value = 'text/plain' ).
+        value = 'text/plain' ) ##NO_TEXT.
       server->response->set_cdata( lo_prog->abap( ) ).
     ELSEIF lv_path CP '/rest/objects/PROG/*'.
       lo_prog = NEW zcl_wabap_object_prog( lv_name ).
@@ -67,7 +67,7 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
       DATA(lo_clas) = NEW zcl_wabap_object_clas( lv_name ).
       server->response->set_header_field(
         name  = 'Content-Type'
-        value = 'text/plain' ).
+        value = 'text/plain' ) ##NO_TEXT.
       server->response->set_cdata( lo_clas->abap( ) ).
     ELSEIF lv_path CP '/rest/objects/CLAS/*'.
       lo_clas = NEW zcl_wabap_object_clas( lv_name ).
@@ -124,8 +124,8 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
         e_content   = lv_data
         e_mime_type = lv_mime ).
 
-    mv_server->response->set_content_type( lv_mime ).
-    mv_server->response->set_data( lv_data ).
+    mi_server->response->set_content_type( lv_mime ).
+    mi_server->response->set_data( lv_data ).
 
   ENDMETHOD.
 

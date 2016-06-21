@@ -30,9 +30,6 @@ CLASS ZCL_WABAP_PRETTY_PRINTER IMPLEMENTATION.
     CALL FUNCTION 'PRETTY_PRINTER'
       EXPORTING
         inctoo             = abap_false
-*       SETTINGS           =
-*   IMPORTING
-*       INDENTATION_MAYBE_WRONG       =
       TABLES
         ntext              = lt_input
         otext              = lt_input
