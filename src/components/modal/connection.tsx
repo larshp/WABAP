@@ -34,15 +34,13 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
           onChange={this.handleChangeDesc.bind(this)}
           style={Style.input} />
         <br />
-        <input type="submit" value="Offline" onClick={this.clickOffline.bind(this)} />
-        <br />
         <br />
         <input type="text"
           value={this.state.str}
           onChange={this.handleChange.bind(this)}
           style={Style.input} />
         <br />
-        <input type="submit" value="Online" onClick={this.clickOnline.bind(this)} />
+        <input type="submit" value="Create" onClick={this.clickOnline.bind(this)} />
       </div>
       </div>);
   }
@@ -54,7 +52,7 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
       this.state.desc);
     this.props.close();
   }
-
+/*
   private clickOffline() {
     Store.getStore().connections.add(
       Store.ConnectionType.Offline,
@@ -62,7 +60,7 @@ export class Connection extends React.Component<{show: boolean, close: () => voi
       this.state.desc);
     this.props.close();
   }
-
+*/
   private handleChange(event) {
     this.setState({str: event.target.value, desc: this.state.desc});
   }
