@@ -110,8 +110,7 @@ export class Editor {
         alert("todo, activate! ctrl+f3");
       },
       "Shift-F1": function(cm) {
-// todo, wrong wrong wrong, bad bad bad
-// get the proper connection object
+// todo, wrong wrong wrong, bad bad bad, get the proper connection object
         let printer = new REST.PrettyPrinter(Store.getStore().connections.list[0]);
 
         let cursor = cm.getCursor();
@@ -125,7 +124,7 @@ export class Editor {
         });
       },
       "F11": function(cm) {
-        alert("todo, save, f11");
+        Store.getStore().tablist.getActive().getSave()(cm.getValue());
       },
       "Ctrl-S": function(cm) {
         Store.getStore().tablist.getActive().getSave()(cm.getValue());
