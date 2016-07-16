@@ -6,8 +6,7 @@ CLASS zcl_wabap_service DEFINITION
 
     INTERFACES if_http_extension.
 
-    CONSTANTS cv_url TYPE string VALUE '/SAP/zwabap' ##NO_TEXT.
-
+    CONSTANTS c_url TYPE string VALUE '/SAP/zwabap' ##NO_TEXT.
   PROTECTED SECTION.
 
     METHODS to_json
@@ -45,7 +44,7 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
     DATA(lv_method) = server->request->get_method( ).
 
     SPLIT lv_path AT '/' INTO TABLE lt_path.
-    READ TABLE lt_path INDEX 5 INTO lv_name.
+    READ TABLE lt_path INDEX 5 INTO lv_name.              "#EC CI_SUBRC
     TRANSLATE lv_name TO UPPER CASE.
 
 * todo, refactor
@@ -96,33 +95,55 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
       read_mime( lv_path ).
     ENDIF.
 
-    server->response->set_status( code = 200
-                                  reason = lv_reason ).
-
   ENDMETHOD.
 
 
   METHOD read_mime.
 
-* todo, does this work with browser caching?
-* or use something more standard instead?
+    DATA: li_api       TYPE REF TO if_mr_api,
+          lv_data      TYPE xstring,
+          lv_mime      TYPE string,
+          lv_changed   TYPE smimphio-chng_time,
+          lv_timestamp TYPE char14,
+          lv_modified  TYPE string,
+          lv_url       TYPE string.
 
-    DATA: li_api  TYPE REF TO if_mr_api,
-          lv_data TYPE xstring,
-          lv_mime TYPE string,
-          lv_url  TYPE string.
 
-
-    lv_url = cv_url && iv_file.
+    lv_url = c_url && iv_file.
 
     li_api = cl_mime_repository_api=>if_mr_api~get_api( ).
 
     li_api->get(
       EXPORTING
-        i_url       = lv_url
+        i_url                  = lv_url
       IMPORTING
-        e_content   = lv_data
-        e_mime_type = lv_mime ).
+        e_content              = lv_data
+        e_mime_type            = lv_mime
+        e_content_last_changed = lv_changed
+      EXCEPTIONS
+        not_found              = 1 ).
+    IF sy-subrc = 1.
+      mi_server->response->set_cdata( '404' ).
+      mi_server->response->set_status( code = 404 reason = '404' ).
+      RETURN.
+    ENDIF.
+
+    lv_timestamp = lv_changed.
+    lv_modified = cl_bsp_utility=>date_to_string_http( lv_timestamp ).
+    DATA(lv_value) = mi_server->request->get_header_field(
+      name  = 'If-Modified-Since' ) ##NO_TEXT.
+    IF lv_modified = lv_value.
+      mi_server->response->set_status( code = 304 reason = '' ).
+      RETURN.
+    ENDIF.
+
+    mi_server->response->set_header_field(
+      name  = 'Cache-Control'
+      value = 'max-age=86400' ) ##NO_TEXT.
+
+    mi_server->response->set_header_field(
+      name  = 'Last-Modified'
+      value = lv_modified ) ##NO_TEXT.
 
     mi_server->response->set_content_type( lv_mime ).
     mi_server->response->set_data( lv_data ).
