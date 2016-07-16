@@ -145,6 +145,7 @@ CLASS ZCL_WABAP_SERVICE IMPLEMENTATION.
       name  = 'Last-Modified'
       value = lv_modified ) ##NO_TEXT.
 
+    mi_server->response->set_compression( ).
     mi_server->response->set_content_type( lv_mime ).
     mi_server->response->set_data( lv_data ).
 
