@@ -13,7 +13,7 @@ Proof-of-concept.
 
 * download build.zip
 
-* clone abap using abapGit
+* clone abap using [abapGit](http://www.abapgit.org)
 
 * run ZWABAP_INSTALLER and supply with build.zip
 
