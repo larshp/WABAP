@@ -19,4 +19,5 @@ Proof-of-concept.
 
 * run via SICF service ZWABAP
 
+### Screenshot
 ![wabap](https://github.com/larshp/WABAP/wiki/img/wabap001.png)
