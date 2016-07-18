@@ -170,7 +170,7 @@ CLASS lcl_app IMPLEMENTATION.
 
     li_api->create_folder(
       EXPORTING
-        i_url              = zcl_wabap_service=>cv_url
+        i_url              = zcl_wabap_service=>c_url
         i_description      = 'wabap'
         i_dev_package      = p_devc
       EXCEPTIONS
@@ -197,7 +197,7 @@ CLASS lcl_app IMPLEMENTATION.
     li_api = cl_mime_repository_api=>if_mr_api~get_api( ).
 
     LOOP AT it_files ASSIGNING <ls_file>.
-      lv_url = zcl_wabap_service=>cv_url && '/' && <ls_file>-filename.
+      lv_url = zcl_wabap_service=>c_url && '/' && <ls_file>-filename.
 
       WRITE: / lv_url.
 
