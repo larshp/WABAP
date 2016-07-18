@@ -18,3 +18,5 @@ Proof-of-concept.
 * run ZWABAP_INSTALLER and supply with build.zip
 
 * run via SICF service ZWABAP
+
+![wabap](https://github.com/larshp/WABAP/wiki/img/wabap001.png)
