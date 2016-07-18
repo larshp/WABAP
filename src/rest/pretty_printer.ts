@@ -1,6 +1,6 @@
 import Manager from "./manager";
 import { BackendObject } from "./";
-import { Connection } from "../store/";
+import * as Store from "../store/";
 
 function parse(evt): string {
   return evt.target.responseText;
@@ -8,9 +8,9 @@ function parse(evt): string {
 
 export class PrettyPrinter {
 
-  private c: Connection;
+  private c: Store.Connection;
 
-  public constructor(c: Connection) {
+  public constructor(c: Store.Connection) {
     this.c = c;
   }
 
@@ -18,7 +18,10 @@ export class PrettyPrinter {
     Manager.post(
       this.c.cstring + "pretty_printer/",
       code,
-      (evt) => { callback(parse(evt)); });
+      (evt) => {
+        callback(parse(evt));
+        Store.getStore().notifications.add("Pretty printed");
+      });
   }
 
 }
