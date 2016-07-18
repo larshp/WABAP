@@ -5,7 +5,7 @@ Proof-of-concept.
 
 ### Building/Installing
 
-* `npm run typings`
+* `npm install`
 
 * `npm test`
 
