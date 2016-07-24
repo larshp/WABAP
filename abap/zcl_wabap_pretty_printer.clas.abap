@@ -5,6 +5,8 @@ CLASS zcl_wabap_pretty_printer DEFINITION
 
   PUBLIC SECTION.
 
+    INTERFACES zif_swag_handler.
+
     CLASS-METHODS run
       IMPORTING
         !iv_code       TYPE string
@@ -44,6 +46,19 @@ CLASS ZCL_WABAP_PRETTY_PRINTER IMPLEMENTATION.
     CONCATENATE LINES OF lt_input
       INTO rv_code
       SEPARATED BY cl_abap_char_utilities=>newline.
+
+  ENDMETHOD.
+
+
+  METHOD zif_swag_handler~meta.
+
+    FIELD-SYMBOLS: <ls_meta> LIKE LINE OF rt_meta.
+
+    APPEND INITIAL LINE TO rt_meta ASSIGNING <ls_meta>.
+    <ls_meta>-summary   = 'Pretty printer'(001).
+    <ls_meta>-url-regex = '/pretty_printer$'.
+    <ls_meta>-method    = zcl_swag=>c_method-post.
+    <ls_meta>-handler   = 'RUN'.
 
   ENDMETHOD.
 ENDCLASS.

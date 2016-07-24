@@ -7,12 +7,6 @@ CLASS zcl_wabap_service_rest DEFINITION
     INTERFACES if_http_extension.
   PROTECTED SECTION.
   PRIVATE SECTION.
-
-    METHODS to_json
-      IMPORTING
-        !ig_data       TYPE any
-      RETURNING
-        VALUE(rv_json) TYPE xstring.
 ENDCLASS.
 
 
@@ -22,77 +16,45 @@ CLASS ZCL_WABAP_SERVICE_REST IMPLEMENTATION.
 
   METHOD if_http_extension~handle_request.
 
-    DATA: lv_path   TYPE string,
-          lv_name   TYPE tadir-obj_name,
-          lt_path   TYPE TABLE OF string.
+    CONSTANTS: c_base TYPE string VALUE '/sap/zwabap/rest' ##NO_TEXT.
+
+    DATA: lo_swag     TYPE REF TO zcl_swag,
+          lv_path     TYPE string,
+          lv_json_url TYPE string,
+          li_handler  TYPE REF TO zif_swag_handler.
 
 
-    lv_path = server->request->get_header_field( '~path_info' ).
+    CREATE OBJECT lo_swag
+      EXPORTING
+        ii_server = server
+        iv_base   = c_base.
 
-    DATA(lv_method) = server->request->get_method( ).
+    CREATE OBJECT li_handler TYPE zcl_wabap_pretty_printer.
+    lo_swag->register( li_handler ).
+    CREATE OBJECT li_handler TYPE zcl_wabap_object_devc.
+    lo_swag->register( li_handler ).
+    CREATE OBJECT li_handler TYPE zcl_wabap_object_smim.
+    lo_swag->register( li_handler ).
+    CREATE OBJECT li_handler TYPE zcl_wabap_object_prog.
+    lo_swag->register( li_handler ).
+    CREATE OBJECT li_handler TYPE zcl_wabap_object_clas.
+    lo_swag->register( li_handler ).
 
-    SPLIT lv_path AT '/' INTO TABLE lt_path.
-    READ TABLE lt_path INDEX 5 INTO lv_name.              "#EC CI_SUBRC
-    TRANSLATE lv_name TO UPPER CASE.
+    lv_json_url = c_base && '/swagger.json'.
 
-* todo, use ABAP Swagger
-    IF lv_path CP '/rest/objects/DEVC/*'.
-      DATA(lo_devc) = NEW zcl_wabap_object_devc( lv_name ).
-      server->response->set_data( to_json( lo_devc->read( ) ) ).
-
-    ELSEIF lv_path CP '/rest/objects/PROG/*/abap'.
-      DATA(lo_prog) = NEW zcl_wabap_object_prog( lv_name ).
-      server->response->set_header_field(
-        name  = 'Content-Type'
-        value = 'text/plain' ) ##NO_TEXT.
-      server->response->set_cdata( lo_prog->abap( ) ).
-    ELSEIF lv_path CP '/rest/objects/PROG/*'.
-      lo_prog = NEW zcl_wabap_object_prog( lv_name ).
-      server->response->set_data( to_json( lo_prog->read( ) ) ).
-
-    ELSEIF lv_path CP '/rest/objects/CLAS/*/abap'.
-      DATA(lo_clas) = NEW zcl_wabap_object_clas( lv_name ).
-      server->response->set_header_field(
-        name  = 'Content-Type'
-        value = 'text/plain' ) ##NO_TEXT.
-      server->response->set_cdata( lo_clas->abap( ) ).
-    ELSEIF lv_path CP '/rest/objects/CLAS/*'.
-      lo_clas = NEW zcl_wabap_object_clas( lv_name ).
-      server->response->set_data( to_json( lo_clas->read( ) ) ).
-
-    ELSEIF lv_path CP '/rest/objects/SMIM/*/content'.
-      DATA(lo_smim) = NEW zcl_wabap_object_smim( lv_name ).
-      IF lv_method = 'POST'.
-        lo_smim->save_content( server->request->get_data( ) ).
-      ELSE.
-        server->response->set_data( lo_smim->read_content( ) ).
-      ENDIF.
-    ELSEIF lv_path CP '/rest/objects/SMIM/*'.
-      lo_smim = NEW zcl_wabap_object_smim( lv_name ).
-      server->response->set_data( to_json( lo_smim->read( ) ) ).
-
-    ELSEIF lv_path CP '/rest/pretty_printer'.
-      server->response->set_cdata(
-        zcl_wabap_pretty_printer=>run(
-        server->request->get_cdata( ) ) ).
+    lv_path = server->request->get_header_field( '~path' ).
+* todo, move this part into ZCL_SWAG?
+    IF lv_path = c_base && '/swagger.html'.
+      lo_swag->generate_ui(
+        iv_json_url = lv_json_url
+        iv_title    = 'WABAP - Swagger' ).
+    ELSEIF lv_path = lv_json_url.
+      lo_swag->generate_spec(
+        iv_title       = 'WABAP'
+        iv_description = 'WABAP REST functions' ).
     ELSE.
-      server->response->set_cdata( '404' ).
-      server->response->set_status( code = 404 reason = '404' ).
+      lo_swag->run( ).
     ENDIF.
-
-  ENDMETHOD.
-
-
-  METHOD to_json.
-
-    DATA: lo_writer TYPE REF TO cl_sxml_string_writer.
-
-
-    lo_writer = cl_sxml_string_writer=>create( if_sxml=>co_xt_json ).
-    CALL TRANSFORMATION id
-      SOURCE data = ig_data
-      RESULT XML lo_writer.
-    rv_json = lo_writer->get_output( ).
 
   ENDMETHOD.
 ENDCLASS.

@@ -5,40 +5,35 @@ CLASS zcl_wabap_object_smim DEFINITION
 
   PUBLIC SECTION.
 
+    INTERFACES zif_swag_handler.
+
     TYPES:
       BEGIN OF ty_smim,
         url    TYPE skwf_url,
         folder TYPE abap_bool,
       END OF ty_smim.
 
+    METHODS read
+      IMPORTING
+        !iv_key        TYPE sdok_loid
+      RETURNING
+        VALUE(rs_data) TYPE ty_smim.
     METHODS read_content
+      IMPORTING
+        !iv_key           TYPE sdok_loid
       RETURNING
         VALUE(rv_content) TYPE xstring.
     METHODS save_content
       IMPORTING
+        !iv_key     TYPE sdok_loid
         !iv_content TYPE xstring.
-    METHODS read
-      RETURNING
-        VALUE(rs_data) TYPE ty_smim.
-    METHODS constructor
-      IMPORTING
-        !iv_key TYPE clike.
   PROTECTED SECTION.
   PRIVATE SECTION.
-
-    DATA mv_key TYPE sdok_loid.
 ENDCLASS.
 
 
 
 CLASS ZCL_WABAP_OBJECT_SMIM IMPLEMENTATION.
-
-
-  METHOD constructor.
-
-    mv_key = iv_key.
-
-  ENDMETHOD.
 
 
   METHOD read.
@@ -49,7 +44,7 @@ CLASS ZCL_WABAP_OBJECT_SMIM IMPLEMENTATION.
 
 
     SELECT SINGLE * FROM smimloio INTO ls_smimloio
-      WHERE loio_id = mv_key.                           "#EC CI_GENBUFF
+      WHERE loio_id = iv_key.                           "#EC CI_GENBUFF
     ASSERT sy-subrc = 0.
 
     IF ls_smimloio-lo_class = wbmr_c_skwf_folder_class.
@@ -72,7 +67,7 @@ CLASS ZCL_WABAP_OBJECT_SMIM IMPLEMENTATION.
 
   METHOD read_content.
 
-    DATA(ls_smim) = read( ).
+    DATA(ls_smim) = read( iv_key ).
 
     ASSERT ls_smim-folder = abap_false.
 
@@ -96,7 +91,7 @@ CLASS ZCL_WABAP_OBJECT_SMIM IMPLEMENTATION.
 
   METHOD save_content.
 
-    DATA(ls_data) = read( ).
+    DATA(ls_data) = read( iv_key ).
     ASSERT ls_data-folder = abap_false.
 
     DATA(li_api) = cl_mime_repository_api=>if_mr_api~get_api( ).
@@ -115,6 +110,35 @@ CLASS ZCL_WABAP_OBJECT_SMIM IMPLEMENTATION.
         is_folder               = 7
         OTHERS                  = 8 ).
     ASSERT sy-subrc = 0.
+
+  ENDMETHOD.
+
+
+  METHOD zif_swag_handler~meta.
+
+    FIELD-SYMBOLS: <ls_meta> LIKE LINE OF rt_meta.
+
+
+    APPEND INITIAL LINE TO rt_meta ASSIGNING <ls_meta>.
+    <ls_meta>-summary   = 'Read SMIM'.
+    <ls_meta>-url-regex = '/objects/SMIM/(\w*)/$'.
+    APPEND 'IV_KEY' TO <ls_meta>-url-group_names.
+    <ls_meta>-method    = zcl_swag=>c_method-get.
+    <ls_meta>-handler   = 'READ'.
+
+    APPEND INITIAL LINE TO rt_meta ASSIGNING <ls_meta>.
+    <ls_meta>-summary   = 'Read SMIM content'.
+    <ls_meta>-url-regex = '/objects/SMIM/(\w*)/content/$'.
+    APPEND 'IV_KEY' TO <ls_meta>-url-group_names.
+    <ls_meta>-method    = zcl_swag=>c_method-get.
+    <ls_meta>-handler   = 'READ_CONTENT'.
+
+    APPEND INITIAL LINE TO rt_meta ASSIGNING <ls_meta>.
+    <ls_meta>-summary   = 'Save SMIM content'.
+    <ls_meta>-url-regex = '/objects/SMIM/(\w*)/content/$'.
+    APPEND 'IV_KEY' TO <ls_meta>-url-group_names.
+    <ls_meta>-method    = zcl_swag=>c_method-post.
+    <ls_meta>-handler   = 'SAVE_CONTENT'.
 
   ENDMETHOD.
 ENDCLASS.

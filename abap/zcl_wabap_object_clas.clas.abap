@@ -5,24 +5,25 @@ CLASS zcl_wabap_object_clas DEFINITION
 
   PUBLIC SECTION.
 
+    INTERFACES zif_swag_handler.
+
     TYPES:
       BEGIN OF ty_clas,
         vseoclass TYPE vseoclass,
       END OF ty_clas.
 
     METHODS read
+      IMPORTING
+        !iv_name       TYPE seoclsname
       RETURNING
         VALUE(rs_data) TYPE ty_clas.
-    METHODS constructor
-      IMPORTING
-        !iv_name TYPE tadir-obj_name.
     METHODS abap
+      IMPORTING
+        !iv_name       TYPE seoclsname
       RETURNING
         VALUE(rv_abap) TYPE string.
   PROTECTED SECTION.
   PRIVATE SECTION.
-
-    DATA mv_name TYPE seoclsname.
 ENDCLASS.
 
 
@@ -39,7 +40,7 @@ CLASS ZCL_WABAP_OBJECT_CLAS IMPLEMENTATION.
     lo_instance = cl_oo_factory=>create_instance( ).
 
     li_source = lo_instance->create_clif_source(
-      clif_name = mv_name
+      clif_name = iv_name
       version   = 'A' ).
 
     li_source->get_source(
@@ -53,19 +54,12 @@ CLASS ZCL_WABAP_OBJECT_CLAS IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD constructor.
-
-    mv_name = iv_name.
-
-  ENDMETHOD.
-
-
   METHOD read.
 
     DATA: ls_clskey TYPE seoclskey.
 
 
-    ls_clskey-clsname = mv_name.
+    ls_clskey-clsname = iv_name.
 
     CALL FUNCTION 'SEO_CLIF_GET'
       EXPORTING
@@ -73,6 +67,28 @@ CLASS ZCL_WABAP_OBJECT_CLAS IMPLEMENTATION.
         version = seoc_version_active
       IMPORTING
         class   = rs_data-vseoclass.  " todo, active vs inactive
+
+  ENDMETHOD.
+
+
+  METHOD zif_swag_handler~meta.
+
+    FIELD-SYMBOLS: <ls_meta> LIKE LINE OF rt_meta.
+
+
+    APPEND INITIAL LINE TO rt_meta ASSIGNING <ls_meta>.
+    <ls_meta>-summary   = 'Read CLAS'.
+    <ls_meta>-url-regex = '/objects/CLAS/(\w*)/$'.
+    APPEND 'IV_NAME' TO <ls_meta>-url-group_names.
+    <ls_meta>-method    = zcl_swag=>c_method-get.
+    <ls_meta>-handler   = 'READ'.
+
+    APPEND INITIAL LINE TO rt_meta ASSIGNING <ls_meta>.
+    <ls_meta>-summary   = 'Read CLAS ABAP'.
+    <ls_meta>-url-regex = '/objects/CLAS/(\w*)/abap/$'.
+    APPEND 'IV_NAME' TO <ls_meta>-url-group_names.
+    <ls_meta>-method    = zcl_swag=>c_method-get.
+    <ls_meta>-handler   = 'ABAP'.
 
   ENDMETHOD.
 ENDCLASS.
