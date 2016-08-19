@@ -5,7 +5,6 @@
     "outDir": "build",
     "noFallthroughCasesInSwitch": true,
     "removeComments": true,
-    "experimentalDecorators": true,
     "noImplicitReturns": true,
     "sourceMap": true,
     "experimentalDecorators": true
