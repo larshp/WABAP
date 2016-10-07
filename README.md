@@ -15,7 +15,7 @@ Proof-of-concept.
 
 * clone abap using [abapGit](http://www.abapgit.org)
 
-* run ZWABAP_INSTALLER and supply with build.zip
+* run ZWABAP_INSTALLER and supply with build.zip (install into new isolated package)
 
 * run via SICF service ZWABAP
 
