@@ -19,5 +19,7 @@ Proof-of-concept.
 
 * run via SICF service ZWABAP
 
+* endpoint is located at zwabap/rest/
+
 ### Screenshot
 ![wabap](https://github.com/larshp/WABAP/wiki/img/wabap001.png)
