@@ -25,7 +25,8 @@ function toggleReadOnly(cm) {
 function validator(text, callback, options) {
   let result = [];
 
-  let issues = abaplint.run("foobar.abap", text);
+  let file = new abaplint.File("foobar.abap", text);
+  let issues = abaplint.Runner.run([file]);
 
   for (let issue of issues) {
     result.push(

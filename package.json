@@ -4,7 +4,7 @@
   "description": "WABAP",
   "main": "index.js",
   "dependencies": {
-    "abaplint": "^0.26.9",
+    "abaplint": "^0.29.2",
     "codemirror": "^5.16.0",
     "codemirror-abap": "^0.1.7",
     "mobx": "^2.3.7",
@@ -17,19 +17,21 @@
     "react-dom": "^15.2.1"
   },
   "devDependencies": {
+    "@types/codemirror": "0.0.35",
+    "@types/react": "^0.14.50",
+    "@types/react-addons-css-transition-group": "^0.14.18",
+    "@types/react-addons-transition-group": "^0.14.17",
+    "@types/react-dom": "^0.14.19",
     "browserify": "^13.0.1",
     "tslint": "^3.13.0",
-    "typescript": "^1.8.10",
-    "typings": "^1.3.1"
+    "typescript": "^2.0.10"
   },
   "scripts": {
-    "postinstall": "npm run typings",
     "browserify": "browserify build/index.js -o web/bundle.js",
     "postbrowserify": "./runweb.sh",
     "tslint": "tslint -c tslint.json \"src/**/*.ts*\"",
     "pretest": "abaplint \"abap/**/*.abap\"",
     "test": "tsc --pretty",
-    "typings": "typings install",
     "zip": "zip build.zip web/*",
     "posttest": "npm run browserify"
   },

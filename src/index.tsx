@@ -1,4 +1,3 @@
-import "../typings/index.d.ts";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as Components from "./components/";
@@ -80,7 +79,7 @@ class Main extends React.Component<{}, {}> {
 
       <div style={tree}><Components.Tree con={Store.getStore().connections} /></div>
 
-      <div style={adjust} draggable="true"
+      <div style={adjust} draggable={true}
         onDrag={this.onDrag.bind(this)}
         onDragStart={this.onDragStart.bind(this)}>
       </div>
