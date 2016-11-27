@@ -6,6 +6,8 @@
     "noFallthroughCasesInSwitch": true,
     "removeComments": true,
     "noImplicitReturns": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "sourceMap": true,
     "experimentalDecorators": true
   },

@@ -5,7 +5,7 @@ import Octicons from "../misc/octicons";
 
 export enum ConnectionType {
   Online,
-  Offline
+  Offline,
 }
 
 export class Connection extends Store.TreeItem {

@@ -22,7 +22,7 @@ function toggleReadOnly(cm) {
   }
 }
 
-function validator(text, callback, options) {
+function validator(text, callback) {
   let result = [];
 
   let file = new abaplint.File("foobar.abap", text);
@@ -90,7 +90,7 @@ export class Editor {
         tabSize: 2,
         theme: "seti",
         gutters: ["CodeMirror-lint-markers"],
-      }
+      },
     );
 
     // consume the full div height
@@ -104,10 +104,10 @@ export class Editor {
       "Ctrl-F1": function(cm) {
         toggleReadOnly(cm);
       },
-      "Ctrl-F2": function(cm) {
+      "Ctrl-F2": function() {
         alert("todo, check! ctrl+f2");
       },
-      "Ctrl-F3": function(cm) {
+      "Ctrl-F3": function() {
         alert("todo, activate! ctrl+f3");
       },
       "Shift-F1": function(cm) {

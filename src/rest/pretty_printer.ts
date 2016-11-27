@@ -1,5 +1,4 @@
 import Manager from "./manager";
-import { BackendObject } from "./";
 import * as Store from "../store/";
 
 function parse(evt): string {

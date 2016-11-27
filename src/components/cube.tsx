@@ -1,6 +1,4 @@
 import * as React from "react";
-import * as Components from "./";
-import * as Store from "../store/";
 import {observer} from "mobx-react";
 
 class Style {

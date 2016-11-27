@@ -1,5 +1,3 @@
-import * as Store from "../store/";
-
 function handleError(evt, callback?: (evt) => void) {
   if (evt.target.status === 200) {
     callback(evt);

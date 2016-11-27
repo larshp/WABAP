@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as Modal from "./modal/";
 import * as Store from "../store/";
 import {observer} from "mobx-react";
 import Octicons from "../misc/octicons";

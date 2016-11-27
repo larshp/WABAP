@@ -23,7 +23,7 @@
     "@types/react-addons-transition-group": "^0.14.17",
     "@types/react-dom": "^0.14.19",
     "browserify": "^13.0.1",
-    "tslint": "^3.13.0",
+    "tslint": "^4.0.2",
     "typescript": "^2.0.10"
   },
   "scripts": {
@@ -33,7 +33,7 @@
     "pretest": "abaplint \"abap/**/*.abap\"",
     "test": "tsc --pretty",
     "zip": "zip build.zip web/*",
-    "posttest": "npm run browserify"
+    "posttest": "npm run browserify && npm run tslint"
   },
   "repository": {
     "type": "git",
