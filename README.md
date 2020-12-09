@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/larshp/WABAP.svg?branch=master)](https://travis-ci.org/larshp/WABAP)
 [![Dependency Status](https://david-dm.org/larshp/WABAP.svg)](https://david-dm.org/larshp/WABAP)
-[![abaplint](https://abaplint.org/badges/larshp/WABAP)](https://abaplint.org/project/larshp/WABAP)
 
 Proof-of-concept.
 
